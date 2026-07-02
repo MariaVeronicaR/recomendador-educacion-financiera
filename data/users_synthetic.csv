@@ -1,0 +1,251 @@
+user_id,age_group,education_level,employment_status,financial_knowledge_level,saving_habit,debt_experience,investment_experience,financial_behavior_level,financial_attitude_level,learning_goal
+U0001,35-44,secundaria,empleado,bajo,ocasional,media,básica,bajo,medio,presupuestar
+U0002,18-24,formación profesional,estudiante,bajo,ocasional,baja,ninguna,medio,alto,presupuestar
+U0003,45-54,formación profesional,empleado,bajo,frecuente,baja,ninguna,bajo,alto,prepararse para invertir
+U0004,45-54,universidad,empleado,alto,ocasional,baja,intermedia,medio,alto,usar crédito
+U0005,35-44,secundaria,empleado,bajo,nunca,ninguna,ninguna,bajo,medio,entender deuda
+U0006,25-34,secundaria,empleado,alto,frecuente,media,ninguna,medio,bajo,entender deuda
+U0007,55+,formación profesional,empleado,medio,frecuente,media,ninguna,bajo,medio,ahorrar
+U0008,18-24,universidad,desempleado,medio,ocasional,baja,básica,medio,medio,ahorrar
+U0009,35-44,bachillerato,empleado,medio,ocasional,ninguna,avanzada,medio,bajo,presupuestar
+U0010,18-24,formación profesional,autónomo,medio,nunca,baja,avanzada,medio,alto,planificar finanzas
+U0011,18-24,universidad,empleado,medio,ocasional,media,ninguna,medio,medio,planificar finanzas
+U0012,45-54,bachillerato,empleado,bajo,frecuente,alta,ninguna,medio,medio,ahorrar
+U0013,45-54,formación profesional,autónomo,medio,nunca,baja,ninguna,alto,alto,planificar finanzas
+U0014,25-34,secundaria,desempleado,alto,nunca,baja,ninguna,medio,alto,presupuestar
+U0015,25-34,formación profesional,empleado,medio,ocasional,ninguna,ninguna,medio,bajo,ahorrar
+U0016,55+,formación profesional,empleado,medio,nunca,ninguna,ninguna,medio,bajo,ahorrar
+U0017,18-24,formación profesional,empleado,alto,frecuente,ninguna,ninguna,medio,bajo,presupuestar
+U0018,55+,formación profesional,empleado,medio,frecuente,ninguna,ninguna,medio,medio,entender deuda
+U0019,35-44,formación profesional,desempleado,bajo,nunca,baja,básica,bajo,bajo,entender deuda
+U0020,25-34,bachillerato,empleado,alto,ocasional,alta,básica,bajo,alto,planificar finanzas
+U0021,55+,universidad,autónomo,bajo,nunca,ninguna,ninguna,bajo,medio,planificar finanzas
+U0022,25-34,universidad,empleado,medio,frecuente,alta,básica,medio,bajo,ahorrar
+U0023,55+,formación profesional,empleado,medio,nunca,baja,ninguna,alto,bajo,planificar finanzas
+U0024,18-24,secundaria,empleado,medio,nunca,ninguna,básica,bajo,medio,prepararse para invertir
+U0025,25-34,formación profesional,empleado,alto,ocasional,media,ninguna,medio,medio,ahorrar
+U0026,25-34,universidad,estudiante,medio,frecuente,alta,ninguna,bajo,medio,planificar finanzas
+U0027,45-54,universidad,empleado,bajo,ocasional,media,ninguna,alto,medio,presupuestar
+U0028,45-54,bachillerato,empleado,alto,ocasional,ninguna,ninguna,medio,medio,prepararse para invertir
+U0029,35-44,secundaria,empleado,bajo,nunca,alta,básica,bajo,medio,ahorrar
+U0030,18-24,universidad,empleado,bajo,ocasional,baja,ninguna,bajo,bajo,planificar finanzas
+U0031,55+,formación profesional,autónomo,medio,nunca,ninguna,ninguna,alto,alto,planificar finanzas
+U0032,45-54,secundaria,empleado,bajo,ocasional,alta,ninguna,medio,bajo,planificar finanzas
+U0033,45-54,posgrado,autónomo,alto,nunca,media,básica,alto,alto,planificar finanzas
+U0034,45-54,bachillerato,autónomo,bajo,ocasional,alta,ninguna,alto,medio,ahorrar
+U0035,45-54,secundaria,estudiante,bajo,nunca,alta,intermedia,bajo,medio,entender deuda
+U0036,55+,formación profesional,desempleado,bajo,frecuente,ninguna,intermedia,bajo,bajo,entender deuda
+U0037,35-44,bachillerato,empleado,medio,ocasional,baja,ninguna,medio,bajo,planificar finanzas
+U0038,25-34,universidad,empleado,medio,ocasional,ninguna,básica,bajo,medio,planificar finanzas
+U0039,35-44,bachillerato,empleado,bajo,nunca,ninguna,ninguna,medio,alto,prepararse para invertir
+U0040,55+,formación profesional,empleado,medio,nunca,ninguna,ninguna,medio,medio,entender deuda
+U0041,25-34,secundaria,empleado,alto,frecuente,ninguna,ninguna,medio,medio,ahorrar
+U0042,45-54,universidad,empleado,bajo,nunca,ninguna,ninguna,medio,alto,presupuestar
+U0043,25-34,formación profesional,estudiante,medio,ocasional,ninguna,básica,bajo,alto,evitar fraude
+U0044,18-24,bachillerato,estudiante,alto,ocasional,ninguna,ninguna,alto,medio,planificar finanzas
+U0045,35-44,posgrado,empleado,alto,frecuente,media,intermedia,medio,alto,usar crédito
+U0046,45-54,universidad,empleado,bajo,nunca,media,ninguna,medio,medio,ahorrar
+U0047,18-24,bachillerato,empleado,bajo,ocasional,ninguna,ninguna,medio,medio,presupuestar
+U0048,25-34,formación profesional,empleado,bajo,nunca,alta,ninguna,medio,alto,evitar fraude
+U0049,25-34,secundaria,empleado,medio,frecuente,alta,ninguna,medio,medio,prepararse para invertir
+U0050,18-24,secundaria,empleado,bajo,nunca,media,ninguna,bajo,medio,presupuestar
+U0051,35-44,secundaria,empleado,medio,nunca,media,ninguna,medio,bajo,entender deuda
+U0052,18-24,bachillerato,autónomo,bajo,ocasional,media,ninguna,bajo,bajo,usar crédito
+U0053,55+,bachillerato,empleado,medio,ocasional,media,intermedia,bajo,bajo,ahorrar
+U0054,18-24,formación profesional,empleado,bajo,ocasional,media,ninguna,medio,medio,presupuestar
+U0055,45-54,posgrado,estudiante,bajo,nunca,media,intermedia,medio,medio,presupuestar
+U0056,35-44,formación profesional,estudiante,medio,frecuente,media,ninguna,alto,alto,ahorrar
+U0057,25-34,bachillerato,empleado,bajo,ocasional,media,ninguna,alto,medio,planificar finanzas
+U0058,35-44,bachillerato,empleado,alto,ocasional,media,básica,medio,medio,evitar fraude
+U0059,25-34,universidad,autónomo,bajo,ocasional,ninguna,ninguna,medio,medio,presupuestar
+U0060,45-54,secundaria,empleado,medio,ocasional,alta,básica,bajo,bajo,planificar finanzas
+U0061,18-24,universidad,empleado,medio,ocasional,media,ninguna,medio,bajo,ahorrar
+U0062,35-44,bachillerato,empleado,bajo,ocasional,baja,ninguna,bajo,medio,ahorrar
+U0063,25-34,secundaria,estudiante,bajo,ocasional,media,ninguna,bajo,medio,evitar fraude
+U0064,55+,formación profesional,empleado,bajo,nunca,ninguna,ninguna,bajo,medio,ahorrar
+U0065,55+,formación profesional,empleado,bajo,ocasional,baja,básica,medio,medio,entender deuda
+U0066,18-24,secundaria,desempleado,bajo,ocasional,baja,ninguna,medio,bajo,presupuestar
+U0067,35-44,bachillerato,desempleado,bajo,ocasional,media,ninguna,bajo,medio,entender deuda
+U0068,25-34,universidad,desempleado,medio,ocasional,media,básica,alto,bajo,ahorrar
+U0069,35-44,secundaria,estudiante,bajo,nunca,baja,ninguna,bajo,bajo,evitar fraude
+U0070,35-44,bachillerato,empleado,alto,frecuente,media,intermedia,alto,medio,usar crédito
+U0071,35-44,universidad,autónomo,bajo,nunca,baja,ninguna,medio,medio,presupuestar
+U0072,35-44,formación profesional,desempleado,medio,ocasional,ninguna,ninguna,medio,medio,ahorrar
+U0073,18-24,posgrado,autónomo,medio,frecuente,alta,ninguna,bajo,bajo,evitar fraude
+U0074,25-34,formación profesional,desempleado,bajo,ocasional,media,ninguna,bajo,medio,ahorrar
+U0075,35-44,universidad,empleado,medio,ocasional,alta,básica,medio,medio,ahorrar
+U0076,25-34,posgrado,empleado,medio,frecuente,media,ninguna,medio,bajo,entender deuda
+U0077,45-54,formación profesional,autónomo,bajo,ocasional,alta,ninguna,medio,bajo,planificar finanzas
+U0078,35-44,secundaria,estudiante,medio,ocasional,ninguna,avanzada,alto,medio,presupuestar
+U0079,45-54,bachillerato,empleado,medio,ocasional,media,avanzada,bajo,medio,entender deuda
+U0080,55+,formación profesional,desempleado,medio,ocasional,media,ninguna,alto,medio,planificar finanzas
+U0081,25-34,bachillerato,empleado,alto,ocasional,ninguna,básica,bajo,medio,usar crédito
+U0082,25-34,bachillerato,estudiante,medio,ocasional,ninguna,básica,bajo,medio,evitar fraude
+U0083,45-54,bachillerato,empleado,medio,frecuente,baja,ninguna,medio,medio,planificar finanzas
+U0084,45-54,bachillerato,empleado,bajo,ocasional,baja,ninguna,bajo,medio,planificar finanzas
+U0085,25-34,formación profesional,empleado,medio,frecuente,alta,ninguna,bajo,medio,evitar fraude
+U0086,45-54,secundaria,estudiante,medio,frecuente,alta,básica,medio,bajo,prepararse para invertir
+U0087,45-54,bachillerato,empleado,alto,nunca,media,ninguna,medio,bajo,usar crédito
+U0088,35-44,universidad,estudiante,bajo,ocasional,media,ninguna,alto,bajo,entender deuda
+U0089,25-34,bachillerato,estudiante,medio,frecuente,media,ninguna,medio,medio,usar crédito
+U0090,35-44,bachillerato,empleado,medio,nunca,baja,ninguna,bajo,medio,usar crédito
+U0091,55+,bachillerato,desempleado,medio,ocasional,baja,básica,medio,bajo,prepararse para invertir
+U0092,25-34,universidad,empleado,medio,ocasional,baja,básica,medio,medio,evitar fraude
+U0093,35-44,universidad,empleado,alto,frecuente,baja,básica,medio,medio,presupuestar
+U0094,25-34,universidad,estudiante,bajo,ocasional,alta,ninguna,alto,alto,ahorrar
+U0095,45-54,bachillerato,autónomo,medio,ocasional,ninguna,intermedia,bajo,alto,planificar finanzas
+U0096,35-44,posgrado,desempleado,alto,ocasional,media,ninguna,medio,medio,prepararse para invertir
+U0097,35-44,formación profesional,autónomo,alto,ocasional,ninguna,ninguna,alto,medio,planificar finanzas
+U0098,18-24,secundaria,autónomo,alto,ocasional,baja,ninguna,alto,medio,entender deuda
+U0099,18-24,universidad,estudiante,medio,ocasional,media,básica,medio,medio,ahorrar
+U0100,25-34,secundaria,empleado,bajo,frecuente,ninguna,ninguna,medio,alto,planificar finanzas
+U0101,18-24,formación profesional,empleado,alto,ocasional,baja,ninguna,bajo,alto,entender deuda
+U0102,35-44,formación profesional,empleado,bajo,ocasional,ninguna,ninguna,medio,bajo,evitar fraude
+U0103,18-24,secundaria,desempleado,bajo,nunca,alta,ninguna,alto,bajo,presupuestar
+U0104,25-34,secundaria,empleado,bajo,nunca,media,ninguna,bajo,bajo,presupuestar
+U0105,35-44,formación profesional,empleado,medio,ocasional,baja,ninguna,medio,alto,presupuestar
+U0106,45-54,universidad,empleado,medio,frecuente,ninguna,ninguna,medio,medio,entender deuda
+U0107,55+,secundaria,estudiante,medio,nunca,ninguna,básica,medio,medio,planificar finanzas
+U0108,25-34,bachillerato,empleado,bajo,ocasional,alta,ninguna,medio,medio,ahorrar
+U0109,25-34,secundaria,empleado,bajo,nunca,ninguna,ninguna,medio,medio,ahorrar
+U0110,55+,secundaria,autónomo,bajo,nunca,media,básica,medio,medio,usar crédito
+U0111,25-34,secundaria,empleado,medio,ocasional,alta,básica,alto,medio,entender deuda
+U0112,35-44,secundaria,empleado,bajo,nunca,media,ninguna,medio,medio,planificar finanzas
+U0113,45-54,posgrado,autónomo,medio,ocasional,ninguna,intermedia,alto,medio,ahorrar
+U0114,35-44,bachillerato,empleado,bajo,ocasional,baja,ninguna,bajo,medio,presupuestar
+U0115,35-44,secundaria,empleado,bajo,nunca,media,ninguna,medio,bajo,presupuestar
+U0116,18-24,formación profesional,empleado,bajo,ocasional,baja,ninguna,bajo,alto,presupuestar
+U0117,25-34,bachillerato,empleado,bajo,ocasional,ninguna,ninguna,medio,bajo,ahorrar
+U0118,18-24,secundaria,empleado,bajo,nunca,media,ninguna,medio,medio,usar crédito
+U0119,45-54,universidad,estudiante,alto,nunca,ninguna,avanzada,alto,medio,usar crédito
+U0120,35-44,bachillerato,estudiante,bajo,nunca,media,ninguna,alto,alto,presupuestar
+U0121,45-54,secundaria,empleado,medio,ocasional,baja,ninguna,bajo,bajo,usar crédito
+U0122,18-24,formación profesional,desempleado,bajo,ocasional,media,básica,bajo,bajo,ahorrar
+U0123,35-44,universidad,empleado,bajo,ocasional,baja,ninguna,medio,medio,planificar finanzas
+U0124,35-44,formación profesional,empleado,medio,ocasional,ninguna,ninguna,medio,medio,ahorrar
+U0125,18-24,formación profesional,empleado,medio,nunca,media,ninguna,alto,alto,prepararse para invertir
+U0126,25-34,bachillerato,empleado,medio,frecuente,baja,básica,medio,medio,entender deuda
+U0127,18-24,secundaria,estudiante,medio,ocasional,media,ninguna,bajo,bajo,entender deuda
+U0128,25-34,formación profesional,estudiante,bajo,nunca,baja,ninguna,medio,alto,prepararse para invertir
+U0129,18-24,secundaria,empleado,bajo,ocasional,media,básica,alto,medio,usar crédito
+U0130,18-24,bachillerato,desempleado,medio,ocasional,baja,básica,bajo,medio,evitar fraude
+U0131,45-54,formación profesional,autónomo,medio,ocasional,baja,básica,medio,medio,entender deuda
+U0132,18-24,secundaria,desempleado,bajo,nunca,ninguna,ninguna,alto,bajo,evitar fraude
+U0133,45-54,universidad,estudiante,medio,ocasional,ninguna,ninguna,bajo,alto,evitar fraude
+U0134,45-54,secundaria,empleado,bajo,ocasional,ninguna,ninguna,bajo,medio,entender deuda
+U0135,25-34,bachillerato,autónomo,bajo,ocasional,baja,básica,alto,medio,ahorrar
+U0136,25-34,formación profesional,desempleado,medio,frecuente,ninguna,ninguna,medio,alto,usar crédito
+U0137,18-24,universidad,desempleado,bajo,ocasional,ninguna,básica,bajo,medio,planificar finanzas
+U0138,18-24,bachillerato,empleado,bajo,nunca,baja,ninguna,alto,medio,presupuestar
+U0139,55+,universidad,empleado,medio,nunca,ninguna,básica,medio,bajo,evitar fraude
+U0140,25-34,secundaria,estudiante,bajo,ocasional,baja,ninguna,medio,bajo,ahorrar
+U0141,25-34,secundaria,empleado,medio,ocasional,ninguna,intermedia,medio,bajo,usar crédito
+U0142,18-24,secundaria,empleado,medio,nunca,baja,ninguna,bajo,alto,presupuestar
+U0143,25-34,formación profesional,desempleado,medio,ocasional,baja,básica,alto,medio,presupuestar
+U0144,45-54,bachillerato,empleado,medio,ocasional,media,ninguna,bajo,medio,planificar finanzas
+U0145,18-24,universidad,empleado,medio,ocasional,media,ninguna,medio,medio,ahorrar
+U0146,18-24,secundaria,estudiante,alto,ocasional,alta,ninguna,bajo,alto,ahorrar
+U0147,25-34,universidad,desempleado,medio,nunca,baja,intermedia,medio,alto,entender deuda
+U0148,55+,bachillerato,empleado,alto,ocasional,media,intermedia,bajo,medio,planificar finanzas
+U0149,25-34,bachillerato,estudiante,medio,ocasional,media,ninguna,medio,medio,presupuestar
+U0150,45-54,bachillerato,desempleado,bajo,frecuente,alta,ninguna,medio,medio,planificar finanzas
+U0151,35-44,posgrado,estudiante,medio,ocasional,ninguna,ninguna,medio,medio,entender deuda
+U0152,35-44,formación profesional,empleado,alto,ocasional,media,básica,medio,medio,prepararse para invertir
+U0153,18-24,secundaria,empleado,bajo,nunca,baja,ninguna,bajo,medio,planificar finanzas
+U0154,25-34,universidad,empleado,bajo,ocasional,baja,básica,medio,bajo,prepararse para invertir
+U0155,45-54,bachillerato,empleado,bajo,ocasional,alta,básica,medio,alto,prepararse para invertir
+U0156,45-54,formación profesional,estudiante,bajo,nunca,media,ninguna,medio,medio,planificar finanzas
+U0157,35-44,formación profesional,estudiante,bajo,frecuente,media,ninguna,medio,alto,presupuestar
+U0158,55+,formación profesional,empleado,medio,ocasional,alta,básica,medio,bajo,planificar finanzas
+U0159,25-34,universidad,estudiante,bajo,nunca,ninguna,ninguna,medio,medio,planificar finanzas
+U0160,45-54,universidad,empleado,medio,ocasional,ninguna,ninguna,medio,medio,ahorrar
+U0161,55+,secundaria,empleado,medio,ocasional,media,básica,alto,bajo,presupuestar
+U0162,35-44,formación profesional,empleado,medio,ocasional,media,ninguna,medio,medio,planificar finanzas
+U0163,25-34,universidad,empleado,bajo,nunca,ninguna,ninguna,medio,bajo,prepararse para invertir
+U0164,25-34,universidad,empleado,alto,frecuente,ninguna,básica,medio,medio,entender deuda
+U0165,25-34,secundaria,estudiante,bajo,nunca,media,ninguna,alto,bajo,ahorrar
+U0166,35-44,bachillerato,autónomo,bajo,ocasional,baja,ninguna,bajo,alto,usar crédito
+U0167,55+,secundaria,empleado,bajo,nunca,alta,ninguna,medio,medio,planificar finanzas
+U0168,25-34,universidad,empleado,medio,ocasional,baja,básica,bajo,medio,presupuestar
+U0169,25-34,universidad,empleado,alto,frecuente,ninguna,avanzada,medio,alto,ahorrar
+U0170,55+,universidad,estudiante,medio,ocasional,ninguna,ninguna,bajo,medio,entender deuda
+U0171,35-44,formación profesional,empleado,medio,nunca,alta,básica,bajo,medio,planificar finanzas
+U0172,25-34,universidad,empleado,alto,ocasional,media,avanzada,medio,alto,evitar fraude
+U0173,35-44,secundaria,empleado,alto,frecuente,media,básica,medio,medio,ahorrar
+U0174,35-44,formación profesional,autónomo,bajo,ocasional,ninguna,básica,bajo,bajo,ahorrar
+U0175,18-24,formación profesional,empleado,medio,frecuente,alta,ninguna,bajo,bajo,ahorrar
+U0176,25-34,formación profesional,empleado,bajo,nunca,alta,ninguna,medio,alto,evitar fraude
+U0177,35-44,formación profesional,empleado,bajo,nunca,baja,ninguna,alto,medio,ahorrar
+U0178,18-24,universidad,empleado,medio,frecuente,media,ninguna,bajo,medio,entender deuda
+U0179,55+,universidad,desempleado,alto,ocasional,ninguna,intermedia,bajo,medio,ahorrar
+U0180,25-34,secundaria,empleado,alto,frecuente,ninguna,intermedia,medio,bajo,prepararse para invertir
+U0181,25-34,formación profesional,estudiante,medio,ocasional,ninguna,básica,bajo,medio,planificar finanzas
+U0182,25-34,universidad,desempleado,medio,nunca,alta,ninguna,medio,alto,presupuestar
+U0183,35-44,formación profesional,empleado,alto,frecuente,ninguna,intermedia,bajo,alto,planificar finanzas
+U0184,25-34,bachillerato,desempleado,alto,frecuente,alta,ninguna,medio,bajo,planificar finanzas
+U0185,25-34,posgrado,empleado,medio,frecuente,alta,ninguna,bajo,bajo,ahorrar
+U0186,25-34,bachillerato,estudiante,medio,ocasional,baja,básica,bajo,alto,planificar finanzas
+U0187,45-54,formación profesional,estudiante,medio,nunca,ninguna,ninguna,bajo,medio,ahorrar
+U0188,45-54,posgrado,empleado,medio,nunca,media,básica,bajo,bajo,ahorrar
+U0189,25-34,formación profesional,desempleado,medio,ocasional,ninguna,intermedia,bajo,medio,ahorrar
+U0190,18-24,secundaria,empleado,medio,ocasional,baja,ninguna,medio,medio,ahorrar
+U0191,18-24,universidad,desempleado,bajo,nunca,media,ninguna,medio,bajo,usar crédito
+U0192,25-34,formación profesional,estudiante,bajo,ocasional,ninguna,ninguna,medio,bajo,usar crédito
+U0193,45-54,bachillerato,empleado,bajo,nunca,baja,básica,medio,medio,planificar finanzas
+U0194,35-44,formación profesional,estudiante,bajo,nunca,alta,básica,bajo,alto,presupuestar
+U0195,25-34,universidad,autónomo,alto,frecuente,baja,avanzada,medio,alto,planificar finanzas
+U0196,25-34,formación profesional,empleado,medio,ocasional,baja,ninguna,medio,medio,evitar fraude
+U0197,18-24,secundaria,estudiante,bajo,ocasional,baja,ninguna,alto,bajo,ahorrar
+U0198,25-34,universidad,empleado,bajo,ocasional,baja,ninguna,alto,bajo,ahorrar
+U0199,18-24,secundaria,empleado,medio,nunca,media,ninguna,bajo,bajo,planificar finanzas
+U0200,18-24,formación profesional,empleado,medio,ocasional,baja,ninguna,medio,medio,ahorrar
+U0201,18-24,formación profesional,empleado,bajo,nunca,alta,básica,alto,medio,entender deuda
+U0202,25-34,posgrado,desempleado,medio,ocasional,baja,ninguna,bajo,medio,evitar fraude
+U0203,25-34,universidad,empleado,medio,frecuente,alta,básica,alto,medio,presupuestar
+U0204,18-24,secundaria,empleado,alto,frecuente,ninguna,ninguna,bajo,medio,prepararse para invertir
+U0205,35-44,universidad,estudiante,medio,ocasional,baja,ninguna,alto,medio,planificar finanzas
+U0206,18-24,universidad,desempleado,bajo,frecuente,baja,ninguna,medio,bajo,planificar finanzas
+U0207,35-44,universidad,empleado,medio,ocasional,ninguna,ninguna,medio,bajo,planificar finanzas
+U0208,25-34,universidad,desempleado,medio,ocasional,baja,ninguna,bajo,medio,planificar finanzas
+U0209,35-44,bachillerato,estudiante,bajo,nunca,media,ninguna,medio,medio,ahorrar
+U0210,45-54,posgrado,empleado,medio,nunca,media,ninguna,medio,medio,planificar finanzas
+U0211,25-34,formación profesional,estudiante,bajo,ocasional,alta,ninguna,medio,medio,planificar finanzas
+U0212,18-24,universidad,estudiante,medio,ocasional,media,ninguna,medio,medio,entender deuda
+U0213,18-24,formación profesional,estudiante,medio,ocasional,alta,ninguna,alto,medio,planificar finanzas
+U0214,55+,secundaria,estudiante,bajo,nunca,baja,básica,bajo,medio,entender deuda
+U0215,25-34,formación profesional,desempleado,bajo,ocasional,media,ninguna,alto,alto,presupuestar
+U0216,25-34,formación profesional,estudiante,bajo,nunca,baja,ninguna,medio,medio,planificar finanzas
+U0217,18-24,formación profesional,estudiante,bajo,ocasional,alta,ninguna,bajo,bajo,planificar finanzas
+U0218,45-54,formación profesional,estudiante,alto,ocasional,alta,básica,medio,medio,entender deuda
+U0219,18-24,secundaria,empleado,medio,ocasional,alta,ninguna,medio,bajo,planificar finanzas
+U0220,35-44,formación profesional,desempleado,bajo,nunca,media,ninguna,medio,alto,entender deuda
+U0221,45-54,secundaria,empleado,alto,ocasional,baja,avanzada,medio,medio,prepararse para invertir
+U0222,18-24,formación profesional,autónomo,medio,nunca,ninguna,ninguna,medio,medio,ahorrar
+U0223,18-24,secundaria,empleado,bajo,nunca,ninguna,ninguna,medio,medio,entender deuda
+U0224,18-24,bachillerato,estudiante,medio,ocasional,baja,ninguna,medio,bajo,planificar finanzas
+U0225,55+,posgrado,empleado,bajo,nunca,ninguna,ninguna,medio,bajo,entender deuda
+U0226,25-34,bachillerato,estudiante,bajo,nunca,media,ninguna,bajo,bajo,ahorrar
+U0227,55+,bachillerato,empleado,medio,ocasional,baja,básica,alto,alto,presupuestar
+U0228,25-34,universidad,empleado,medio,frecuente,alta,ninguna,medio,medio,usar crédito
+U0229,18-24,bachillerato,autónomo,bajo,nunca,baja,ninguna,medio,medio,usar crédito
+U0230,55+,bachillerato,empleado,bajo,nunca,media,básica,medio,medio,entender deuda
+U0231,35-44,secundaria,empleado,medio,ocasional,ninguna,avanzada,medio,medio,usar crédito
+U0232,55+,formación profesional,empleado,medio,ocasional,alta,ninguna,medio,bajo,evitar fraude
+U0233,35-44,bachillerato,empleado,bajo,frecuente,media,ninguna,medio,alto,entender deuda
+U0234,18-24,bachillerato,empleado,medio,ocasional,baja,ninguna,medio,alto,usar crédito
+U0235,25-34,bachillerato,estudiante,bajo,nunca,alta,ninguna,alto,bajo,ahorrar
+U0236,25-34,secundaria,empleado,bajo,nunca,media,ninguna,bajo,alto,presupuestar
+U0237,45-54,formación profesional,empleado,bajo,frecuente,ninguna,ninguna,bajo,medio,planificar finanzas
+U0238,18-24,bachillerato,estudiante,medio,ocasional,ninguna,ninguna,bajo,medio,entender deuda
+U0239,35-44,secundaria,autónomo,medio,nunca,ninguna,intermedia,bajo,medio,entender deuda
+U0240,25-34,universidad,empleado,medio,ocasional,media,básica,bajo,alto,prepararse para invertir
+U0241,45-54,universidad,empleado,medio,nunca,ninguna,ninguna,bajo,bajo,prepararse para invertir
+U0242,25-34,bachillerato,estudiante,bajo,nunca,media,ninguna,medio,alto,usar crédito
+U0243,25-34,secundaria,empleado,bajo,nunca,baja,ninguna,bajo,alto,planificar finanzas
+U0244,25-34,bachillerato,empleado,bajo,ocasional,baja,ninguna,bajo,alto,ahorrar
+U0245,25-34,formación profesional,estudiante,medio,ocasional,media,ninguna,bajo,bajo,evitar fraude
+U0246,45-54,bachillerato,autónomo,bajo,ocasional,baja,intermedia,bajo,alto,evitar fraude
+U0247,25-34,posgrado,empleado,medio,frecuente,baja,avanzada,medio,bajo,planificar finanzas
+U0248,35-44,bachillerato,empleado,medio,nunca,ninguna,ninguna,bajo,bajo,entender deuda
+U0249,25-34,formación profesional,empleado,medio,ocasional,ninguna,intermedia,alto,medio,presupuestar
+U0250,55+,universidad,desempleado,alto,frecuente,ninguna,intermedia,bajo,medio,planificar finanzas
