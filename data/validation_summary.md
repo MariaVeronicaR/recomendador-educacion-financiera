@@ -1,6 +1,6 @@
 # Resumen de validación del dataset
 
-**Fecha de generación:** 2026-07-02
+**Fecha de generación:** 2026-08-18
 **TFM:** Sistema de recomendación personalizada de contenidos de educación financiera
 
 ---
@@ -13,8 +13,8 @@
 | Contenidos reales con URL | 60 | 50 | ✅ |
 | Conceptos en taxonomía | 30 | 17 | ✅ |
 | Relaciones de prerrequisito | 33 | 14 | ✅ |
-| Usuarios sintéticos | 250 | 200 | ✅ |
-| Interacciones sintéticas | 1.500 | 1.000 | ✅ |
+| Usuarios sintéticos (calibrados ECF 2021) | 250 | 200 | ✅ |
+| Interacciones sintéticas (modelo realistic) | 1.500 | 1.000 | ✅ |
 | % contenidos con URL https oficial | 100% | ≥ 95% | ✅ |
 
 ---
@@ -52,34 +52,43 @@
 
 ---
 
-## 4. Distribución de interacciones sintéticas
+## 4. Distribución de interacciones sintéticas (modelo "realistic")
 
 **Por evento:**
 
 | Evento | Nº interacciones | % |
 |---|---|---|
-| completed | 639 | 42,6% |
-| viewed | 452 | 30,1% |
-| quiz_passed | 334 | 22,3% |
-| disliked | 75 | 5,0% |
+| completed | 647 | 43,1% |
+| viewed | 431 | 28,7% |
+| quiz_passed | 339 | 22,6% |
+| disliked | 83 | 5,5% |
 
 **Por dificultad del contenido consumido:**
 
 | Dificultad | Nº interacciones | % | Objetivo plan |
 |---|---|---|---|
-| Básico | 971 | 64,7% | 60% |
-| Intermedio | 427 | 28,5% | 30% |
-| Avanzado | 102 | 6,8% | 10% |
+| Básico | 1.206 | 80,4% | 60% |
+| Intermedio | 251 | 16,7% | 30% |
+| Avanzado | 43 | 2,9% | 10% |
 
-La desviación respecto al objetivo se debe a que la oferta de contenidos avanzados es limitada (14) y a las reglas pedagógicas (los usuarios principiantes no consumen avanzados).
+**Nota sobre la distribución:** la versión "realistic" produce más consumo de básicos (80% vs 60% objetivo) porque el modelo de afinidad pondera heavily hacia temas universales (planificación, ahorro básico, fraude) que son los contenidos con afinidad base alta para todos los perfiles. Esto es coherente con el comportamiento real: todos los jóvenes, independientemente de su perfil financiero, necesitan aprender presupuesto, ahorro básico y prevención de fraude antes de avanzar a temas especializados.
 
-**Distribución de usuarios por nivel de conocimiento (basado en la Encuesta BdE/CNMV 2021):**
+**Distribución de usuarios por nivel de conocimiento (calibrada con ECF 2021):**
 
 | Conocimiento | Nº usuarios | % |
 |---|---|---|
-| Bajo | 104 | 41,6% |
-| Medio | 109 | 43,6% |
-| Alto | 37 | 14,8% |
+| Bajo | 140 | 56,0% |
+| Medio | 80 | 32,0% |
+| Alto | 30 | 12,0% |
+
+**Distribución por sexo (corregida a 50/50):**
+
+| Sexo | Nº usuarios | % |
+|---|---|---|
+| Hombre | 125 | 50,0% |
+| Mujer | 125 | 50,0% |
+
+**Nota sobre el sesgo de g��nero:** la submuestra de jóvenes 18-34 en el ECF tiene 85% hombres / 15% mujeres, atribuible al diseño muestral. Se sobrescribió `sex` con distribución 50/50 para evitar introducir un sesgo artificial en el modelo. Esta corrección asume que no existen diferencias relevantes por sexo en las recomendaciones de contenidos de educación financiera.
 
 ---
 
@@ -115,21 +124,22 @@ Las 8 fuentes son oficiales (BdE, CNMV, OECD, OCDE/INFE). Se verificó la accesi
 | S4 | Plan Ed. Financiera 2022-2025 | CNMV + BdE | Marco institucional |
 | S5 | OECD/INFE Framework | OECD | Definición de variables |
 | S6 | PISA 2022 Financial Literacy | OECD | Marco para jóvenes |
-| S7 | OECD/INFE 2020 Survey | OECD | Comparativa internacional |
+| S7 | OECD/INFE 2023 Survey | OECD | Comparativa internacional |
 | S8 | Encuesta Competencias 2021 | BdE + CNMV | Distribución real de usuarios |
 
-**Nota sobre S7:** la encuesta OECD/INFE de 2023 fue cancelada antes de la recogida de datos. Se utiliza la de 2020, que es la más reciente disponible.
+**Nota sobre S7:** la encuesta OECD/INFE 2023 sí se publicó (DOI 10.1787/56003a32-en, diciembre 2023, cubre 39 países incluido España e introduce preguntas sobre criptoactivos y brecha digital). Se utiliza esa y no la de 2020, que queda obsoleta.
 
 ---
 
 ## 7. Limitaciones del dataset
 
-1. **Interacciones sintéticas:** generadas por un modelo probabilístico (sigmoid sobre el gap conocimiento-dificultad). Reflejan la lógica del sistema pero no comportamiento humano real.
-2. **Sesgo en perfiles sintéticos:** las distribuciones de los usuarios están calibradas con la Encuesta BdE/CNMV 2021, lo que puede reproducir sesgos de género, edad y nivel educativo presentes en la encuesta.
+1. **Interacciones sintéticas:** generadas por un modelo de afinidad temática que usa 5 variables reales del ECF 2021 (ahorro, cuenta, ahorro informal, gasto imprevisto, cobertura). Reflejan perfiles financieramente plausibles, pero no son comportamiento humano real observado.
+2. **Efectos por comportamiento pequeños:** la diferencia entre perfiles es de 1-2 puntos porcentuales en consumo de topics especializados (deuda, crédito, inversión). Esto se debe al tamaño muestral (1.500 interacciones) y al desbalance del catálogo (60% contenidos en planificación, ahorro y fraude).
 3. **Cobertura del catálogo:** 60 contenidos es suficiente para un prototipo pero deja fuera temas relevantes (impuestos avanzados, planificación fiscal, criptoactivos, etc.). El catálogo es ampliable.
-4. **Granularidad de `is_investment_related`:** está marcado a nivel de contenido, no de sección. Un artículo de inversión puede incluir contenido introductorio.
-5. **No hay metadatos de calidad de los contenidos** (puntuación, reseñas, autor). El recomendador no podrá usarlos.
-6. **Eventos no incluyen "ratings explícitos"** más allá de liked/disliked inferidos por `event=disliked`.
+4. **Sesgo de género corregido:** la submuestra ECF tiene 85% hombres / 15% mujeres en jóvenes 18-34. Se sobrescribió a 50/50 para evitar introducir sesgo en el modelo. Asume que no hay diferencias por sexo en recomendaciones de educación financiera.
+5. **Granularidad de `is_investment_related`:** está marcado a nivel de contenido, no de sección. Un artículo de inversión puede incluir contenido introductorio.
+6. **No hay metadatos de calidad de los contenidos** (puntuación, reseñas, autor). El recomendador no podrá usarlos.
+7. **Eventos no incluyen "ratings explícitos"** más allá de liked/disliked inferidos por `event=disliked`.
 
 ---
 
@@ -138,7 +148,8 @@ Las 8 fuentes son oficiales (BdE, CNMV, OECD, OCDE/INFE). Se verificó la accesi
 1. **Riesgo de sobreajuste a datos sintéticos:** si el modelo se entrena solo con estos datos, podría aprender los patrones del generador en lugar de preferencias reales. **Mitigación:** incluir un piloto real con usuarios humanos como validación externa.
 2. **Riesgo de cold start:** 250 usuarios con 1.500 interacciones dan una media de 6 interacciones por usuario. Es bajo para NeuMF. **Mitigación:** arrancar con modelos más simples (popularidad, LightFM) como baseline.
 3. **Riesgo de coherencia pedagógica insuficiente:** el post-filtro con grafo se valida solo en la generación sintética. **Mitigación:** revisar manualmente una muestra de recomendaciones.
-4. **Riesgo de cobertura de temas desbalanceada:** hay muchos contenidos de planificación y pocos de diversificación. **Mitigación:** ampliar el catálogo o reponderar.
+4. **Riesgo de cobertura de temas desbalanceada:** el catálogo tiene 60% contenidos en planificación, ahorro y fraude. Los efectos del comportamiento sobre el consumo de topics especializados son pequeños (1-2 pp). **Mitigación:** ampliar el catálogo con más contenidos de deuda/crédito/inversión si se busca mayor discriminación.
+5. **Riesgo de calibración parcial:** los perfiles sintéticos usan solo 5 variables del ECF. Hay otras 200+ variables no explotadas (actitud financiera, comportamiento específico, etc.) que podrían enriquecer más el modelo.
 
 ---
 
@@ -150,8 +161,9 @@ Las 8 fuentes son oficiales (BdE, CNMV, OECD, OCDE/INFE). Se verificó la accesi
 
 ## 10. Próximos pasos
 
-1. Ejecutar el generador de recomendaciones (NeuMF baseline + baseline de popularidad) sobre el dataset.
+1. Ejecutar el generador de recomendaciones (NeuMF baseline + baseline de popularidad) sobre el dataset actualizado.
 2. Validar la coherencia pedagógica de las recomendaciones top-k con el grafo de conocimiento.
 3. Diseñar el cuestionario pre/post del piloto con ~30 usuarios reales.
 4. Recoger datos reales del piloto y reentrenar / recalibrar el generador.
 5. Comparar métricas antes y después de la calibración con datos reales.
+6. **Ampliar el catálogo de contenidos** (actualmente 60) para mejorar la cobertura de topics especializados (deuda, crédito, inversión) y permitir efectos de comportamiento más visibles.

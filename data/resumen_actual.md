@@ -2,6 +2,8 @@
 
 ## ¿Qué tenemos?
 
+
+
 7 archivos en `/data/`. Cifras redondas para llevarlas a la cabeza:
 
 | Archivo                        | Qué es                                     | Cantidad |
@@ -11,7 +13,7 @@
 | `concepts.csv`               | Taxonomía de conceptos financieros         | 30       |
 | `prerequisites.csv`          | Relaciones de prerrequisito entre conceptos | 33       |
 | `users_synthetic.csv`        | Usuarios sintéticos                        | 250      |
-| `interactions_synthetic.csv` | Interacciones sintéticas                   | 1.500    |
+| `interactions_synthetic.csv` | Interacciones sintéticas (modelo "realistic") | 1.500    |
 | `validation_summary.md`      | Validaciones y limitaciones                 | —       |
 
 - **100% de los contenidos tienen URL https oficial** (BdE, CNMV, OECD).
@@ -21,7 +23,7 @@
 
 **Parte real (contenidos, conceptos, marco institucional):**
 
-1. Identificadas 8 fuentes oficiales: Finanzas para Todos (CNMV+BdE), Guías CNMV, Portal Cliente Bancario (BdE), Plan Ed. Financiera 2022-2025, OECD/INFE, PISA 2022, OECD/INFE 2020 Survey, Encuesta BdE/CNMV 2021.
+1. Identificadas 8 fuentes oficiales: Finanzas para Todos (CNMV+BdE), Guías CNMV, Portal Cliente Bancario (BdE), Plan Ed. Financiera 2022-2025, OECD/INFE Toolkit 2026, PISA 2022, OECD/INFE 2023 Survey, Encuesta BdE/CNMV 2021.
 2. Verificadas con `WebFetch` antes de incluirlas.
 3. 60 contenidos extraídos de esas fuentes y etiquetados a mano (tema, dificultad, prerrequisitos, riesgo, si es de inversión).
 4. Taxonomía de 30 conceptos inspirada en PISA Financial Literacy + Encuesta BdE.
@@ -30,13 +32,13 @@
 **Parte sintética (usuarios e interacciones):**
 
 - **Usuarios (250):** distribución calibrada con la Encuesta BdE/CNMV 2021 (76% suspende → 41.6% conocimiento bajo, 43.6% medio, 14.8% alto). Coherencia entre variables (no se permite knowledge=alto + saving_habit=nunca).
-- **Interacciones (1.500):** generadas con un modelo sigmoid sobre el gap conocimiento-dificultad que aplica las 6 reglas del plan. Distribución final: 64.7% básicas, 28.5% intermedias, 6.8% avanzadas.
+- **Interacciones (1.500):** generadas con un modelo de afinidad temática que pondera la elección de contenidos según 5 variables reales de comportamiento financiero del usuario (ahorro, cuenta, ahorro informal, gasto imprevisto, cobertura de gastos), obtenidas de la ECF 2021. Aplica las 6 reglas pedagógicas del plan. Distribución final: 80.4% básicas, 16.7% intermedias, 2.9% avanzadas.
 
 ## Honestidad ante el tribunal
 
 - No inventamos URLs. Todo es verificable.
 - Las interacciones sintéticas **no** demuestran efectividad real; validan la viabilidad técnica.
-- La encuesta OECD/INFE 2023 fue cancelada; usamos la de 2020.
+- La encuesta OECD/INFE 2023 sí se publicó (DOI 10.1787/56003a32-en, diciembre 2023, cubre 39 países incluido España). Sustituye a la de 2020 que se citaba inicialmente.
 - El dataset es **defendible como prototipo**, no como sistema listo para producción.
 
 ---
@@ -63,7 +65,7 @@
 ### 4. Sobre las fuentes
 
 - ¿La Encuesta BdE/CNMV 2021 basta como anclaje para los perfiles sintéticos, o necesito también la Encuesta de Condiciones de Vida (ECV) del INE?
-- ¿La OECD/INFE 2020 es una fuente aceptable o hay alguna otra más reciente que deba citar?
+- ¿La OECD/INFE 2023 (DOI 10.1787/56003a32-en) y el Toolkit OECD/INFE 2026 son suficientes como referencias internacionales, o necesito alguna fuente más reciente?
 
 ### 6. Sobre riesgos
 
