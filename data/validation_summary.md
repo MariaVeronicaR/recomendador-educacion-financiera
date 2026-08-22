@@ -1,6 +1,6 @@
 # Resumen de validación del dataset
 
-**Fecha de generación:** 2026-08-18
+**Fecha de generación:** 2026-08-22
 **TFM:** Sistema de recomendación personalizada de contenidos de educación financiera
 
 ---
@@ -10,7 +10,7 @@
 | Métrica | Valor | Mínimo plan | Estado |
 |---|---|---|---|
 | Fuentes oficiales registradas | 8 | 6 | ✅ |
-| Contenidos reales con URL | **78** | 50 | ✅ |
+| Contenidos reales con URL | **99** | 50 | ✅ |
 | Conceptos en taxonomía | 30 | 17 | ✅ |
 | Relaciones de prerrequisito | 33 | 14 | ✅ |
 | Usuarios sintéticos (calibrados ECF 2021) | 250 | 200 | ✅ |
@@ -23,9 +23,9 @@
 
 | Dificultad | Nº contenidos | % |
 |---|---|---|
-| Básico | 39 | 50,0% |
-| Intermedio | 25 | 32,1% |
-| Avanzado | 14 | 17,9% |
+| Básico | 44 | 44.4% |
+| Intermedio | 36 | 36.4% |
+| Avanzado | 19 | 19.2% |
 
 **Nota:** distribución mejorada tras la expansión con Guías CNMV (jul 2026). Se acerca al objetivo 60/30/10 del plan, aunque sigue habiendo sesgo hacia avanzados por el predominio de hipotecas y guías de inversión específicas.
 
@@ -35,20 +35,22 @@
 
 | Tema | Nº contenidos |
 |---|---|
-| planificación | 19 |
-| inversión | 15 |
+| planificación | 23 |
+| inversión | 17 |
 | fraude | 10 |
 | hipotecas | 9 |
-| cuentas bancarias | 5 |
-| tarjetas | 3 |
+| cuentas bancarias | 7 |
 | préstamos | 4 |
-| interés | 3 |
 | ahorro | 4 |
+| mercado | 3 |
 | deuda | 3 |
+| tarjetas | 3 |
+| interés | 3 |
+| contexto | 2 |
 | riesgo | 2 |
 | diversificación | 1 |
 
-**Contenidos marcados como relacionados con inversión:** 18 (sobre 78).
+**Contenidos marcados como relacionados con inversión:** 23 (sobre 99).
 
 ---
 
@@ -58,18 +60,18 @@
 
 | Evento | Nº interacciones | % |
 |---|---|---|
-| completed | 647 | 43,1% |
-| viewed | 431 | 28,7% |
-| quiz_passed | 339 | 22,6% |
-| disliked | 83 | 5,5% |
+| completed | 665 | 44.3% |
+| viewed | 477 | 31.8% |
+| quiz_passed | 269 | 17.9% |
+| disliked | 89 | 5.9% |
 
 **Por dificultad del contenido consumido:**
 
 | Dificultad | Nº interacciones | % | Objetivo plan |
 |---|---|---|---|
-| Básico | 1.206 | 80,4% | 60% |
-| Intermedio | 251 | 16,7% | 30% |
-| Avanzado | 43 | 2,9% | 10% |
+| Básico | 1.017 | 67.8% | 60% |
+| Intermedio | 450 | 30.0% | 30% |
+| Avanzado | 33 | 2.2% | 10% |
 
 **Nota sobre la distribución:** la versión "realistic" produce más consumo de básicos (80% vs 60% objetivo) porque el modelo de afinidad pondera heavily hacia temas universales (planificación, ahorro básico, fraude) que son los contenidos con afinidad base alta para todos los perfiles. Esto es coherente con el comportamiento real: todos los jóvenes, independientemente de su perfil financiero, necesitan aprender presupuesto, ahorro básico y prevención de fraude antes de avanzar a temas especializados.
 
@@ -95,7 +97,7 @@
 ## 5. Validaciones de coherencia pedagógica
 
 ### 5.1. Adecuación nivel-contenido
-- **Usuarios con nivel bajo (104) que consumen contenido avanzado:** 14 interacciones, lo que representa el 1,4% de sus interacciones. Por debajo del 5% de tolerancia definido en el plan.
+- **Usuarios con nivel bajo (140) que consumen contenido avanzado:** 5 interacciones, lo que representa el 0.5% de sus interacciones. Por debajo del 5% de tolerancia definido en el plan.
 - **Interpretación:** la regla 1 del plan se respeta: los principiantes consumen mayoritariamente contenidos básicos (400 de 594 interacciones de nivel bajo).
 
 ### 5.2. Inversión sin prerrequisitos

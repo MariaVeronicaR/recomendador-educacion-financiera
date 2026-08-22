@@ -9,7 +9,7 @@
 | Archivo                        | Qué es                                     | Cantidad |
 | ------------------------------ | ------------------------------------------- | -------- |
 | `sources.csv`                | Fuentes oficiales registradas (con URL)     | 8        |
-| `contents.csv`               | Contenidos reales con URL verificable       | 60       |
+| `contents.csv`               | Contenidos reales con URL verificable       | **99**   |
 | `concepts.csv`               | Taxonomía de conceptos financieros         | 30       |
 | `prerequisites.csv`          | Relaciones de prerrequisito entre conceptos | 33       |
 | `users_synthetic.csv`        | Usuarios sintéticos                        | 250      |
@@ -25,7 +25,7 @@
 
 1. Identificadas 8 fuentes oficiales: Finanzas para Todos (CNMV+BdE), Guías CNMV, Portal Cliente Bancario (BdE), Plan Ed. Financiera 2022-2025, OECD/INFE Toolkit 2026, PISA 2022, OECD/INFE 2023 Survey, Encuesta BdE/CNMV 2021.
 2. Verificadas con `WebFetch` antes de incluirlas.
-3. 60 contenidos extraídos de esas fuentes y etiquetados a mano (tema, dificultad, prerrequisitos, riesgo, si es de inversión).
+3. 99 contenidos extraídos de esas fuentes y etiquetados a mano (tema, dificultad, prerrequisitos, riesgo, si es de inversión).
 4. Taxonomía de 30 conceptos inspirada en PISA Financial Literacy + Encuesta BdE.
 5. 33 relaciones de prerrequisito (las 14 mínimas del plan + 19 adicionales para enriquecer el grafo).
 
