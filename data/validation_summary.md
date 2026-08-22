@@ -10,7 +10,7 @@
 | Métrica | Valor | Mínimo plan | Estado |
 |---|---|---|---|
 | Fuentes oficiales registradas | 8 | 6 | ✅ |
-| Contenidos reales con URL | 60 | 50 | ✅ |
+| Contenidos reales con URL | **78** | 50 | ✅ |
 | Conceptos en taxonomía | 30 | 17 | ✅ |
 | Relaciones de prerrequisito | 33 | 14 | ✅ |
 | Usuarios sintéticos (calibrados ECF 2021) | 250 | 200 | ✅ |
@@ -23,11 +23,11 @@
 
 | Dificultad | Nº contenidos | % |
 |---|---|---|
-| Básico | 27 | 45,0% |
-| Intermedio | 19 | 31,7% |
-| Avanzado | 14 | 23,3% |
+| Básico | 39 | 50,0% |
+| Intermedio | 25 | 32,1% |
+| Avanzado | 14 | 17,9% |
 
-**Nota:** la distribución de contenidos no es 60/30/10 porque el catálogo refleja la oferta real de las fuentes, donde abundan materiales introductorios. La distribución de las interacciones sintéticas sí se acerca al 60/30/10 que pide el plan (ver sección 4).
+**Nota:** distribución mejorada tras la expansión con Guías CNMV (jul 2026). Se acerca al objetivo 60/30/10 del plan, aunque sigue habiendo sesgo hacia avanzados por el predominio de hipotecas y guías de inversión específicas.
 
 ---
 
@@ -35,20 +35,20 @@
 
 | Tema | Nº contenidos |
 |---|---|
-| planificación | 14 |
-| inversión | 11 |
+| planificación | 19 |
+| inversión | 15 |
+| fraude | 10 |
 | hipotecas | 9 |
-| fraude | 6 |
 | cuentas bancarias | 5 |
-| tarjetas | 4 |
+| tarjetas | 3 |
 | préstamos | 4 |
 | interés | 3 |
-| ahorro | 3 |
-| deuda | 2 |
+| ahorro | 4 |
+| deuda | 3 |
 | riesgo | 2 |
 | diversificación | 1 |
 
-**Contenidos marcados como relacionados con inversión:** 11 (sobre 60).
+**Contenidos marcados como relacionados con inversión:** 18 (sobre 78).
 
 ---
 
@@ -107,7 +107,7 @@
 - En la práctica, los usuarios con conocimiento bajo no llegan a contenidos avanzados de inversión ni de hipoteca, porque no superan los filtros.
 
 ### 5.4. Diversidad de catálogo
-- **Contenidos distintos consumidos:** todos los 60 aparecen al menos una vez en el dataset sintético.
+- **Contenidos distintos consumidos:** todos los 78 aparecen al menos una vez en el dataset sintético.
 - **Cobertura de usuarios:** los 250 usuarios tienen al menos 4 interacciones (umbral mínimo para que un recomendador colabore tenga señal suficiente).
 
 ---
@@ -116,16 +116,30 @@
 
 Las 8 fuentes son oficiales (BdE, CNMV, OECD, OCDE/INFE). Se verificó la accesibilidad de cada URL con `WebFetch` el 2026-07-02. Ver `sources.csv` para detalle.
 
+### 6.1. Fuentes declaradas
+
 | # | Fuente | Organización | Uso principal |
 |---|---|---|---|
-| S1 | Finanzas para Todos | CNMV + BdE | Catálogo principal de contenidos |
-| S2 | Guías del inversor | CNMV | Inversión y riesgo |
-| S3 | Portal Cliente Bancario | BdE | Banca, hipotecas, fraude, simuladores |
+| S1 | Finanzas para Todos | CNMV + BdE | Catálogo principal de contenidos (27 contenidos) |
+| S2 | Guías del inversor | CNMV | Inversión, fraude, riesgo (22 contenidos tras expansión) |
+| S3 | Portal Cliente Bancario | BdE | Banca, hipotecas, fraude, simuladores (25 contenidos) |
 | S4 | Plan Ed. Financiera 2022-2025 | CNMV + BdE | Marco institucional |
-| S5 | OECD/INFE Framework | OECD | Definición de variables |
+| S5 | OECD/INFE Framework 2026 | OECD | Definición de variables |
 | S6 | PISA 2022 Financial Literacy | OECD | Marco para jóvenes |
 | S7 | OECD/INFE 2023 Survey | OECD | Comparativa internacional |
 | S8 | Encuesta Competencias 2021 | BdE + CNMV | Distribución real de usuarios |
+
+### 6.2. Distribución real de contenidos por fuente (catálogo 78)
+
+| Fuente | Nº contenidos | % |
+|---|---|---|
+| Finanzas para Todos | 27 | 34,6% |
+| Portal Cliente Bancario BdE | 25 | 32,1% |
+| CNMV | 12 | 28,2% (tras expansión con 10 Guías CNMV) |
+| CNMV y BdE | 2 | 2,6% |
+| OECD | 2 | 2,6% |
+
+**Mejora tras la expansión (jul 2026):** antes solo se usaban 2 fuentes (BdE y CNMV indirectamente). Tras añadir las 10 Guías CNMV verificadas, se diversificó el catálogo incluyendo las 3 fuentes principales de educación financiera en España.
 
 **Nota sobre S7:** la encuesta OECD/INFE 2023 sí se publicó (DOI 10.1787/56003a32-en, diciembre 2023, cubre 39 países incluido España e introduce preguntas sobre criptoactivos y brecha digital). Se utiliza esa y no la de 2020, que queda obsoleta.
 
@@ -135,7 +149,7 @@ Las 8 fuentes son oficiales (BdE, CNMV, OECD, OCDE/INFE). Se verificó la accesi
 
 1. **Interacciones sintéticas:** generadas por un modelo de afinidad temática que usa 5 variables reales del ECF 2021 (ahorro, cuenta, ahorro informal, gasto imprevisto, cobertura). Reflejan perfiles financieramente plausibles, pero no son comportamiento humano real observado.
 2. **Efectos por comportamiento pequeños:** la diferencia entre perfiles es de 1-2 puntos porcentuales en consumo de topics especializados (deuda, crédito, inversión). Esto se debe al tamaño muestral (1.500 interacciones) y al desbalance del catálogo (60% contenidos en planificación, ahorro y fraude).
-3. **Cobertura del catálogo:** 60 contenidos es suficiente para un prototipo pero deja fuera temas relevantes (impuestos avanzados, planificación fiscal, criptoactivos, etc.). El catálogo es ampliable.
+3. **Cobertura del catálogo mejorada:** 78 contenidos (era 60), distribución 50/32/18 por dificultad (objetivo 60/30/10). Temas todavía no cubiertos: impuestos avanzados, planificación fiscal detallada, criptoactivos en profundidad.
 4. **Sesgo de género corregido:** la submuestra ECF tiene 85% hombres / 15% mujeres en jóvenes 18-34. Se sobrescribió a 50/50 para evitar introducir sesgo en el modelo. Asume que no hay diferencias por sexo en recomendaciones de educación financiera.
 5. **Granularidad de `is_investment_related`:** está marcado a nivel de contenido, no de sección. Un artículo de inversión puede incluir contenido introductorio.
 6. **No hay metadatos de calidad de los contenidos** (puntuación, reseñas, autor). El recomendador no podrá usarlos.
@@ -148,7 +162,7 @@ Las 8 fuentes son oficiales (BdE, CNMV, OECD, OCDE/INFE). Se verificó la accesi
 1. **Riesgo de sobreajuste a datos sintéticos:** si el modelo se entrena solo con estos datos, podría aprender los patrones del generador en lugar de preferencias reales. **Mitigación:** incluir un piloto real con usuarios humanos como validación externa.
 2. **Riesgo de cold start:** 250 usuarios con 1.500 interacciones dan una media de 6 interacciones por usuario. Es bajo para NeuMF. **Mitigación:** arrancar con modelos más simples (popularidad, LightFM) como baseline.
 3. **Riesgo de coherencia pedagógica insuficiente:** el post-filtro con grafo se valida solo en la generación sintética. **Mitigación:** revisar manualmente una muestra de recomendaciones.
-4. **Riesgo de cobertura de temas desbalanceada:** el catálogo tiene 60% contenidos en planificación, ahorro y fraude. Los efectos del comportamiento sobre el consumo de topics especializados son pequeños (1-2 pp). **Mitigación:** ampliar el catálogo con más contenidos de deuda/crédito/inversión si se busca mayor discriminación.
+4. **Riesgo de cobertura de temas desbalanceada:** el catálogo tiene 19 contenidos de planificación (24%) y 15 de inversión (19%). Los efectos del comportamiento sobre el consumo de topics especializados siguen siendo pequeños (1-2 pp). **Mitigación:** ampliar el catálogo con más contenidos de deuda/crédito/impuestos si se busca mayor discriminación.
 5. **Riesgo de calibración parcial:** los perfiles sintéticos usan solo 5 variables del ECF. Hay otras 200+ variables no explotadas (actitud financiera, comportamiento específico, etc.) que podrían enriquecer más el modelo.
 
 ---
