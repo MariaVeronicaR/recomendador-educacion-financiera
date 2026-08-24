@@ -1,0 +1,1251 @@
+user_id,rank,content_id,predicted_score,title,topic,difficulty
+U0001,1,C072,0.571,Calculadora de gestión de deudas,deuda,básico
+U0001,2,C009,0.5281,Cómo gestionar mis deudas,deuda,básico
+U0001,3,C088,0.4895,Qué es la inflación y cómo nos afecta,inflación,básico
+U0001,4,C008,0.4799,5 consejos sobre endeudamiento,deuda,básico
+U0001,5,C089,0.4701,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0002,1,C072,0.6368,Calculadora de gestión de deudas,deuda,básico
+U0002,2,C028,0.6081,Protegerte contra el fraude,fraude,básico
+U0002,3,C088,0.5901,Qué es la inflación y cómo nos afecta,inflación,básico
+U0002,4,C065,0.5807,Chiringuitos financieros,fraude,básico
+U0002,5,C002,0.5764,Cómo está tu salud financiera,planificación,básico
+U0003,1,C072,0.6733,Calculadora de gestión de deudas,deuda,básico
+U0003,2,C009,0.6519,Cómo gestionar mis deudas,deuda,básico
+U0003,3,C015,0.6453,Glosario de términos financieros,planificación,básico
+U0003,4,C088,0.604,Qué es la inflación y cómo nos afecta,inflación,básico
+U0003,5,C025,0.5982,Comisiones bancarias,cuentas bancarias,básico
+U0004,1,C072,0.6661,Calculadora de gestión de deudas,deuda,básico
+U0004,2,C047,0.651,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0004,3,C043,0.6461,Plan de Educación Financiera 2022-2025,planificación,básico
+U0004,4,C018,0.6373,Depósitos a plazo,cuentas bancarias,básico
+U0004,5,C009,0.6257,Cómo gestionar mis deudas,deuda,básico
+U0005,1,C072,0.5904,Calculadora de gestión de deudas,deuda,básico
+U0005,2,C053,0.5454,Protección de datos en operaciones financieras,fraude,básico
+U0005,3,C009,0.533,Cómo gestionar mis deudas,deuda,básico
+U0005,4,C088,0.516,Qué es la inflación y cómo nos afecta,inflación,básico
+U0005,5,C008,0.5159,5 consejos sobre endeudamiento,deuda,básico
+U0006,1,C030,0.6052,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0006,2,C072,0.5644,Calculadora de gestión de deudas,deuda,básico
+U0006,3,C042,0.5474,Cómo detectar un chiringuito financiero,fraude,básico
+U0006,4,C067,0.5471,Del like a la inversión,fraude,básico
+U0006,5,C066,0.5045,Finfluencers: cómo actuar con responsabilidad,fraude,básico
+U0007,1,C072,0.5731,Calculadora de gestión de deudas,deuda,básico
+U0007,2,C009,0.5481,Cómo gestionar mis deudas,deuda,básico
+U0007,3,C088,0.5267,Qué es la inflación y cómo nos afecta,inflación,básico
+U0007,4,C008,0.526,5 consejos sobre endeudamiento,deuda,básico
+U0007,5,C011,0.5051,Cuidado del entorno: el banco y yo,cuentas bancarias,básico
+U0008,1,C072,0.5571,Calculadora de gestión de deudas,deuda,básico
+U0008,2,C009,0.504,Cómo gestionar mis deudas,deuda,básico
+U0008,3,C073,0.5015,Calculadora de ahorro mensual,ahorro,básico
+U0008,4,C053,0.4972,Protección de datos en operaciones financieras,fraude,básico
+U0008,5,C008,0.467,5 consejos sobre endeudamiento,deuda,básico
+U0009,1,C053,0.5778,Protección de datos en operaciones financieras,fraude,básico
+U0009,2,C072,0.5509,Calculadora de gestión de deudas,deuda,básico
+U0009,3,C009,0.5413,Cómo gestionar mis deudas,deuda,básico
+U0009,4,C071,0.4945,Calculadora de presupuesto personal,planificación,básico
+U0009,5,C088,0.4786,Qué es la inflación y cómo nos afecta,inflación,básico
+U0010,1,C072,0.5601,Calculadora de gestión de deudas,deuda,básico
+U0010,2,C009,0.5207,Cómo gestionar mis deudas,deuda,básico
+U0010,3,C088,0.4798,Qué es la inflación y cómo nos afecta,inflación,básico
+U0010,4,C008,0.4699,5 consejos sobre endeudamiento,deuda,básico
+U0010,5,C089,0.4564,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0011,1,C072,0.6473,Calculadora de gestión de deudas,deuda,básico
+U0011,2,C073,0.6391,Calculadora de ahorro mensual,ahorro,básico
+U0011,3,C009,0.6328,Cómo gestionar mis deudas,deuda,básico
+U0011,4,C088,0.6139,Qué es la inflación y cómo nos afecta,inflación,básico
+U0011,5,C042,0.5975,Cómo detectar un chiringuito financiero,fraude,básico
+U0012,1,C072,0.586,Calculadora de gestión de deudas,deuda,básico
+U0012,2,C009,0.5071,Cómo gestionar mis deudas,deuda,básico
+U0012,3,C030,0.5031,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0012,4,C047,0.5017,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0012,5,C088,0.4909,Qué es la inflación y cómo nos afecta,inflación,básico
+U0013,1,C072,0.553,Calculadora de gestión de deudas,deuda,básico
+U0013,2,C053,0.514,Protección de datos en operaciones financieras,fraude,básico
+U0013,3,C009,0.5088,Cómo gestionar mis deudas,deuda,básico
+U0013,4,C015,0.4783,Glosario de términos financieros,planificación,básico
+U0013,5,C047,0.4687,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0014,1,C072,0.6083,Calculadora de gestión de deudas,deuda,básico
+U0014,2,C088,0.6039,Qué es la inflación y cómo nos afecta,inflación,básico
+U0014,3,C009,0.5861,Cómo gestionar mis deudas,deuda,básico
+U0014,4,C048,0.5764,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0014,5,C018,0.513,Depósitos a plazo,cuentas bancarias,básico
+U0015,1,C072,0.6109,Calculadora de gestión de deudas,deuda,básico
+U0015,2,C009,0.5755,Cómo gestionar mis deudas,deuda,básico
+U0015,3,C088,0.5725,Qué es la inflación y cómo nos afecta,inflación,básico
+U0015,4,C053,0.5659,Protección de datos en operaciones financieras,fraude,básico
+U0015,5,C061,0.5462,Manual para universitarios,planificación,básico
+U0016,1,C072,0.5669,Calculadora de gestión de deudas,deuda,básico
+U0016,2,C088,0.5657,Qué es la inflación y cómo nos afecta,inflación,básico
+U0016,3,C009,0.5279,Cómo gestionar mis deudas,deuda,básico
+U0016,4,C008,0.4849,5 consejos sobre endeudamiento,deuda,básico
+U0016,5,C002,0.4751,Cómo está tu salud financiera,planificación,básico
+U0017,1,C072,0.5673,Calculadora de gestión de deudas,deuda,básico
+U0017,2,C009,0.5275,Cómo gestionar mis deudas,deuda,básico
+U0017,3,C088,0.5178,Qué es la inflación y cómo nos afecta,inflación,básico
+U0017,4,C057,0.4852,Cómo comparar productos de ahorro,ahorro,básico
+U0017,5,C008,0.4768,5 consejos sobre endeudamiento,deuda,básico
+U0018,1,C057,0.7154,Cómo comparar productos de ahorro,ahorro,básico
+U0018,2,C047,0.6377,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0018,3,C072,0.6317,Calculadora de gestión de deudas,deuda,básico
+U0018,4,C015,0.6142,Glosario de términos financieros,planificación,básico
+U0018,5,C009,0.604,Cómo gestionar mis deudas,deuda,básico
+U0019,1,C072,0.6282,Calculadora de gestión de deudas,deuda,básico
+U0019,2,C073,0.5961,Calculadora de ahorro mensual,ahorro,básico
+U0019,3,C088,0.5832,Qué es la inflación y cómo nos afecta,inflación,básico
+U0019,4,C071,0.581,Calculadora de presupuesto personal,planificación,básico
+U0019,5,C015,0.5775,Glosario de términos financieros,planificación,básico
+U0020,1,C009,0.5282,Cómo gestionar mis deudas,deuda,básico
+U0020,2,C088,0.4946,Qué es la inflación y cómo nos afecta,inflación,básico
+U0020,3,C008,0.487,5 consejos sobre endeudamiento,deuda,básico
+U0020,4,C089,0.4701,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0020,5,C053,0.4517,Protección de datos en operaciones financieras,fraude,básico
+U0021,1,C072,0.5294,Calculadora de gestión de deudas,deuda,básico
+U0021,2,C071,0.497,Calculadora de presupuesto personal,planificación,básico
+U0021,3,C053,0.4857,Protección de datos en operaciones financieras,fraude,básico
+U0021,4,C088,0.4781,Qué es la inflación y cómo nos afecta,inflación,básico
+U0021,5,C009,0.4715,Cómo gestionar mis deudas,deuda,básico
+U0022,1,C072,0.5545,Calculadora de gestión de deudas,deuda,básico
+U0022,2,C009,0.505,Cómo gestionar mis deudas,deuda,básico
+U0022,3,C053,0.4901,Protección de datos en operaciones financieras,fraude,básico
+U0022,4,C051,0.4729,Declaración de la renta: conceptos básicos,planificación,básico
+U0022,5,C088,0.4718,Qué es la inflación y cómo nos afecta,inflación,básico
+U0023,1,C072,0.6704,Calculadora de gestión de deudas,deuda,básico
+U0023,2,C009,0.6386,Cómo gestionar mis deudas,deuda,básico
+U0023,3,C073,0.6253,Calculadora de ahorro mensual,ahorro,básico
+U0023,4,C053,0.6164,Protección de datos en operaciones financieras,fraude,básico
+U0023,5,C048,0.58,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0024,1,C072,0.5356,Calculadora de gestión de deudas,deuda,básico
+U0024,2,C009,0.5083,Cómo gestionar mis deudas,deuda,básico
+U0024,3,C088,0.4921,Qué es la inflación y cómo nos afecta,inflación,básico
+U0024,4,C071,0.4828,Calculadora de presupuesto personal,planificación,básico
+U0024,5,C053,0.4731,Protección de datos en operaciones financieras,fraude,básico
+U0025,1,C072,0.5555,Calculadora de gestión de deudas,deuda,básico
+U0025,2,C009,0.5154,Cómo gestionar mis deudas,deuda,básico
+U0025,3,C008,0.4772,5 consejos sobre endeudamiento,deuda,básico
+U0025,4,C088,0.4686,Qué es la inflación y cómo nos afecta,inflación,básico
+U0025,5,C073,0.462,Calculadora de ahorro mensual,ahorro,básico
+U0026,1,C072,0.59,Calculadora de gestión de deudas,deuda,básico
+U0026,2,C009,0.5301,Cómo gestionar mis deudas,deuda,básico
+U0026,3,C002,0.5245,Cómo está tu salud financiera,planificación,básico
+U0026,4,C008,0.4876,5 consejos sobre endeudamiento,deuda,básico
+U0026,5,C088,0.477,Qué es la inflación y cómo nos afecta,inflación,básico
+U0027,1,C072,0.5701,Calculadora de gestión de deudas,deuda,básico
+U0027,2,C009,0.5401,Cómo gestionar mis deudas,deuda,básico
+U0027,3,C047,0.4974,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0027,4,C025,0.4899,Comisiones bancarias,cuentas bancarias,básico
+U0027,5,C008,0.4784,5 consejos sobre endeudamiento,deuda,básico
+U0028,1,C073,0.6299,Calculadora de ahorro mensual,ahorro,básico
+U0028,2,C072,0.5914,Calculadora de gestión de deudas,deuda,básico
+U0028,3,C067,0.574,Del like a la inversión,fraude,básico
+U0028,4,C048,0.5723,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0028,5,C009,0.5673,Cómo gestionar mis deudas,deuda,básico
+U0029,1,C072,0.5644,Calculadora de gestión de deudas,deuda,básico
+U0029,2,C009,0.52,Cómo gestionar mis deudas,deuda,básico
+U0029,3,C088,0.4936,Qué es la inflación y cómo nos afecta,inflación,básico
+U0029,4,C008,0.4725,5 consejos sobre endeudamiento,deuda,básico
+U0029,5,C089,0.4564,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0030,1,C072,0.5693,Calculadora de gestión de deudas,deuda,básico
+U0030,2,C009,0.54,Cómo gestionar mis deudas,deuda,básico
+U0030,3,C088,0.5217,Qué es la inflación y cómo nos afecta,inflación,básico
+U0030,4,C008,0.4761,5 consejos sobre endeudamiento,deuda,básico
+U0030,5,C089,0.4701,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0031,1,C088,0.6437,Qué es la inflación y cómo nos afecta,inflación,básico
+U0031,2,C072,0.6278,Calculadora de gestión de deudas,deuda,básico
+U0031,3,C009,0.6167,Cómo gestionar mis deudas,deuda,básico
+U0031,4,C048,0.5569,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0031,5,C008,0.5461,5 consejos sobre endeudamiento,deuda,básico
+U0032,1,C072,0.574,Calculadora de gestión de deudas,deuda,básico
+U0032,2,C009,0.5438,Cómo gestionar mis deudas,deuda,básico
+U0032,3,C053,0.4907,Protección de datos en operaciones financieras,fraude,básico
+U0032,4,C008,0.4769,5 consejos sobre endeudamiento,deuda,básico
+U0032,5,C089,0.4701,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0033,1,C072,0.5369,Calculadora de gestión de deudas,deuda,básico
+U0033,2,C009,0.5034,Cómo gestionar mis deudas,deuda,básico
+U0033,3,C008,0.4552,5 consejos sobre endeudamiento,deuda,básico
+U0033,4,C089,0.4471,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0033,5,C055,0.4311,Finanzas sostenibles: criterios ESG,inversión,avanzado
+U0034,1,C072,0.632,Calculadora de gestión de deudas,deuda,básico
+U0034,2,C009,0.6128,Cómo gestionar mis deudas,deuda,básico
+U0034,3,C088,0.6104,Qué es la inflación y cómo nos afecta,inflación,básico
+U0034,4,C048,0.597,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0034,5,C073,0.5966,Calculadora de ahorro mensual,ahorro,básico
+U0035,1,C072,0.6211,Calculadora de gestión de deudas,deuda,básico
+U0035,2,C009,0.5489,Cómo gestionar mis deudas,deuda,básico
+U0035,3,C030,0.5482,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0035,4,C042,0.5402,Cómo detectar un chiringuito financiero,fraude,básico
+U0035,5,C088,0.5354,Qué es la inflación y cómo nos afecta,inflación,básico
+U0036,1,C053,0.6415,Protección de datos en operaciones financieras,fraude,básico
+U0036,2,C048,0.5775,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0036,3,C072,0.5713,Calculadora de gestión de deudas,deuda,básico
+U0036,4,C009,0.5552,Cómo gestionar mis deudas,deuda,básico
+U0036,5,C030,0.5395,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0037,1,C072,0.604,Calculadora de gestión de deudas,deuda,básico
+U0037,2,C065,0.587,Chiringuitos financieros,fraude,básico
+U0037,3,C009,0.5787,Cómo gestionar mis deudas,deuda,básico
+U0037,4,C047,0.5721,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0037,5,C015,0.5686,Glosario de términos financieros,planificación,básico
+U0038,1,C073,0.7164,Calculadora de ahorro mensual,ahorro,básico
+U0038,2,C048,0.7018,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0038,3,C072,0.6769,Calculadora de gestión de deudas,deuda,básico
+U0038,4,C088,0.6427,Qué es la inflación y cómo nos afecta,inflación,básico
+U0038,5,C009,0.6397,Cómo gestionar mis deudas,deuda,básico
+U0039,1,C072,0.6101,Calculadora de gestión de deudas,deuda,básico
+U0039,2,C009,0.5959,Cómo gestionar mis deudas,deuda,básico
+U0039,3,C008,0.5596,5 consejos sobre endeudamiento,deuda,básico
+U0039,4,C042,0.5553,Cómo detectar un chiringuito financiero,fraude,básico
+U0039,5,C064,0.5354,Estafas y fraudes financieros,fraude,básico
+U0040,1,C072,0.5702,Calculadora de gestión de deudas,deuda,básico
+U0040,2,C009,0.5281,Cómo gestionar mis deudas,deuda,básico
+U0040,3,C053,0.4843,Protección de datos en operaciones financieras,fraude,básico
+U0040,4,C088,0.4753,Qué es la inflación y cómo nos afecta,inflación,básico
+U0040,5,C008,0.4729,5 consejos sobre endeudamiento,deuda,básico
+U0041,1,C011,0.6083,Cuidado del entorno: el banco y yo,cuentas bancarias,básico
+U0041,2,C088,0.5881,Qué es la inflación y cómo nos afecta,inflación,básico
+U0041,3,C017,0.5658,"Cuentas corrientes, depósitos a la vista y libretas de ahorro",cuentas bancarias,básico
+U0041,4,C009,0.5641,Cómo gestionar mis deudas,deuda,básico
+U0041,5,C072,0.5561,Calculadora de gestión de deudas,deuda,básico
+U0042,1,C073,0.6733,Calculadora de ahorro mensual,ahorro,básico
+U0042,2,C048,0.6292,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0042,3,C072,0.5916,Calculadora de gestión de deudas,deuda,básico
+U0042,4,C053,0.5708,Protección de datos en operaciones financieras,fraude,básico
+U0042,5,C009,0.5661,Cómo gestionar mis deudas,deuda,básico
+U0043,1,C072,0.5678,Calculadora de gestión de deudas,deuda,básico
+U0043,2,C009,0.5243,Cómo gestionar mis deudas,deuda,básico
+U0043,3,C008,0.4868,5 consejos sobre endeudamiento,deuda,básico
+U0043,4,C088,0.4762,Qué es la inflación y cómo nos afecta,inflación,básico
+U0043,5,C047,0.4685,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0044,1,C088,0.6859,Qué es la inflación y cómo nos afecta,inflación,básico
+U0044,2,C072,0.6626,Calculadora de gestión de deudas,deuda,básico
+U0044,3,C009,0.6381,Cómo gestionar mis deudas,deuda,básico
+U0044,4,C082,0.5966,Comisiones bancarias: conceptos y comparación,cuentas bancarias,básico
+U0044,5,C001,0.586,Cómo elaborar un presupuesto,planificación,básico
+U0045,1,C053,0.7076,Protección de datos en operaciones financieras,fraude,básico
+U0045,2,C072,0.6206,Calculadora de gestión de deudas,deuda,básico
+U0045,3,C073,0.57,Calculadora de ahorro mensual,ahorro,básico
+U0045,4,C002,0.5465,Cómo está tu salud financiera,planificación,básico
+U0045,5,C088,0.534,Qué es la inflación y cómo nos afecta,inflación,básico
+U0046,1,C072,0.6162,Calculadora de gestión de deudas,deuda,básico
+U0046,2,C009,0.5749,Cómo gestionar mis deudas,deuda,básico
+U0046,3,C088,0.5455,Qué es la inflación y cómo nos afecta,inflación,básico
+U0046,4,C008,0.5317,5 consejos sobre endeudamiento,deuda,básico
+U0046,5,C089,0.5165,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0047,1,C072,0.6919,Calculadora de gestión de deudas,deuda,básico
+U0047,2,C009,0.6573,Cómo gestionar mis deudas,deuda,básico
+U0047,3,C028,0.6257,Protegerte contra el fraude,fraude,básico
+U0047,4,C088,0.6156,Qué es la inflación y cómo nos afecta,inflación,básico
+U0047,5,C008,0.5965,5 consejos sobre endeudamiento,deuda,básico
+U0048,1,C072,0.6057,Calculadora de gestión de deudas,deuda,básico
+U0048,2,C075,0.5466,Calculadora de patrimonio neto,planificación,intermedio
+U0048,3,C009,0.5151,Cómo gestionar mis deudas,deuda,básico
+U0048,4,C088,0.4946,Qué es la inflación y cómo nos afecta,inflación,básico
+U0048,5,C043,0.4897,Plan de Educación Financiera 2022-2025,planificación,básico
+U0049,1,C053,0.6319,Protección de datos en operaciones financieras,fraude,básico
+U0049,2,C001,0.6027,Cómo elaborar un presupuesto,planificación,básico
+U0049,3,C043,0.6023,Plan de Educación Financiera 2022-2025,planificación,básico
+U0049,4,C072,0.5943,Calculadora de gestión de deudas,deuda,básico
+U0049,5,C009,0.582,Cómo gestionar mis deudas,deuda,básico
+U0050,1,C073,0.7307,Calculadora de ahorro mensual,ahorro,básico
+U0050,2,C051,0.6847,Declaración de la renta: conceptos básicos,planificación,básico
+U0050,3,C072,0.672,Calculadora de gestión de deudas,deuda,básico
+U0050,4,C015,0.6548,Glosario de términos financieros,planificación,básico
+U0050,5,C043,0.6434,Plan de Educación Financiera 2022-2025,planificación,básico
+U0051,1,C072,0.6531,Calculadora de gestión de deudas,deuda,básico
+U0051,2,C002,0.6354,Cómo está tu salud financiera,planificación,básico
+U0051,3,C009,0.5813,Cómo gestionar mis deudas,deuda,básico
+U0051,4,C088,0.5706,Qué es la inflación y cómo nos afecta,inflación,básico
+U0051,5,C008,0.5489,5 consejos sobre endeudamiento,deuda,básico
+U0052,1,C072,0.7133,Calculadora de gestión de deudas,deuda,básico
+U0052,2,C009,0.6699,Cómo gestionar mis deudas,deuda,básico
+U0052,3,C088,0.6432,Qué es la inflación y cómo nos afecta,inflación,básico
+U0052,4,C002,0.6332,Cómo está tu salud financiera,planificación,básico
+U0052,5,C011,0.6304,Cuidado del entorno: el banco y yo,cuentas bancarias,básico
+U0053,1,C072,0.5269,Calculadora de gestión de deudas,deuda,básico
+U0053,2,C053,0.4811,Protección de datos en operaciones financieras,fraude,básico
+U0053,3,C009,0.4759,Cómo gestionar mis deudas,deuda,básico
+U0053,4,C088,0.4746,Qué es la inflación y cómo nos afecta,inflación,básico
+U0053,5,C030,0.4697,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0054,1,C072,0.5962,Calculadora de gestión de deudas,deuda,básico
+U0054,2,C048,0.5657,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0054,3,C075,0.5363,Calculadora de patrimonio neto,planificación,intermedio
+U0054,4,C047,0.5299,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0054,5,C030,0.5236,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0055,1,C072,0.5869,Calculadora de gestión de deudas,deuda,básico
+U0055,2,C088,0.5268,Qué es la inflación y cómo nos afecta,inflación,básico
+U0055,3,C051,0.5231,Declaración de la renta: conceptos básicos,planificación,básico
+U0055,4,C053,0.5156,Protección de datos en operaciones financieras,fraude,básico
+U0055,5,C008,0.5105,5 consejos sobre endeudamiento,deuda,básico
+U0056,1,C072,0.6405,Calculadora de gestión de deudas,deuda,básico
+U0056,2,C009,0.5952,Cómo gestionar mis deudas,deuda,básico
+U0056,3,C001,0.5815,Cómo elaborar un presupuesto,planificación,básico
+U0056,4,C088,0.5716,Qué es la inflación y cómo nos afecta,inflación,básico
+U0056,5,C073,0.5626,Calculadora de ahorro mensual,ahorro,básico
+U0057,1,C072,0.5639,Calculadora de gestión de deudas,deuda,básico
+U0057,2,C009,0.5318,Cómo gestionar mis deudas,deuda,básico
+U0057,3,C088,0.5049,Qué es la inflación y cómo nos afecta,inflación,básico
+U0057,4,C073,0.5015,Calculadora de ahorro mensual,ahorro,básico
+U0057,5,C057,0.5015,Cómo comparar productos de ahorro,ahorro,básico
+U0058,1,C072,0.5483,Calculadora de gestión de deudas,deuda,básico
+U0058,2,C009,0.5252,Cómo gestionar mis deudas,deuda,básico
+U0058,3,C088,0.5114,Qué es la inflación y cómo nos afecta,inflación,básico
+U0058,4,C053,0.5007,Protección de datos en operaciones financieras,fraude,básico
+U0058,5,C048,0.472,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0059,1,C072,0.5694,Calculadora de gestión de deudas,deuda,básico
+U0059,2,C009,0.5401,Cómo gestionar mis deudas,deuda,básico
+U0059,3,C088,0.5096,Qué es la inflación y cómo nos afecta,inflación,básico
+U0059,4,C008,0.4783,5 consejos sobre endeudamiento,deuda,básico
+U0059,5,C089,0.4634,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0060,1,C047,0.6567,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0060,2,C072,0.6161,Calculadora de gestión de deudas,deuda,básico
+U0060,3,C071,0.6151,Calculadora de presupuesto personal,planificación,básico
+U0060,4,C043,0.6071,Plan de Educación Financiera 2022-2025,planificación,básico
+U0060,5,C088,0.605,Qué es la inflación y cómo nos afecta,inflación,básico
+U0061,1,C072,0.6225,Calculadora de gestión de deudas,deuda,básico
+U0061,2,C057,0.6156,Cómo comparar productos de ahorro,ahorro,básico
+U0061,3,C006,0.6137,8 productos bancarios,cuentas bancarias,básico
+U0061,4,C030,0.5913,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0061,5,C009,0.5829,Cómo gestionar mis deudas,deuda,básico
+U0062,1,C072,0.5646,Calculadora de gestión de deudas,deuda,básico
+U0062,2,C073,0.5567,Calculadora de ahorro mensual,ahorro,básico
+U0062,3,C009,0.5101,Cómo gestionar mis deudas,deuda,básico
+U0062,4,C088,0.4968,Qué es la inflación y cómo nos afecta,inflación,básico
+U0062,5,C092,0.496,Qué son las comisiones bancarias,cuentas bancarias,básico
+U0063,1,C072,0.6033,Calculadora de gestión de deudas,deuda,básico
+U0063,2,C009,0.5969,Cómo gestionar mis deudas,deuda,básico
+U0063,3,C082,0.5262,Comisiones bancarias: conceptos y comparación,cuentas bancarias,básico
+U0063,4,C073,0.5225,Calculadora de ahorro mensual,ahorro,básico
+U0063,5,C001,0.5089,Cómo elaborar un presupuesto,planificación,básico
+U0064,1,C088,0.6588,Qué es la inflación y cómo nos afecta,inflación,básico
+U0064,2,C072,0.642,Calculadora de gestión de deudas,deuda,básico
+U0064,3,C009,0.6284,Cómo gestionar mis deudas,deuda,básico
+U0064,4,C018,0.5999,Depósitos a plazo,cuentas bancarias,básico
+U0064,5,C011,0.5964,Cuidado del entorno: el banco y yo,cuentas bancarias,básico
+U0065,1,C015,0.7423,Glosario de términos financieros,planificación,básico
+U0065,2,C073,0.668,Calculadora de ahorro mensual,ahorro,básico
+U0065,3,C072,0.6162,Calculadora de gestión de deudas,deuda,básico
+U0065,4,C025,0.5754,Comisiones bancarias,cuentas bancarias,básico
+U0065,5,C088,0.5653,Qué es la inflación y cómo nos afecta,inflación,básico
+U0066,1,C073,0.644,Calculadora de ahorro mensual,ahorro,básico
+U0066,2,C092,0.6297,Qué son las comisiones bancarias,cuentas bancarias,básico
+U0066,3,C072,0.6232,Calculadora de gestión de deudas,deuda,básico
+U0066,4,C053,0.6055,Protección de datos en operaciones financieras,fraude,básico
+U0066,5,C009,0.593,Cómo gestionar mis deudas,deuda,básico
+U0067,1,C072,0.5503,Calculadora de gestión de deudas,deuda,básico
+U0067,2,C009,0.5004,Cómo gestionar mis deudas,deuda,básico
+U0067,3,C088,0.4961,Qué es la inflación y cómo nos afecta,inflación,básico
+U0067,4,C008,0.4835,5 consejos sobre endeudamiento,deuda,básico
+U0067,5,C053,0.4717,Protección de datos en operaciones financieras,fraude,básico
+U0068,1,C072,0.6104,Calculadora de gestión de deudas,deuda,básico
+U0068,2,C073,0.5926,Calculadora de ahorro mensual,ahorro,básico
+U0068,3,C053,0.5871,Protección de datos en operaciones financieras,fraude,básico
+U0068,4,C008,0.5692,5 consejos sobre endeudamiento,deuda,básico
+U0068,5,C009,0.5687,Cómo gestionar mis deudas,deuda,básico
+U0069,1,C072,0.6335,Calculadora de gestión de deudas,deuda,básico
+U0069,2,C009,0.5918,Cómo gestionar mis deudas,deuda,básico
+U0069,3,C073,0.5747,Calculadora de ahorro mensual,ahorro,básico
+U0069,4,C008,0.542,5 consejos sobre endeudamiento,deuda,básico
+U0069,5,C011,0.5401,Cuidado del entorno: el banco y yo,cuentas bancarias,básico
+U0070,1,C072,0.6654,Calculadora de gestión de deudas,deuda,básico
+U0070,2,C009,0.6117,Cómo gestionar mis deudas,deuda,básico
+U0070,3,C008,0.574,5 consejos sobre endeudamiento,deuda,básico
+U0070,4,C088,0.5708,Qué es la inflación y cómo nos afecta,inflación,básico
+U0070,5,C043,0.5496,Plan de Educación Financiera 2022-2025,planificación,básico
+U0071,1,C072,0.6215,Calculadora de gestión de deudas,deuda,básico
+U0071,2,C009,0.5644,Cómo gestionar mis deudas,deuda,básico
+U0071,3,C061,0.5583,Manual para universitarios,planificación,básico
+U0071,4,C008,0.5553,5 consejos sobre endeudamiento,deuda,básico
+U0071,5,C057,0.5471,Cómo comparar productos de ahorro,ahorro,básico
+U0072,1,C088,0.6131,Qué es la inflación y cómo nos afecta,inflación,básico
+U0072,2,C072,0.5741,Calculadora de gestión de deudas,deuda,básico
+U0072,3,C009,0.5655,Cómo gestionar mis deudas,deuda,básico
+U0072,4,C047,0.538,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0072,5,C043,0.5263,Plan de Educación Financiera 2022-2025,planificación,básico
+U0073,1,C030,0.5953,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0073,2,C088,0.5906,Qué es la inflación y cómo nos afecta,inflación,básico
+U0073,3,C072,0.5887,Calculadora de gestión de deudas,deuda,básico
+U0073,4,C073,0.5838,Calculadora de ahorro mensual,ahorro,básico
+U0073,5,C061,0.5755,Manual para universitarios,planificación,básico
+U0074,1,C072,0.6153,Calculadora de gestión de deudas,deuda,básico
+U0074,2,C009,0.5668,Cómo gestionar mis deudas,deuda,básico
+U0074,3,C008,0.5275,5 consejos sobre endeudamiento,deuda,básico
+U0074,4,C073,0.5162,Calculadora de ahorro mensual,ahorro,básico
+U0074,5,C089,0.5144,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0075,1,C073,0.6512,Calculadora de ahorro mensual,ahorro,básico
+U0075,2,C092,0.6384,Qué son las comisiones bancarias,cuentas bancarias,básico
+U0075,3,C072,0.6334,Calculadora de gestión de deudas,deuda,básico
+U0075,4,C015,0.6146,Glosario de términos financieros,planificación,básico
+U0075,5,C025,0.6102,Comisiones bancarias,cuentas bancarias,básico
+U0076,1,C053,0.7092,Protección de datos en operaciones financieras,fraude,básico
+U0076,2,C009,0.6354,Cómo gestionar mis deudas,deuda,básico
+U0076,3,C072,0.6291,Calculadora de gestión de deudas,deuda,básico
+U0076,4,C071,0.625,Calculadora de presupuesto personal,planificación,básico
+U0076,5,C073,0.5722,Calculadora de ahorro mensual,ahorro,básico
+U0077,1,C072,0.5749,Calculadora de gestión de deudas,deuda,básico
+U0077,2,C011,0.5389,Cuidado del entorno: el banco y yo,cuentas bancarias,básico
+U0077,3,C009,0.5315,Cómo gestionar mis deudas,deuda,básico
+U0077,4,C073,0.5111,Calculadora de ahorro mensual,ahorro,básico
+U0077,5,C008,0.4933,5 consejos sobre endeudamiento,deuda,básico
+U0078,1,C072,0.5741,Calculadora de gestión de deudas,deuda,básico
+U0078,2,C009,0.5282,Cómo gestionar mis deudas,deuda,básico
+U0078,3,C088,0.4907,Qué es la inflación y cómo nos afecta,inflación,básico
+U0078,4,C008,0.4886,5 consejos sobre endeudamiento,deuda,básico
+U0078,5,C073,0.4738,Calculadora de ahorro mensual,ahorro,básico
+U0079,1,C072,0.5712,Calculadora de gestión de deudas,deuda,básico
+U0079,2,C042,0.5266,Cómo detectar un chiringuito financiero,fraude,básico
+U0079,3,C009,0.5253,Cómo gestionar mis deudas,deuda,básico
+U0079,4,C066,0.5233,Finfluencers: cómo actuar con responsabilidad,fraude,básico
+U0079,5,C008,0.4919,5 consejos sobre endeudamiento,deuda,básico
+U0080,1,C073,0.6683,Calculadora de ahorro mensual,ahorro,básico
+U0080,2,C072,0.6586,Calculadora de gestión de deudas,deuda,básico
+U0080,3,C088,0.6423,Qué es la inflación y cómo nos afecta,inflación,básico
+U0080,4,C071,0.6414,Calculadora de presupuesto personal,planificación,básico
+U0080,5,C009,0.6381,Cómo gestionar mis deudas,deuda,básico
+U0081,1,C072,0.5701,Calculadora de gestión de deudas,deuda,básico
+U0081,2,C009,0.527,Cómo gestionar mis deudas,deuda,básico
+U0081,3,C088,0.4989,Qué es la inflación y cómo nos afecta,inflación,básico
+U0081,4,C008,0.4826,5 consejos sobre endeudamiento,deuda,básico
+U0081,5,C089,0.4693,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0082,1,C072,0.6438,Calculadora de gestión de deudas,deuda,básico
+U0082,2,C009,0.5993,Cómo gestionar mis deudas,deuda,básico
+U0082,3,C050,0.5435,Cómo leer una nómina,planificación,básico
+U0082,4,C008,0.5431,5 consejos sobre endeudamiento,deuda,básico
+U0082,5,C088,0.5268,Qué es la inflación y cómo nos afecta,inflación,básico
+U0083,1,C072,0.5799,Calculadora de gestión de deudas,deuda,básico
+U0083,2,C073,0.5775,Calculadora de ahorro mensual,ahorro,básico
+U0083,3,C009,0.5468,Cómo gestionar mis deudas,deuda,básico
+U0083,4,C048,0.5253,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0083,5,C008,0.508,5 consejos sobre endeudamiento,deuda,básico
+U0084,1,C072,0.5374,Calculadora de gestión de deudas,deuda,básico
+U0084,2,C009,0.4879,Cómo gestionar mis deudas,deuda,básico
+U0084,3,C053,0.4805,Protección de datos en operaciones financieras,fraude,básico
+U0084,4,C047,0.4596,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0084,5,C008,0.445,5 consejos sobre endeudamiento,deuda,básico
+U0085,1,C009,0.5362,Cómo gestionar mis deudas,deuda,básico
+U0085,2,C073,0.5234,Calculadora de ahorro mensual,ahorro,básico
+U0085,3,C008,0.4986,5 consejos sobre endeudamiento,deuda,básico
+U0085,4,C053,0.4841,Protección de datos en operaciones financieras,fraude,básico
+U0085,5,C088,0.4718,Qué es la inflación y cómo nos afecta,inflación,básico
+U0086,1,C072,0.561,Calculadora de gestión de deudas,deuda,básico
+U0086,2,C053,0.5238,Protección de datos en operaciones financieras,fraude,básico
+U0086,3,C009,0.5204,Cómo gestionar mis deudas,deuda,básico
+U0086,4,C008,0.4843,5 consejos sobre endeudamiento,deuda,básico
+U0086,5,C088,0.4659,Qué es la inflación y cómo nos afecta,inflación,básico
+U0087,1,C072,0.5999,Calculadora de gestión de deudas,deuda,básico
+U0087,2,C030,0.5627,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0087,3,C047,0.543,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0087,4,C009,0.5372,Cómo gestionar mis deudas,deuda,básico
+U0087,5,C028,0.5188,Protegerte contra el fraude,fraude,básico
+U0088,1,C072,0.6646,Calculadora de gestión de deudas,deuda,básico
+U0088,2,C009,0.6165,Cómo gestionar mis deudas,deuda,básico
+U0088,3,C008,0.5812,5 consejos sobre endeudamiento,deuda,básico
+U0088,4,C088,0.5681,Qué es la inflación y cómo nos afecta,inflación,básico
+U0088,5,C089,0.5549,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0089,1,C072,0.6098,Calculadora de gestión de deudas,deuda,básico
+U0089,2,C009,0.5662,Cómo gestionar mis deudas,deuda,básico
+U0089,3,C008,0.5533,5 consejos sobre endeudamiento,deuda,básico
+U0089,4,C073,0.5495,Calculadora de ahorro mensual,ahorro,básico
+U0089,5,C088,0.5463,Qué es la inflación y cómo nos afecta,inflación,básico
+U0090,1,C072,0.6197,Calculadora de gestión de deudas,deuda,básico
+U0090,2,C048,0.5662,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0090,3,C008,0.5305,5 consejos sobre endeudamiento,deuda,básico
+U0090,4,C089,0.5168,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0090,5,C043,0.5098,Plan de Educación Financiera 2022-2025,planificación,básico
+U0091,1,C072,0.6029,Calculadora de gestión de deudas,deuda,básico
+U0091,2,C088,0.5284,Qué es la inflación y cómo nos afecta,inflación,básico
+U0091,3,C043,0.5282,Plan de Educación Financiera 2022-2025,planificación,básico
+U0091,4,C048,0.5101,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0091,5,C008,0.5068,5 consejos sobre endeudamiento,deuda,básico
+U0092,1,C072,0.5723,Calculadora de gestión de deudas,deuda,básico
+U0092,2,C088,0.5152,Qué es la inflación y cómo nos afecta,inflación,básico
+U0092,3,C009,0.5121,Cómo gestionar mis deudas,deuda,básico
+U0092,4,C008,0.488,5 consejos sobre endeudamiento,deuda,básico
+U0092,5,C073,0.4765,Calculadora de ahorro mensual,ahorro,básico
+U0093,1,C048,0.6269,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0093,2,C088,0.6246,Qué es la inflación y cómo nos afecta,inflación,básico
+U0093,3,C072,0.5817,Calculadora de gestión de deudas,deuda,básico
+U0093,4,C009,0.574,Cómo gestionar mis deudas,deuda,básico
+U0093,5,C073,0.5673,Calculadora de ahorro mensual,ahorro,básico
+U0094,1,C072,0.5455,Calculadora de gestión de deudas,deuda,básico
+U0094,2,C088,0.5021,Qué es la inflación y cómo nos afecta,inflación,básico
+U0094,3,C009,0.4979,Cómo gestionar mis deudas,deuda,básico
+U0094,4,C028,0.4732,Protegerte contra el fraude,fraude,básico
+U0094,5,C008,0.463,5 consejos sobre endeudamiento,deuda,básico
+U0095,1,C072,0.6133,Calculadora de gestión de deudas,deuda,básico
+U0095,2,C088,0.6054,Qué es la inflación y cómo nos afecta,inflación,básico
+U0095,3,C009,0.5801,Cómo gestionar mis deudas,deuda,básico
+U0095,4,C057,0.5596,Cómo comparar productos de ahorro,ahorro,básico
+U0095,5,C008,0.5194,5 consejos sobre endeudamiento,deuda,básico
+U0096,1,C072,0.6126,Calculadora de gestión de deudas,deuda,básico
+U0096,2,C088,0.5939,Qué es la inflación y cómo nos afecta,inflación,básico
+U0096,3,C009,0.5838,Cómo gestionar mis deudas,deuda,básico
+U0096,4,C053,0.5629,Protección de datos en operaciones financieras,fraude,básico
+U0096,5,C043,0.5541,Plan de Educación Financiera 2022-2025,planificación,básico
+U0097,1,C072,0.5545,Calculadora de gestión de deudas,deuda,básico
+U0097,2,C009,0.5348,Cómo gestionar mis deudas,deuda,básico
+U0097,3,C088,0.4884,Qué es la inflación y cómo nos afecta,inflación,básico
+U0097,4,C053,0.4624,Protección de datos en operaciones financieras,fraude,básico
+U0097,5,C008,0.4596,5 consejos sobre endeudamiento,deuda,básico
+U0098,1,C053,0.6456,Protección de datos en operaciones financieras,fraude,básico
+U0098,2,C072,0.6204,Calculadora de gestión de deudas,deuda,básico
+U0098,3,C073,0.5769,Calculadora de ahorro mensual,ahorro,básico
+U0098,4,C009,0.5694,Cómo gestionar mis deudas,deuda,básico
+U0098,5,C008,0.555,5 consejos sobre endeudamiento,deuda,básico
+U0099,1,C072,0.6511,Calculadora de gestión de deudas,deuda,básico
+U0099,2,C002,0.6402,Cómo está tu salud financiera,planificación,básico
+U0099,3,C009,0.5925,Cómo gestionar mis deudas,deuda,básico
+U0099,4,C053,0.5804,Protección de datos en operaciones financieras,fraude,básico
+U0099,5,C008,0.5439,5 consejos sobre endeudamiento,deuda,básico
+U0100,1,C072,0.5416,Calculadora de gestión de deudas,deuda,básico
+U0100,2,C009,0.5077,Cómo gestionar mis deudas,deuda,básico
+U0100,3,C008,0.4678,5 consejos sobre endeudamiento,deuda,básico
+U0100,4,C088,0.4471,Qué es la inflación y cómo nos afecta,inflación,básico
+U0100,5,C089,0.445,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0101,1,C072,0.7079,Calculadora de gestión de deudas,deuda,básico
+U0101,2,C009,0.6751,Cómo gestionar mis deudas,deuda,básico
+U0101,3,C088,0.6439,Qué es la inflación y cómo nos afecta,inflación,básico
+U0101,4,C008,0.6116,5 consejos sobre endeudamiento,deuda,básico
+U0101,5,C089,0.5906,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0102,1,C072,0.5816,Calculadora de gestión de deudas,deuda,básico
+U0102,2,C009,0.5389,Cómo gestionar mis deudas,deuda,básico
+U0102,3,C073,0.5231,Calculadora de ahorro mensual,ahorro,básico
+U0102,4,C053,0.5218,Protección de datos en operaciones financieras,fraude,básico
+U0102,5,C088,0.4999,Qué es la inflación y cómo nos afecta,inflación,básico
+U0103,1,C072,0.5474,Calculadora de gestión de deudas,deuda,básico
+U0103,2,C009,0.503,Cómo gestionar mis deudas,deuda,básico
+U0103,3,C073,0.4813,Calculadora de ahorro mensual,ahorro,básico
+U0103,4,C030,0.4615,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0103,5,C008,0.4608,5 consejos sobre endeudamiento,deuda,básico
+U0104,1,C009,0.518,Cómo gestionar mis deudas,deuda,básico
+U0104,2,C030,0.5003,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0104,3,C073,0.4885,Calculadora de ahorro mensual,ahorro,básico
+U0104,4,C008,0.4728,5 consejos sobre endeudamiento,deuda,básico
+U0104,5,C047,0.4553,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0105,1,C072,0.5787,Calculadora de gestión de deudas,deuda,básico
+U0105,2,C009,0.5323,Cómo gestionar mis deudas,deuda,básico
+U0105,3,C088,0.5072,Qué es la inflación y cómo nos afecta,inflación,básico
+U0105,4,C008,0.4909,5 consejos sobre endeudamiento,deuda,básico
+U0105,5,C089,0.4701,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0106,1,C073,0.607,Calculadora de ahorro mensual,ahorro,básico
+U0106,2,C053,0.5959,Protección de datos en operaciones financieras,fraude,básico
+U0106,3,C072,0.5512,Calculadora de gestión de deudas,deuda,básico
+U0106,4,C009,0.5485,Cómo gestionar mis deudas,deuda,básico
+U0106,5,C006,0.4919,8 productos bancarios,cuentas bancarias,básico
+U0107,1,C072,0.6209,Calculadora de gestión de deudas,deuda,básico
+U0107,2,C009,0.6087,Cómo gestionar mis deudas,deuda,básico
+U0107,3,C088,0.594,Qué es la inflación y cómo nos afecta,inflación,básico
+U0107,4,C048,0.5792,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0107,5,C073,0.5561,Calculadora de ahorro mensual,ahorro,básico
+U0108,1,C073,0.6721,Calculadora de ahorro mensual,ahorro,básico
+U0108,2,C072,0.5827,Calculadora de gestión de deudas,deuda,básico
+U0108,3,C009,0.5453,Cómo gestionar mis deudas,deuda,básico
+U0108,4,C048,0.5332,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0108,5,C043,0.5187,Plan de Educación Financiera 2022-2025,planificación,básico
+U0109,1,C072,0.5754,Calculadora de gestión de deudas,deuda,básico
+U0109,2,C009,0.5308,Cómo gestionar mis deudas,deuda,básico
+U0109,3,C088,0.4913,Qué es la inflación y cómo nos afecta,inflación,básico
+U0109,4,C008,0.4828,5 consejos sobre endeudamiento,deuda,básico
+U0109,5,C089,0.4701,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0110,1,C072,0.5726,Calculadora de gestión de deudas,deuda,básico
+U0110,2,C009,0.5486,Cómo gestionar mis deudas,deuda,básico
+U0110,3,C088,0.5345,Qué es la inflación y cómo nos afecta,inflación,básico
+U0110,4,C073,0.5279,Calculadora de ahorro mensual,ahorro,básico
+U0110,5,C008,0.5024,5 consejos sobre endeudamiento,deuda,básico
+U0111,1,C072,0.5566,Calculadora de gestión de deudas,deuda,básico
+U0111,2,C009,0.5271,Cómo gestionar mis deudas,deuda,básico
+U0111,3,C053,0.5141,Protección de datos en operaciones financieras,fraude,básico
+U0111,4,C073,0.4889,Calculadora de ahorro mensual,ahorro,básico
+U0111,5,C088,0.4878,Qué es la inflación y cómo nos afecta,inflación,básico
+U0112,1,C082,0.6124,Comisiones bancarias: conceptos y comparación,cuentas bancarias,básico
+U0112,2,C048,0.6045,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0112,3,C072,0.5555,Calculadora de gestión de deudas,deuda,básico
+U0112,4,C009,0.5481,Cómo gestionar mis deudas,deuda,básico
+U0112,5,C073,0.5121,Calculadora de ahorro mensual,ahorro,básico
+U0113,1,C071,0.7452,Calculadora de presupuesto personal,planificación,básico
+U0113,2,C030,0.6885,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0113,3,C073,0.6828,Calculadora de ahorro mensual,ahorro,básico
+U0113,4,C072,0.6698,Calculadora de gestión de deudas,deuda,básico
+U0113,5,C001,0.6578,Cómo elaborar un presupuesto,planificación,básico
+U0114,1,C072,0.5466,Calculadora de gestión de deudas,deuda,básico
+U0114,2,C009,0.5069,Cómo gestionar mis deudas,deuda,básico
+U0114,3,C088,0.5052,Qué es la inflación y cómo nos afecta,inflación,básico
+U0114,4,C053,0.4729,Protección de datos en operaciones financieras,fraude,básico
+U0114,5,C008,0.4682,5 consejos sobre endeudamiento,deuda,básico
+U0115,1,C072,0.562,Calculadora de gestión de deudas,deuda,básico
+U0115,2,C009,0.5452,Cómo gestionar mis deudas,deuda,básico
+U0115,3,C053,0.5378,Protección de datos en operaciones financieras,fraude,básico
+U0115,4,C071,0.4762,Calculadora de presupuesto personal,planificación,básico
+U0115,5,C073,0.4658,Calculadora de ahorro mensual,ahorro,básico
+U0116,1,C072,0.7063,Calculadora de gestión de deudas,deuda,básico
+U0116,2,C047,0.6487,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0116,3,C088,0.64,Qué es la inflación y cómo nos afecta,inflación,básico
+U0116,4,C009,0.6265,Cómo gestionar mis deudas,deuda,básico
+U0116,5,C008,0.5894,5 consejos sobre endeudamiento,deuda,básico
+U0117,1,C072,0.6399,Calculadora de gestión de deudas,deuda,básico
+U0117,2,C030,0.6186,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0117,3,C009,0.6084,Cómo gestionar mis deudas,deuda,básico
+U0117,4,C028,0.6015,Protegerte contra el fraude,fraude,básico
+U0117,5,C088,0.5867,Qué es la inflación y cómo nos afecta,inflación,básico
+U0118,1,C072,0.5669,Calculadora de gestión de deudas,deuda,básico
+U0118,2,C009,0.5153,Cómo gestionar mis deudas,deuda,básico
+U0118,3,C088,0.4768,Qué es la inflación y cómo nos afecta,inflación,básico
+U0118,4,C008,0.4713,5 consejos sobre endeudamiento,deuda,básico
+U0118,5,C002,0.4651,Cómo está tu salud financiera,planificación,básico
+U0119,1,C053,0.716,Protección de datos en operaciones financieras,fraude,básico
+U0119,2,C001,0.5996,Cómo elaborar un presupuesto,planificación,básico
+U0119,3,C072,0.5973,Calculadora de gestión de deudas,deuda,básico
+U0119,4,C009,0.5883,Cómo gestionar mis deudas,deuda,básico
+U0119,5,C073,0.5759,Calculadora de ahorro mensual,ahorro,básico
+U0120,1,C053,0.6637,Protección de datos en operaciones financieras,fraude,básico
+U0120,2,C073,0.5675,Calculadora de ahorro mensual,ahorro,básico
+U0120,3,C072,0.5615,Calculadora de gestión de deudas,deuda,básico
+U0120,4,C009,0.5391,Cómo gestionar mis deudas,deuda,básico
+U0120,5,C015,0.5254,Glosario de términos financieros,planificación,básico
+U0121,1,C057,0.7341,Cómo comparar productos de ahorro,ahorro,básico
+U0121,2,C072,0.6926,Calculadora de gestión de deudas,deuda,básico
+U0121,3,C088,0.6707,Qué es la inflación y cómo nos afecta,inflación,básico
+U0121,4,C009,0.6664,Cómo gestionar mis deudas,deuda,básico
+U0121,5,C008,0.612,5 consejos sobre endeudamiento,deuda,básico
+U0122,1,C072,0.5522,Calculadora de gestión de deudas,deuda,básico
+U0122,2,C088,0.5069,Qué es la inflación y cómo nos afecta,inflación,básico
+U0122,3,C009,0.4979,Cómo gestionar mis deudas,deuda,básico
+U0122,4,C008,0.4855,5 consejos sobre endeudamiento,deuda,básico
+U0122,5,C073,0.4677,Calculadora de ahorro mensual,ahorro,básico
+U0123,1,C009,0.6678,Cómo gestionar mis deudas,deuda,básico
+U0123,2,C050,0.6433,Cómo leer una nómina,planificación,básico
+U0123,3,C003,0.6431,Planificación financiera: paga extra y devolución de la renta,planificación,básico
+U0123,4,C043,0.6225,Plan de Educación Financiera 2022-2025,planificación,básico
+U0123,5,C008,0.6122,5 consejos sobre endeudamiento,deuda,básico
+U0124,1,C072,0.6692,Calculadora de gestión de deudas,deuda,básico
+U0124,2,C009,0.6351,Cómo gestionar mis deudas,deuda,básico
+U0124,3,C088,0.625,Qué es la inflación y cómo nos afecta,inflación,básico
+U0124,4,C057,0.6209,Cómo comparar productos de ahorro,ahorro,básico
+U0124,5,C089,0.5725,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0125,1,C072,0.5809,Calculadora de gestión de deudas,deuda,básico
+U0125,2,C009,0.5506,Cómo gestionar mis deudas,deuda,básico
+U0125,3,C008,0.4863,5 consejos sobre endeudamiento,deuda,básico
+U0125,4,C088,0.4814,Qué es la inflación y cómo nos afecta,inflación,básico
+U0125,5,C089,0.4649,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0126,1,C025,0.594,Comisiones bancarias,cuentas bancarias,básico
+U0126,2,C072,0.58,Calculadora de gestión de deudas,deuda,básico
+U0126,3,C011,0.5499,Cuidado del entorno: el banco y yo,cuentas bancarias,básico
+U0126,4,C075,0.5341,Calculadora de patrimonio neto,planificación,intermedio
+U0126,5,C009,0.5164,Cómo gestionar mis deudas,deuda,básico
+U0127,1,C017,0.7256,"Cuentas corrientes, depósitos a la vista y libretas de ahorro",cuentas bancarias,básico
+U0127,2,C053,0.7223,Protección de datos en operaciones financieras,fraude,básico
+U0127,3,C073,0.7134,Calculadora de ahorro mensual,ahorro,básico
+U0127,4,C071,0.7015,Calculadora de presupuesto personal,planificación,básico
+U0127,5,C088,0.698,Qué es la inflación y cómo nos afecta,inflación,básico
+U0128,1,C073,0.7227,Calculadora de ahorro mensual,ahorro,básico
+U0128,2,C072,0.7006,Calculadora de gestión de deudas,deuda,básico
+U0128,3,C009,0.6655,Cómo gestionar mis deudas,deuda,básico
+U0128,4,C048,0.6633,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0128,5,C053,0.6461,Protección de datos en operaciones financieras,fraude,básico
+U0129,1,C030,0.5785,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0129,2,C092,0.5541,Qué son las comisiones bancarias,cuentas bancarias,básico
+U0129,3,C072,0.53,Calculadora de gestión de deudas,deuda,básico
+U0129,4,C067,0.524,Del like a la inversión,fraude,básico
+U0129,5,C071,0.5149,Calculadora de presupuesto personal,planificación,básico
+U0130,1,C053,0.6701,Protección de datos en operaciones financieras,fraude,básico
+U0130,2,C072,0.6459,Calculadora de gestión de deudas,deuda,básico
+U0130,3,C009,0.5886,Cómo gestionar mis deudas,deuda,básico
+U0130,4,C001,0.5767,Cómo elaborar un presupuesto,planificación,básico
+U0130,5,C088,0.5654,Qué es la inflación y cómo nos afecta,inflación,básico
+U0131,1,C053,0.556,Protección de datos en operaciones financieras,fraude,básico
+U0131,2,C072,0.5418,Calculadora de gestión de deudas,deuda,básico
+U0131,3,C073,0.5093,Calculadora de ahorro mensual,ahorro,básico
+U0131,4,C009,0.5084,Cómo gestionar mis deudas,deuda,básico
+U0131,5,C050,0.4967,Cómo leer una nómina,planificación,básico
+U0132,1,C053,0.5542,Protección de datos en operaciones financieras,fraude,básico
+U0132,2,C072,0.5417,Calculadora de gestión de deudas,deuda,básico
+U0132,3,C088,0.5362,Qué es la inflación y cómo nos afecta,inflación,básico
+U0132,4,C009,0.4961,Cómo gestionar mis deudas,deuda,básico
+U0132,5,C073,0.4824,Calculadora de ahorro mensual,ahorro,básico
+U0133,1,C072,0.5687,Calculadora de gestión de deudas,deuda,básico
+U0133,2,C009,0.5565,Cómo gestionar mis deudas,deuda,básico
+U0133,3,C088,0.5302,Qué es la inflación y cómo nos afecta,inflación,básico
+U0133,4,C073,0.5253,Calculadora de ahorro mensual,ahorro,básico
+U0133,5,C057,0.5144,Cómo comparar productos de ahorro,ahorro,básico
+U0134,1,C072,0.673,Calculadora de gestión de deudas,deuda,básico
+U0134,2,C009,0.624,Cómo gestionar mis deudas,deuda,básico
+U0134,3,C053,0.618,Protección de datos en operaciones financieras,fraude,básico
+U0134,4,C088,0.6177,Qué es la inflación y cómo nos afecta,inflación,básico
+U0134,5,C008,0.5844,5 consejos sobre endeudamiento,deuda,básico
+U0135,1,C072,0.6361,Calculadora de gestión de deudas,deuda,básico
+U0135,2,C009,0.5888,Cómo gestionar mis deudas,deuda,básico
+U0135,3,C088,0.5834,Qué es la inflación y cómo nos afecta,inflación,básico
+U0135,4,C008,0.5381,5 consejos sobre endeudamiento,deuda,básico
+U0135,5,C089,0.5263,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0136,1,C009,0.6042,Cómo gestionar mis deudas,deuda,básico
+U0136,2,C072,0.5996,Calculadora de gestión de deudas,deuda,básico
+U0136,3,C047,0.5955,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0136,4,C073,0.5949,Calculadora de ahorro mensual,ahorro,básico
+U0136,5,C048,0.5943,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0137,1,C072,0.7028,Calculadora de gestión de deudas,deuda,básico
+U0137,2,C015,0.6841,Glosario de términos financieros,planificación,básico
+U0137,3,C009,0.6657,Cómo gestionar mis deudas,deuda,básico
+U0137,4,C008,0.5979,5 consejos sobre endeudamiento,deuda,básico
+U0137,5,C050,0.5891,Cómo leer una nómina,planificación,básico
+U0138,1,C072,0.5723,Calculadora de gestión de deudas,deuda,básico
+U0138,2,C009,0.5596,Cómo gestionar mis deudas,deuda,básico
+U0138,3,C088,0.5289,Qué es la inflación y cómo nos afecta,inflación,básico
+U0138,4,C025,0.4881,Comisiones bancarias,cuentas bancarias,básico
+U0138,5,C008,0.4814,5 consejos sobre endeudamiento,deuda,básico
+U0139,1,C088,0.5978,Qué es la inflación y cómo nos afecta,inflación,básico
+U0139,2,C048,0.5848,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0139,3,C082,0.5773,Comisiones bancarias: conceptos y comparación,cuentas bancarias,básico
+U0139,4,C072,0.572,Calculadora de gestión de deudas,deuda,básico
+U0139,5,C009,0.566,Cómo gestionar mis deudas,deuda,básico
+U0140,1,C072,0.5764,Calculadora de gestión de deudas,deuda,básico
+U0140,2,C009,0.5614,Cómo gestionar mis deudas,deuda,básico
+U0140,3,C073,0.5503,Calculadora de ahorro mensual,ahorro,básico
+U0140,4,C053,0.5079,Protección de datos en operaciones financieras,fraude,básico
+U0140,5,C043,0.4846,Plan de Educación Financiera 2022-2025,planificación,básico
+U0141,1,C072,0.5623,Calculadora de gestión de deudas,deuda,básico
+U0141,2,C009,0.5147,Cómo gestionar mis deudas,deuda,básico
+U0141,3,C008,0.4952,5 consejos sobre endeudamiento,deuda,básico
+U0141,4,C053,0.4789,Protección de datos en operaciones financieras,fraude,básico
+U0141,5,C089,0.4722,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0142,1,C072,0.5754,Calculadora de gestión de deudas,deuda,básico
+U0142,2,C053,0.5514,Protección de datos en operaciones financieras,fraude,básico
+U0142,3,C009,0.5296,Cómo gestionar mis deudas,deuda,básico
+U0142,4,C047,0.4938,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0142,5,C025,0.4898,Comisiones bancarias,cuentas bancarias,básico
+U0143,1,C072,0.6385,Calculadora de gestión de deudas,deuda,básico
+U0143,2,C009,0.5867,Cómo gestionar mis deudas,deuda,básico
+U0143,3,C088,0.5695,Qué es la inflación y cómo nos afecta,inflación,básico
+U0143,4,C053,0.538,Protección de datos en operaciones financieras,fraude,básico
+U0143,5,C008,0.5377,5 consejos sobre endeudamiento,deuda,básico
+U0144,1,C072,0.5968,Calculadora de gestión de deudas,deuda,básico
+U0144,2,C009,0.5767,Cómo gestionar mis deudas,deuda,básico
+U0144,3,C088,0.5137,Qué es la inflación y cómo nos afecta,inflación,básico
+U0144,4,C008,0.5106,5 consejos sobre endeudamiento,deuda,básico
+U0144,5,C073,0.5079,Calculadora de ahorro mensual,ahorro,básico
+U0145,1,C072,0.6349,Calculadora de gestión de deudas,deuda,básico
+U0145,2,C009,0.6262,Cómo gestionar mis deudas,deuda,básico
+U0145,3,C071,0.6203,Calculadora de presupuesto personal,planificación,básico
+U0145,4,C088,0.6013,Qué es la inflación y cómo nos afecta,inflación,básico
+U0145,5,C030,0.5774,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0146,1,C047,0.7035,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0146,2,C072,0.6764,Calculadora de gestión de deudas,deuda,básico
+U0146,3,C009,0.5884,Cómo gestionar mis deudas,deuda,básico
+U0146,4,C088,0.5765,Qué es la inflación y cómo nos afecta,inflación,básico
+U0146,5,C011,0.5763,Cuidado del entorno: el banco y yo,cuentas bancarias,básico
+U0147,1,C009,0.5698,Cómo gestionar mis deudas,deuda,básico
+U0147,2,C053,0.5628,Protección de datos en operaciones financieras,fraude,básico
+U0147,3,C088,0.553,Qué es la inflación y cómo nos afecta,inflación,básico
+U0147,4,C075,0.5466,Calculadora de patrimonio neto,planificación,intermedio
+U0147,5,C051,0.5369,Declaración de la renta: conceptos básicos,planificación,básico
+U0148,1,C088,0.7686,Qué es la inflación y cómo nos afecta,inflación,básico
+U0148,2,C057,0.7231,Cómo comparar productos de ahorro,ahorro,básico
+U0148,3,C072,0.7022,Calculadora de gestión de deudas,deuda,básico
+U0148,4,C018,0.6761,Depósitos a plazo,cuentas bancarias,básico
+U0148,5,C009,0.6724,Cómo gestionar mis deudas,deuda,básico
+U0149,1,C072,0.6574,Calculadora de gestión de deudas,deuda,básico
+U0149,2,C009,0.6195,Cómo gestionar mis deudas,deuda,básico
+U0149,3,C088,0.5974,Qué es la inflación y cómo nos afecta,inflación,básico
+U0149,4,C071,0.5802,Calculadora de presupuesto personal,planificación,básico
+U0149,5,C008,0.566,5 consejos sobre endeudamiento,deuda,básico
+U0150,1,C072,0.5691,Calculadora de gestión de deudas,deuda,básico
+U0150,2,C011,0.531,Cuidado del entorno: el banco y yo,cuentas bancarias,básico
+U0150,3,C009,0.5283,Cómo gestionar mis deudas,deuda,básico
+U0150,4,C008,0.4817,5 consejos sobre endeudamiento,deuda,básico
+U0150,5,C053,0.4796,Protección de datos en operaciones financieras,fraude,básico
+U0151,1,C072,0.7046,Calculadora de gestión de deudas,deuda,básico
+U0151,2,C002,0.6762,Cómo está tu salud financiera,planificación,básico
+U0151,3,C009,0.6568,Cómo gestionar mis deudas,deuda,básico
+U0151,4,C050,0.6535,Cómo leer una nómina,planificación,básico
+U0151,5,C008,0.617,5 consejos sobre endeudamiento,deuda,básico
+U0152,1,C072,0.5552,Calculadora de gestión de deudas,deuda,básico
+U0152,2,C009,0.5082,Cómo gestionar mis deudas,deuda,básico
+U0152,3,C088,0.4879,Qué es la inflación y cómo nos afecta,inflación,básico
+U0152,4,C008,0.4629,5 consejos sobre endeudamiento,deuda,básico
+U0152,5,C089,0.4577,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0153,1,C072,0.5785,Calculadora de gestión de deudas,deuda,básico
+U0153,2,C009,0.5448,Cómo gestionar mis deudas,deuda,básico
+U0153,3,C008,0.4942,5 consejos sobre endeudamiento,deuda,básico
+U0153,4,C057,0.4725,Cómo comparar productos de ahorro,ahorro,básico
+U0153,5,C089,0.4701,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0154,1,C072,0.5426,Calculadora de gestión de deudas,deuda,básico
+U0154,2,C009,0.525,Cómo gestionar mis deudas,deuda,básico
+U0154,3,C088,0.5097,Qué es la inflación y cómo nos afecta,inflación,básico
+U0154,4,C008,0.4703,5 consejos sobre endeudamiento,deuda,básico
+U0154,5,C025,0.4689,Comisiones bancarias,cuentas bancarias,básico
+U0155,1,C072,0.682,Calculadora de gestión de deudas,deuda,básico
+U0155,2,C053,0.6315,Protección de datos en operaciones financieras,fraude,básico
+U0155,3,C088,0.6223,Qué es la inflación y cómo nos afecta,inflación,básico
+U0155,4,C009,0.6095,Cómo gestionar mis deudas,deuda,básico
+U0155,5,C047,0.5988,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0156,1,C072,0.5324,Calculadora de gestión de deudas,deuda,básico
+U0156,2,C088,0.4457,Qué es la inflación y cómo nos afecta,inflación,básico
+U0156,3,C008,0.4427,5 consejos sobre endeudamiento,deuda,básico
+U0156,4,C089,0.4285,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0156,5,C073,0.4112,Calculadora de ahorro mensual,ahorro,básico
+U0157,1,C072,0.6365,Calculadora de gestión de deudas,deuda,básico
+U0157,2,C008,0.5594,5 consejos sobre endeudamiento,deuda,básico
+U0157,3,C048,0.5401,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0157,4,C050,0.529,Cómo leer una nómina,planificación,básico
+U0157,5,C053,0.5232,Protección de datos en operaciones financieras,fraude,básico
+U0158,1,C072,0.5979,Calculadora de gestión de deudas,deuda,básico
+U0158,2,C088,0.5735,Qué es la inflación y cómo nos afecta,inflación,básico
+U0158,3,C048,0.5309,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0158,4,C008,0.5194,5 consejos sobre endeudamiento,deuda,básico
+U0158,5,C089,0.494,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0159,1,C072,0.6314,Calculadora de gestión de deudas,deuda,básico
+U0159,2,C088,0.6016,Qué es la inflación y cómo nos afecta,inflación,básico
+U0159,3,C009,0.594,Cómo gestionar mis deudas,deuda,básico
+U0159,4,C008,0.5375,5 consejos sobre endeudamiento,deuda,básico
+U0159,5,C089,0.526,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0160,1,C072,0.5678,Calculadora de gestión de deudas,deuda,básico
+U0160,2,C088,0.5489,Qué es la inflación y cómo nos afecta,inflación,básico
+U0160,3,C009,0.521,Cómo gestionar mis deudas,deuda,básico
+U0160,4,C008,0.5083,5 consejos sobre endeudamiento,deuda,básico
+U0160,5,C053,0.5078,Protección de datos en operaciones financieras,fraude,básico
+U0161,1,C002,0.683,Cómo está tu salud financiera,planificación,básico
+U0161,2,C072,0.6697,Calculadora de gestión de deudas,deuda,básico
+U0161,3,C009,0.6084,Cómo gestionar mis deudas,deuda,básico
+U0161,4,C088,0.5787,Qué es la inflación y cómo nos afecta,inflación,básico
+U0161,5,C008,0.5709,5 consejos sobre endeudamiento,deuda,básico
+U0162,1,C072,0.6171,Calculadora de gestión de deudas,deuda,básico
+U0162,2,C053,0.6037,Protección de datos en operaciones financieras,fraude,básico
+U0162,3,C088,0.5853,Qué es la inflación y cómo nos afecta,inflación,básico
+U0162,4,C009,0.5735,Cómo gestionar mis deudas,deuda,básico
+U0162,5,C001,0.5428,Cómo elaborar un presupuesto,planificación,básico
+U0163,1,C072,0.648,Calculadora de gestión de deudas,deuda,básico
+U0163,2,C009,0.6159,Cómo gestionar mis deudas,deuda,básico
+U0163,3,C015,0.571,Glosario de términos financieros,planificación,básico
+U0163,4,C088,0.5598,Qué es la inflación y cómo nos afecta,inflación,básico
+U0163,5,C017,0.5528,"Cuentas corrientes, depósitos a la vista y libretas de ahorro",cuentas bancarias,básico
+U0164,1,C088,0.5452,Qué es la inflación y cómo nos afecta,inflación,básico
+U0164,2,C072,0.5439,Calculadora de gestión de deudas,deuda,básico
+U0164,3,C009,0.5061,Cómo gestionar mis deudas,deuda,básico
+U0164,4,C047,0.4525,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0164,5,C018,0.4524,Depósitos a plazo,cuentas bancarias,básico
+U0165,1,C072,0.5708,Calculadora de gestión de deudas,deuda,básico
+U0165,2,C009,0.5217,Cómo gestionar mis deudas,deuda,básico
+U0165,3,C008,0.4886,5 consejos sobre endeudamiento,deuda,básico
+U0165,4,C088,0.4811,Qué es la inflación y cómo nos afecta,inflación,básico
+U0165,5,C073,0.4756,Calculadora de ahorro mensual,ahorro,básico
+U0166,1,C072,0.5716,Calculadora de gestión de deudas,deuda,básico
+U0166,2,C047,0.57,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0166,3,C053,0.5245,Protección de datos en operaciones financieras,fraude,básico
+U0166,4,C009,0.4988,Cómo gestionar mis deudas,deuda,básico
+U0166,5,C008,0.45,5 consejos sobre endeudamiento,deuda,básico
+U0167,1,C072,0.5428,Calculadora de gestión de deudas,deuda,básico
+U0167,2,C009,0.5129,Cómo gestionar mis deudas,deuda,básico
+U0167,3,C008,0.4622,5 consejos sobre endeudamiento,deuda,básico
+U0167,4,C089,0.444,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0167,5,C047,0.4402,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0168,1,C072,0.6065,Calculadora de gestión de deudas,deuda,básico
+U0168,2,C009,0.5769,Cómo gestionar mis deudas,deuda,básico
+U0168,3,C043,0.576,Plan de Educación Financiera 2022-2025,planificación,básico
+U0168,4,C088,0.5523,Qué es la inflación y cómo nos afecta,inflación,básico
+U0168,5,C008,0.5051,5 consejos sobre endeudamiento,deuda,básico
+U0169,1,C072,0.6249,Calculadora de gestión de deudas,deuda,básico
+U0169,2,C073,0.5999,Calculadora de ahorro mensual,ahorro,básico
+U0169,3,C092,0.5961,Qué son las comisiones bancarias,cuentas bancarias,básico
+U0169,4,C053,0.5873,Protección de datos en operaciones financieras,fraude,básico
+U0169,5,C009,0.5575,Cómo gestionar mis deudas,deuda,básico
+U0170,1,C072,0.5484,Calculadora de gestión de deudas,deuda,básico
+U0170,2,C073,0.5462,Calculadora de ahorro mensual,ahorro,básico
+U0170,3,C009,0.5194,Cómo gestionar mis deudas,deuda,básico
+U0170,4,C053,0.5138,Protección de datos en operaciones financieras,fraude,básico
+U0170,5,C057,0.4875,Cómo comparar productos de ahorro,ahorro,básico
+U0171,1,C072,0.5904,Calculadora de gestión de deudas,deuda,básico
+U0171,2,C009,0.5106,Cómo gestionar mis deudas,deuda,básico
+U0171,3,C088,0.5082,Qué es la inflación y cómo nos afecta,inflación,básico
+U0171,4,C047,0.4952,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0171,5,C043,0.4804,Plan de Educación Financiera 2022-2025,planificación,básico
+U0172,1,C057,0.688,Cómo comparar productos de ahorro,ahorro,básico
+U0172,2,C072,0.6435,Calculadora de gestión de deudas,deuda,básico
+U0172,3,C047,0.63,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0172,4,C009,0.6263,Cómo gestionar mis deudas,deuda,básico
+U0172,5,C088,0.6243,Qué es la inflación y cómo nos afecta,inflación,básico
+U0173,1,C072,0.6208,Calculadora de gestión de deudas,deuda,básico
+U0173,2,C009,0.5948,Cómo gestionar mis deudas,deuda,básico
+U0173,3,C088,0.5746,Qué es la inflación y cómo nos afecta,inflación,básico
+U0173,4,C008,0.5351,5 consejos sobre endeudamiento,deuda,básico
+U0173,5,C043,0.5302,Plan de Educación Financiera 2022-2025,planificación,básico
+U0174,1,C072,0.5672,Calculadora de gestión de deudas,deuda,básico
+U0174,2,C009,0.5283,Cómo gestionar mis deudas,deuda,básico
+U0174,3,C088,0.4975,Qué es la inflación y cómo nos afecta,inflación,básico
+U0174,4,C008,0.4821,5 consejos sobre endeudamiento,deuda,básico
+U0174,5,C089,0.4701,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0175,1,C072,0.5523,Calculadora de gestión de deudas,deuda,básico
+U0175,2,C009,0.5143,Cómo gestionar mis deudas,deuda,básico
+U0175,3,C088,0.4728,Qué es la inflación y cómo nos afecta,inflación,básico
+U0175,4,C073,0.4682,Calculadora de ahorro mensual,ahorro,básico
+U0175,5,C008,0.4679,5 consejos sobre endeudamiento,deuda,básico
+U0176,1,C072,0.5646,Calculadora de gestión de deudas,deuda,básico
+U0176,2,C009,0.5153,Cómo gestionar mis deudas,deuda,básico
+U0176,3,C088,0.4999,Qué es la inflación y cómo nos afecta,inflación,básico
+U0176,4,C008,0.4741,5 consejos sobre endeudamiento,deuda,básico
+U0176,5,C089,0.4577,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0177,1,C072,0.5664,Calculadora de gestión de deudas,deuda,básico
+U0177,2,C009,0.5406,Cómo gestionar mis deudas,deuda,básico
+U0177,3,C028,0.5267,Protegerte contra el fraude,fraude,básico
+U0177,4,C030,0.5192,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0177,5,C073,0.5032,Calculadora de ahorro mensual,ahorro,básico
+U0178,1,C009,0.6585,Cómo gestionar mis deudas,deuda,básico
+U0178,2,C072,0.6514,Calculadora de gestión de deudas,deuda,básico
+U0178,3,C073,0.5953,Calculadora de ahorro mensual,ahorro,básico
+U0178,4,C008,0.5698,5 consejos sobre endeudamiento,deuda,básico
+U0178,5,C017,0.5576,"Cuentas corrientes, depósitos a la vista y libretas de ahorro",cuentas bancarias,básico
+U0179,1,C072,0.6273,Calculadora de gestión de deudas,deuda,básico
+U0179,2,C009,0.5929,Cómo gestionar mis deudas,deuda,básico
+U0179,3,C088,0.5522,Qué es la inflación y cómo nos afecta,inflación,básico
+U0179,4,C008,0.5389,5 consejos sobre endeudamiento,deuda,básico
+U0179,5,C089,0.5263,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0180,1,C072,0.5591,Calculadora de gestión de deudas,deuda,básico
+U0180,2,C009,0.5229,Cómo gestionar mis deudas,deuda,básico
+U0180,3,C088,0.498,Qué es la inflación y cómo nos afecta,inflación,básico
+U0180,4,C008,0.4626,5 consejos sobre endeudamiento,deuda,básico
+U0180,5,C089,0.4495,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0181,1,C072,0.5798,Calculadora de gestión de deudas,deuda,básico
+U0181,2,C088,0.5263,Qué es la inflación y cómo nos afecta,inflación,básico
+U0181,3,C002,0.5186,Cómo está tu salud financiera,planificación,básico
+U0181,4,C009,0.5149,Cómo gestionar mis deudas,deuda,básico
+U0181,5,C043,0.4701,Plan de Educación Financiera 2022-2025,planificación,básico
+U0182,1,C072,0.5481,Calculadora de gestión de deudas,deuda,básico
+U0182,2,C009,0.5134,Cómo gestionar mis deudas,deuda,básico
+U0182,3,C008,0.4577,5 consejos sobre endeudamiento,deuda,básico
+U0182,4,C088,0.4573,Qué es la inflación y cómo nos afecta,inflación,básico
+U0182,5,C089,0.4388,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0183,1,C072,0.5534,Calculadora de gestión de deudas,deuda,básico
+U0183,2,C009,0.5289,Cómo gestionar mis deudas,deuda,básico
+U0183,3,C088,0.5096,Qué es la inflación y cómo nos afecta,inflación,básico
+U0183,4,C043,0.4931,Plan de Educación Financiera 2022-2025,planificación,básico
+U0183,5,C008,0.4858,5 consejos sobre endeudamiento,deuda,básico
+U0184,1,C092,0.5451,Qué son las comisiones bancarias,cuentas bancarias,básico
+U0184,2,C072,0.5449,Calculadora de gestión de deudas,deuda,básico
+U0184,3,C048,0.5386,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0184,4,C009,0.5326,Cómo gestionar mis deudas,deuda,básico
+U0184,5,C053,0.5304,Protección de datos en operaciones financieras,fraude,básico
+U0185,1,C057,0.6415,Cómo comparar productos de ahorro,ahorro,básico
+U0185,2,C072,0.6237,Calculadora de gestión de deudas,deuda,básico
+U0185,3,C009,0.5891,Cómo gestionar mis deudas,deuda,básico
+U0185,4,C088,0.55,Qué es la inflación y cómo nos afecta,inflación,básico
+U0185,5,C008,0.5417,5 consejos sobre endeudamiento,deuda,básico
+U0186,1,C072,0.5682,Calculadora de gestión de deudas,deuda,básico
+U0186,2,C009,0.5469,Cómo gestionar mis deudas,deuda,básico
+U0186,3,C088,0.4954,Qué es la inflación y cómo nos afecta,inflación,básico
+U0186,4,C082,0.4879,Comisiones bancarias: conceptos y comparación,cuentas bancarias,básico
+U0186,5,C053,0.4784,Protección de datos en operaciones financieras,fraude,básico
+U0187,1,C088,0.6028,Qué es la inflación y cómo nos afecta,inflación,básico
+U0187,2,C073,0.5983,Calculadora de ahorro mensual,ahorro,básico
+U0187,3,C017,0.5614,"Cuentas corrientes, depósitos a la vista y libretas de ahorro",cuentas bancarias,básico
+U0187,4,C072,0.5571,Calculadora de gestión de deudas,deuda,básico
+U0187,5,C009,0.5515,Cómo gestionar mis deudas,deuda,básico
+U0188,1,C072,0.647,Calculadora de gestión de deudas,deuda,básico
+U0188,2,C009,0.5597,Cómo gestionar mis deudas,deuda,básico
+U0188,3,C088,0.5454,Qué es la inflación y cómo nos afecta,inflación,básico
+U0188,4,C008,0.5228,5 consejos sobre endeudamiento,deuda,básico
+U0188,5,C053,0.5191,Protección de datos en operaciones financieras,fraude,básico
+U0189,1,C071,0.5576,Calculadora de presupuesto personal,planificación,básico
+U0189,2,C072,0.5489,Calculadora de gestión de deudas,deuda,básico
+U0189,3,C088,0.5327,Qué es la inflación y cómo nos afecta,inflación,básico
+U0189,4,C009,0.5113,Cómo gestionar mis deudas,deuda,básico
+U0189,5,C047,0.492,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0190,1,C072,0.5543,Calculadora de gestión de deudas,deuda,básico
+U0190,2,C009,0.5294,Cómo gestionar mis deudas,deuda,básico
+U0190,3,C088,0.5124,Qué es la inflación y cómo nos afecta,inflación,básico
+U0190,4,C071,0.5088,Calculadora de presupuesto personal,planificación,básico
+U0190,5,C030,0.4918,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0191,1,C072,0.684,Calculadora de gestión de deudas,deuda,básico
+U0191,2,C073,0.6629,Calculadora de ahorro mensual,ahorro,básico
+U0191,3,C009,0.661,Cómo gestionar mis deudas,deuda,básico
+U0191,4,C008,0.6269,5 consejos sobre endeudamiento,deuda,básico
+U0191,5,C048,0.6038,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0192,1,C072,0.5566,Calculadora de gestión de deudas,deuda,básico
+U0192,2,C009,0.5389,Cómo gestionar mis deudas,deuda,básico
+U0192,3,C088,0.4809,Qué es la inflación y cómo nos afecta,inflación,básico
+U0192,4,C008,0.4654,5 consejos sobre endeudamiento,deuda,básico
+U0192,5,C089,0.4577,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0193,1,C072,0.5605,Calculadora de gestión de deudas,deuda,básico
+U0193,2,C009,0.5207,Cómo gestionar mis deudas,deuda,básico
+U0193,3,C008,0.476,5 consejos sobre endeudamiento,deuda,básico
+U0193,4,C047,0.4706,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0193,5,C092,0.4672,Qué son las comisiones bancarias,cuentas bancarias,básico
+U0194,1,C072,0.5849,Calculadora de gestión de deudas,deuda,básico
+U0194,2,C061,0.5722,Manual para universitarios,planificación,básico
+U0194,3,C048,0.568,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0194,4,C009,0.5407,Cómo gestionar mis deudas,deuda,básico
+U0194,5,C008,0.5279,5 consejos sobre endeudamiento,deuda,básico
+U0195,1,C088,0.6014,Qué es la inflación y cómo nos afecta,inflación,básico
+U0195,2,C082,0.5563,Comisiones bancarias: conceptos y comparación,cuentas bancarias,básico
+U0195,3,C072,0.5435,Calculadora de gestión de deudas,deuda,básico
+U0195,4,C009,0.5297,Cómo gestionar mis deudas,deuda,básico
+U0195,5,C073,0.5151,Calculadora de ahorro mensual,ahorro,básico
+U0196,1,C072,0.5484,Calculadora de gestión de deudas,deuda,básico
+U0196,2,C048,0.5206,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0196,3,C025,0.4685,Comisiones bancarias,cuentas bancarias,básico
+U0196,4,C008,0.4571,5 consejos sobre endeudamiento,deuda,básico
+U0196,5,C073,0.4479,Calculadora de ahorro mensual,ahorro,básico
+U0197,1,C072,0.5801,Calculadora de gestión de deudas,deuda,básico
+U0197,2,C009,0.5378,Cómo gestionar mis deudas,deuda,básico
+U0197,3,C073,0.5216,Calculadora de ahorro mensual,ahorro,básico
+U0197,4,C008,0.4959,5 consejos sobre endeudamiento,deuda,básico
+U0197,5,C089,0.4817,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0198,1,C088,0.652,Qué es la inflación y cómo nos afecta,inflación,básico
+U0198,2,C053,0.6,Protección de datos en operaciones financieras,fraude,básico
+U0198,3,C072,0.5926,Calculadora de gestión de deudas,deuda,básico
+U0198,4,C001,0.5915,Cómo elaborar un presupuesto,planificación,básico
+U0198,5,C043,0.5814,Plan de Educación Financiera 2022-2025,planificación,básico
+U0199,1,C088,0.6847,Qué es la inflación y cómo nos afecta,inflación,básico
+U0199,2,C072,0.6615,Calculadora de gestión de deudas,deuda,básico
+U0199,3,C047,0.6559,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0199,4,C043,0.6424,Plan de Educación Financiera 2022-2025,planificación,básico
+U0199,5,C009,0.6353,Cómo gestionar mis deudas,deuda,básico
+U0200,1,C088,0.6747,Qué es la inflación y cómo nos afecta,inflación,básico
+U0200,2,C072,0.6285,Calculadora de gestión de deudas,deuda,básico
+U0200,3,C053,0.5902,Protección de datos en operaciones financieras,fraude,básico
+U0200,4,C071,0.5761,Calculadora de presupuesto personal,planificación,básico
+U0200,5,C009,0.5714,Cómo gestionar mis deudas,deuda,básico
+U0201,1,C088,0.6181,Qué es la inflación y cómo nos afecta,inflación,básico
+U0201,2,C072,0.6071,Calculadora de gestión de deudas,deuda,básico
+U0201,3,C009,0.5964,Cómo gestionar mis deudas,deuda,básico
+U0201,4,C043,0.5752,Plan de Educación Financiera 2022-2025,planificación,básico
+U0201,5,C048,0.5486,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0202,1,C057,0.5811,Cómo comparar productos de ahorro,ahorro,básico
+U0202,2,C072,0.5571,Calculadora de gestión de deudas,deuda,básico
+U0202,3,C088,0.5399,Qué es la inflación y cómo nos afecta,inflación,básico
+U0202,4,C009,0.5167,Cómo gestionar mis deudas,deuda,básico
+U0202,5,C053,0.4865,Protección de datos en operaciones financieras,fraude,básico
+U0203,1,C072,0.556,Calculadora de gestión de deudas,deuda,básico
+U0203,2,C088,0.5126,Qué es la inflación y cómo nos afecta,inflación,básico
+U0203,3,C009,0.4972,Cómo gestionar mis deudas,deuda,básico
+U0203,4,C008,0.4958,5 consejos sobre endeudamiento,deuda,básico
+U0203,5,C071,0.4809,Calculadora de presupuesto personal,planificación,básico
+U0204,1,C088,0.6567,Qué es la inflación y cómo nos afecta,inflación,básico
+U0204,2,C048,0.6335,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0204,3,C072,0.6107,Calculadora de gestión de deudas,deuda,básico
+U0204,4,C009,0.5833,Cómo gestionar mis deudas,deuda,básico
+U0204,5,C002,0.5826,Cómo está tu salud financiera,planificación,básico
+U0205,1,C072,0.5446,Calculadora de gestión de deudas,deuda,básico
+U0205,2,C009,0.513,Cómo gestionar mis deudas,deuda,básico
+U0205,3,C088,0.4727,Qué es la inflación y cómo nos afecta,inflación,básico
+U0205,4,C008,0.4709,5 consejos sobre endeudamiento,deuda,básico
+U0205,5,C073,0.4682,Calculadora de ahorro mensual,ahorro,básico
+U0206,1,C072,0.583,Calculadora de gestión de deudas,deuda,básico
+U0206,2,C025,0.5803,Comisiones bancarias,cuentas bancarias,básico
+U0206,3,C009,0.5135,Cómo gestionar mis deudas,deuda,básico
+U0206,4,C043,0.5088,Plan de Educación Financiera 2022-2025,planificación,básico
+U0206,5,C073,0.5004,Calculadora de ahorro mensual,ahorro,básico
+U0207,1,C072,0.5808,Calculadora de gestión de deudas,deuda,básico
+U0207,2,C053,0.5511,Protección de datos en operaciones financieras,fraude,básico
+U0207,3,C073,0.5379,Calculadora de ahorro mensual,ahorro,básico
+U0207,4,C009,0.5324,Cómo gestionar mis deudas,deuda,básico
+U0207,5,C008,0.4883,5 consejos sobre endeudamiento,deuda,básico
+U0208,1,C015,0.6461,Glosario de términos financieros,planificación,básico
+U0208,2,C072,0.6105,Calculadora de gestión de deudas,deuda,básico
+U0208,3,C053,0.582,Protección de datos en operaciones financieras,fraude,básico
+U0208,4,C073,0.5655,Calculadora de ahorro mensual,ahorro,básico
+U0208,5,C009,0.5355,Cómo gestionar mis deudas,deuda,básico
+U0209,1,C088,0.6352,Qué es la inflación y cómo nos afecta,inflación,básico
+U0209,2,C072,0.6084,Calculadora de gestión de deudas,deuda,básico
+U0209,3,C009,0.5945,Cómo gestionar mis deudas,deuda,básico
+U0209,4,C018,0.5436,Depósitos a plazo,cuentas bancarias,básico
+U0209,5,C047,0.5412,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0210,1,C073,0.551,Calculadora de ahorro mensual,ahorro,básico
+U0210,2,C088,0.55,Qué es la inflación y cómo nos afecta,inflación,básico
+U0210,3,C072,0.5488,Calculadora de gestión de deudas,deuda,básico
+U0210,4,C048,0.5399,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0210,5,C009,0.5148,Cómo gestionar mis deudas,deuda,básico
+U0211,1,C072,0.5725,Calculadora de gestión de deudas,deuda,básico
+U0211,2,C009,0.5608,Cómo gestionar mis deudas,deuda,básico
+U0211,3,C053,0.5049,Protección de datos en operaciones financieras,fraude,básico
+U0211,4,C008,0.4678,5 consejos sobre endeudamiento,deuda,básico
+U0211,5,C089,0.4672,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0212,1,C072,0.5575,Calculadora de gestión de deudas,deuda,básico
+U0212,2,C009,0.5495,Cómo gestionar mis deudas,deuda,básico
+U0212,3,C006,0.5192,8 productos bancarios,cuentas bancarias,básico
+U0212,4,C088,0.5186,Qué es la inflación y cómo nos afecta,inflación,básico
+U0212,5,C011,0.5088,Cuidado del entorno: el banco y yo,cuentas bancarias,básico
+U0213,1,C088,0.6416,Qué es la inflación y cómo nos afecta,inflación,básico
+U0213,2,C072,0.6021,Calculadora de gestión de deudas,deuda,básico
+U0213,3,C071,0.5856,Calculadora de presupuesto personal,planificación,básico
+U0213,4,C009,0.5665,Cómo gestionar mis deudas,deuda,básico
+U0213,5,C043,0.5471,Plan de Educación Financiera 2022-2025,planificación,básico
+U0214,1,C072,0.5779,Calculadora de gestión de deudas,deuda,básico
+U0214,2,C009,0.543,Cómo gestionar mis deudas,deuda,básico
+U0214,3,C088,0.5175,Qué es la inflación y cómo nos afecta,inflación,básico
+U0214,4,C008,0.4852,5 consejos sobre endeudamiento,deuda,básico
+U0214,5,C089,0.4758,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0215,1,C072,0.5728,Calculadora de gestión de deudas,deuda,básico
+U0215,2,C073,0.5506,Calculadora de ahorro mensual,ahorro,básico
+U0215,3,C048,0.5489,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0215,4,C009,0.5348,Cómo gestionar mis deudas,deuda,básico
+U0215,5,C053,0.5036,Protección de datos en operaciones financieras,fraude,básico
+U0216,1,C072,0.5851,Calculadora de gestión de deudas,deuda,básico
+U0216,2,C053,0.5056,Protección de datos en operaciones financieras,fraude,básico
+U0216,3,C075,0.4961,Calculadora de patrimonio neto,planificación,intermedio
+U0216,4,C088,0.4939,Qué es la inflación y cómo nos afecta,inflación,básico
+U0216,5,C009,0.4927,Cómo gestionar mis deudas,deuda,básico
+U0217,1,C072,0.5685,Calculadora de gestión de deudas,deuda,básico
+U0217,2,C088,0.5584,Qué es la inflación y cómo nos afecta,inflación,básico
+U0217,3,C009,0.5373,Cómo gestionar mis deudas,deuda,básico
+U0217,4,C008,0.5023,5 consejos sobre endeudamiento,deuda,básico
+U0217,5,C073,0.4802,Calculadora de ahorro mensual,ahorro,básico
+U0218,1,C088,0.6376,Qué es la inflación y cómo nos afecta,inflación,básico
+U0218,2,C072,0.6109,Calculadora de gestión de deudas,deuda,básico
+U0218,3,C071,0.6095,Calculadora de presupuesto personal,planificación,básico
+U0218,4,C048,0.6042,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0218,5,C053,0.5919,Protección de datos en operaciones financieras,fraude,básico
+U0219,1,C030,0.6694,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0219,2,C072,0.5849,Calculadora de gestión de deudas,deuda,básico
+U0219,3,C073,0.5845,Calculadora de ahorro mensual,ahorro,básico
+U0219,4,C009,0.5694,Cómo gestionar mis deudas,deuda,básico
+U0219,5,C088,0.5665,Qué es la inflación y cómo nos afecta,inflación,básico
+U0220,1,C072,0.6249,Calculadora de gestión de deudas,deuda,básico
+U0220,2,C009,0.5821,Cómo gestionar mis deudas,deuda,básico
+U0220,3,C088,0.567,Qué es la inflación y cómo nos afecta,inflación,básico
+U0220,4,C008,0.5277,5 consejos sobre endeudamiento,deuda,básico
+U0220,5,C043,0.5246,Plan de Educación Financiera 2022-2025,planificación,básico
+U0221,1,C072,0.5827,Calculadora de gestión de deudas,deuda,básico
+U0221,2,C008,0.489,5 consejos sobre endeudamiento,deuda,básico
+U0221,3,C088,0.4802,Qué es la inflación y cómo nos afecta,inflación,básico
+U0221,4,C089,0.475,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0221,5,C015,0.4601,Glosario de términos financieros,planificación,básico
+U0222,1,C073,0.5693,Calculadora de ahorro mensual,ahorro,básico
+U0222,2,C072,0.5633,Calculadora de gestión de deudas,deuda,básico
+U0222,3,C009,0.5369,Cómo gestionar mis deudas,deuda,básico
+U0222,4,C008,0.4959,5 consejos sobre endeudamiento,deuda,básico
+U0222,5,C048,0.4785,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0223,1,C072,0.5783,Calculadora de gestión de deudas,deuda,básico
+U0223,2,C002,0.5423,Cómo está tu salud financiera,planificación,básico
+U0223,3,C009,0.5266,Cómo gestionar mis deudas,deuda,básico
+U0223,4,C011,0.4972,Cuidado del entorno: el banco y yo,cuentas bancarias,básico
+U0223,5,C088,0.491,Qué es la inflación y cómo nos afecta,inflación,básico
+U0224,1,C072,0.5378,Calculadora de gestión de deudas,deuda,básico
+U0224,2,C009,0.4859,Cómo gestionar mis deudas,deuda,básico
+U0224,3,C088,0.4837,Qué es la inflación y cómo nos afecta,inflación,básico
+U0224,4,C008,0.4749,5 consejos sobre endeudamiento,deuda,básico
+U0224,5,C073,0.4511,Calculadora de ahorro mensual,ahorro,básico
+U0225,1,C072,0.6244,Calculadora de gestión de deudas,deuda,básico
+U0225,2,C009,0.604,Cómo gestionar mis deudas,deuda,básico
+U0225,3,C088,0.6013,Qué es la inflación y cómo nos afecta,inflación,básico
+U0225,4,C057,0.5875,Cómo comparar productos de ahorro,ahorro,básico
+U0225,5,C047,0.5739,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0226,1,C072,0.5939,Calculadora de gestión de deudas,deuda,básico
+U0226,2,C009,0.5336,Cómo gestionar mis deudas,deuda,básico
+U0226,3,C088,0.5122,Qué es la inflación y cómo nos afecta,inflación,básico
+U0226,4,C008,0.5046,5 consejos sobre endeudamiento,deuda,básico
+U0226,5,C015,0.4912,Glosario de términos financieros,planificación,básico
+U0227,1,C002,0.6122,Cómo está tu salud financiera,planificación,básico
+U0227,2,C072,0.5548,Calculadora de gestión de deudas,deuda,básico
+U0227,3,C042,0.5227,Cómo detectar un chiringuito financiero,fraude,básico
+U0227,4,C009,0.4933,Cómo gestionar mis deudas,deuda,básico
+U0227,5,C030,0.4909,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0228,1,C053,0.687,Protección de datos en operaciones financieras,fraude,básico
+U0228,2,C072,0.5684,Calculadora de gestión de deudas,deuda,básico
+U0228,3,C009,0.5458,Cómo gestionar mis deudas,deuda,básico
+U0228,4,C015,0.491,Glosario de términos financieros,planificación,básico
+U0228,5,C008,0.4836,5 consejos sobre endeudamiento,deuda,básico
+U0229,1,C072,0.5885,Calculadora de gestión de deudas,deuda,básico
+U0229,2,C047,0.5595,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0229,3,C073,0.5514,Calculadora de ahorro mensual,ahorro,básico
+U0229,4,C009,0.5302,Cómo gestionar mis deudas,deuda,básico
+U0229,5,C067,0.5283,Del like a la inversión,fraude,básico
+U0230,1,C072,0.6069,Calculadora de gestión de deudas,deuda,básico
+U0230,2,C009,0.5241,Cómo gestionar mis deudas,deuda,básico
+U0230,3,C088,0.4981,Qué es la inflación y cómo nos afecta,inflación,básico
+U0230,4,C015,0.4877,Glosario de términos financieros,planificación,básico
+U0230,5,C047,0.4835,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0231,1,C072,0.6649,Calculadora de gestión de deudas,deuda,básico
+U0231,2,C047,0.6154,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0231,3,C088,0.5888,Qué es la inflación y cómo nos afecta,inflación,básico
+U0231,4,C009,0.5775,Cómo gestionar mis deudas,deuda,básico
+U0231,5,C008,0.5498,5 consejos sobre endeudamiento,deuda,básico
+U0232,1,C006,0.5959,8 productos bancarios,cuentas bancarias,básico
+U0232,2,C072,0.5908,Calculadora de gestión de deudas,deuda,básico
+U0232,3,C009,0.5509,Cómo gestionar mis deudas,deuda,básico
+U0232,4,C051,0.5268,Declaración de la renta: conceptos básicos,planificación,básico
+U0232,5,C008,0.5117,5 consejos sobre endeudamiento,deuda,básico
+U0233,1,C072,0.5517,Calculadora de gestión de deudas,deuda,básico
+U0233,2,C088,0.5371,Qué es la inflación y cómo nos afecta,inflación,básico
+U0233,3,C009,0.5188,Cómo gestionar mis deudas,deuda,básico
+U0233,4,C071,0.4782,Calculadora de presupuesto personal,planificación,básico
+U0233,5,C047,0.472,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0234,1,C072,0.6501,Calculadora de gestión de deudas,deuda,básico
+U0234,2,C088,0.6411,Qué es la inflación y cómo nos afecta,inflación,básico
+U0234,3,C009,0.6328,Cómo gestionar mis deudas,deuda,básico
+U0234,4,C017,0.6273,"Cuentas corrientes, depósitos a la vista y libretas de ahorro",cuentas bancarias,básico
+U0234,5,C073,0.6125,Calculadora de ahorro mensual,ahorro,básico
+U0235,1,C072,0.6891,Calculadora de gestión de deudas,deuda,básico
+U0235,2,C002,0.6558,Cómo está tu salud financiera,planificación,básico
+U0235,3,C053,0.6445,Protección de datos en operaciones financieras,fraude,básico
+U0235,4,C009,0.637,Cómo gestionar mis deudas,deuda,básico
+U0235,5,C088,0.6251,Qué es la inflación y cómo nos afecta,inflación,básico
+U0236,1,C088,0.6195,Qué es la inflación y cómo nos afecta,inflación,básico
+U0236,2,C017,0.566,"Cuentas corrientes, depósitos a la vista y libretas de ahorro",cuentas bancarias,básico
+U0236,3,C072,0.5648,Calculadora de gestión de deudas,deuda,básico
+U0236,4,C073,0.5536,Calculadora de ahorro mensual,ahorro,básico
+U0236,5,C009,0.546,Cómo gestionar mis deudas,deuda,básico
+U0237,1,C072,0.5682,Calculadora de gestión de deudas,deuda,básico
+U0237,2,C009,0.5433,Cómo gestionar mis deudas,deuda,básico
+U0237,3,C043,0.4956,Plan de Educación Financiera 2022-2025,planificación,básico
+U0237,4,C008,0.487,5 consejos sobre endeudamiento,deuda,básico
+U0237,5,C018,0.4799,Depósitos a plazo,cuentas bancarias,básico
+U0238,1,C072,0.5656,Calculadora de gestión de deudas,deuda,básico
+U0238,2,C009,0.5299,Cómo gestionar mis deudas,deuda,básico
+U0238,3,C088,0.5244,Qué es la inflación y cómo nos afecta,inflación,básico
+U0238,4,C008,0.4766,5 consejos sobre endeudamiento,deuda,básico
+U0238,5,C057,0.4723,Cómo comparar productos de ahorro,ahorro,básico
+U0239,1,C072,0.6211,Calculadora de gestión de deudas,deuda,básico
+U0239,2,C053,0.6003,Protección de datos en operaciones financieras,fraude,básico
+U0239,3,C047,0.5712,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0239,4,C009,0.5438,Cómo gestionar mis deudas,deuda,básico
+U0239,5,C001,0.513,Cómo elaborar un presupuesto,planificación,básico
+U0240,1,C071,0.6942,Calculadora de presupuesto personal,planificación,básico
+U0240,2,C009,0.669,Cómo gestionar mis deudas,deuda,básico
+U0240,3,C017,0.668,"Cuentas corrientes, depósitos a la vista y libretas de ahorro",cuentas bancarias,básico
+U0240,4,C072,0.6579,Calculadora de gestión de deudas,deuda,básico
+U0240,5,C053,0.6516,Protección de datos en operaciones financieras,fraude,básico
+U0241,1,C072,0.5614,Calculadora de gestión de deudas,deuda,básico
+U0241,2,C009,0.5403,Cómo gestionar mis deudas,deuda,básico
+U0241,3,C053,0.5242,Protección de datos en operaciones financieras,fraude,básico
+U0241,4,C071,0.4941,Calculadora de presupuesto personal,planificación,básico
+U0241,5,C001,0.4919,Cómo elaborar un presupuesto,planificación,básico
+U0242,1,C072,0.551,Calculadora de gestión de deudas,deuda,básico
+U0242,2,C053,0.5305,Protección de datos en operaciones financieras,fraude,básico
+U0242,3,C073,0.5018,Calculadora de ahorro mensual,ahorro,básico
+U0242,4,C025,0.4999,Comisiones bancarias,cuentas bancarias,básico
+U0242,5,C009,0.498,Cómo gestionar mis deudas,deuda,básico
+U0243,1,C072,0.595,Calculadora de gestión de deudas,deuda,básico
+U0243,2,C057,0.5768,Cómo comparar productos de ahorro,ahorro,básico
+U0243,3,C088,0.5757,Qué es la inflación y cómo nos afecta,inflación,básico
+U0243,4,C009,0.5325,Cómo gestionar mis deudas,deuda,básico
+U0243,5,C008,0.5275,5 consejos sobre endeudamiento,deuda,básico
+U0244,1,C072,0.5532,Calculadora de gestión de deudas,deuda,básico
+U0244,2,C015,0.5419,Glosario de términos financieros,planificación,básico
+U0244,3,C009,0.541,Cómo gestionar mis deudas,deuda,básico
+U0244,4,C057,0.5083,Cómo comparar productos de ahorro,ahorro,básico
+U0244,5,C088,0.4886,Qué es la inflación y cómo nos afecta,inflación,básico
+U0245,1,C072,0.5653,Calculadora de gestión de deudas,deuda,básico
+U0245,2,C073,0.5498,Calculadora de ahorro mensual,ahorro,básico
+U0245,3,C009,0.5192,Cómo gestionar mis deudas,deuda,básico
+U0245,4,C030,0.5036,La detective Sara Gómez investiga el fraude por internet,fraude,básico
+U0245,5,C008,0.4943,5 consejos sobre endeudamiento,deuda,básico
+U0246,1,C071,0.642,Calculadora de presupuesto personal,planificación,básico
+U0246,2,C072,0.6024,Calculadora de gestión de deudas,deuda,básico
+U0246,3,C053,0.5957,Protección de datos en operaciones financieras,fraude,básico
+U0246,4,C073,0.576,Calculadora de ahorro mensual,ahorro,básico
+U0246,5,C088,0.5734,Qué es la inflación y cómo nos afecta,inflación,básico
+U0247,1,C072,0.6096,Calculadora de gestión de deudas,deuda,básico
+U0247,2,C075,0.5237,Calculadora de patrimonio neto,planificación,intermedio
+U0247,3,C047,0.519,Ahorro automático: la regla del 50/30/20,ahorro,básico
+U0247,4,C009,0.5177,Cómo gestionar mis deudas,deuda,básico
+U0247,5,C008,0.489,5 consejos sobre endeudamiento,deuda,básico
+U0248,1,C088,0.662,Qué es la inflación y cómo nos afecta,inflación,básico
+U0248,2,C072,0.6528,Calculadora de gestión de deudas,deuda,básico
+U0248,3,C009,0.6268,Cómo gestionar mis deudas,deuda,básico
+U0248,4,C071,0.6119,Calculadora de presupuesto personal,planificación,básico
+U0248,5,C008,0.5857,5 consejos sobre endeudamiento,deuda,básico
+U0249,1,C009,0.5247,Cómo gestionar mis deudas,deuda,básico
+U0249,2,C088,0.5007,Qué es la inflación y cómo nos afecta,inflación,básico
+U0249,3,C073,0.4844,Calculadora de ahorro mensual,ahorro,básico
+U0249,4,C048,0.4653,Fondo de emergencia: por qué y cómo crearlo,ahorro,básico
+U0249,5,C089,0.4621,Cómo afectan a mi dinero la inflación y los tipos de interés,inflación,intermedio
+U0250,1,C072,0.6266,Calculadora de gestión de deudas,deuda,básico
+U0250,2,C009,0.59,Cómo gestionar mis deudas,deuda,básico
+U0250,3,C088,0.5686,Qué es la inflación y cómo nos afecta,inflación,básico
+U0250,4,C008,0.5423,5 consejos sobre endeudamiento,deuda,básico
+U0250,5,C073,0.5344,Calculadora de ahorro mensual,ahorro,básico

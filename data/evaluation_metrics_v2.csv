@@ -1,0 +1,5 @@
+modelo,precision_5,recall_5,ndcg_5,coverage_pct,pvr_pre_pct,pvr_post_pct
+Popularidad,0.0227,0.1036,0.0592,14.14,61.6,0.0
+TF-IDF + Cosine,0.0204,0.092,0.0556,71.72,50.91,0.0
+Híbrido SVD,0.0095,0.0444,0.0227,46.46,75.64,0.0
+NeuMF (PyTorch),0.0219,0.0991,0.0565,13.13,18.42,0.0

@@ -36,11 +36,11 @@ import pandas as pd
 
 random.seed(123)
 
-N_INTERACTIONS = 1500
+N_INTERACTIONS = 11500
 USERS = "/Users/veronica/Desktop/tfm/data/users_synthetic.csv"
 CONTENTS = "/Users/veronica/Desktop/tfm/data/contents.csv"
 ECF = "ecf_2021.csv"  # Debe estar descomprimido en la carpeta actual
-OUT = "/Users/veronica/Desktop/tfm/data/interactions_synthetic_realistic.csv"
+OUT = "/Users/veronica/Desktop/tfm/data/interactions_synthetic_realistic_v2.csv"
 
 # Mapa: topic -> conceptos requeridos según grafo pedagógico
 TOPIC_TO_CONCEPTS = {
@@ -62,13 +62,12 @@ TOPIC_TO_CONCEPTS = {
 
 
 def load_ecf_behaviors():
-    """Carga las 5 variables de comportamiento del ECF para los 250 usuarios muestreados.
+    """Carga las 5 variables de comportamiento del ECF para los usuarios del dataset.
 
-    Estrategia: como users_synthetic.csv tiene user_id = U0001...U0250 y cada uno fue
-    muestreado de un índice del ECF, podemos recuperar las variables ECF usando el
-    mismo seed. Sin embargo, esto es complejo. Solución pragmática: cargar el ECF
-    y muestrear 250 filas con el mismo seed, luego extraer las variables de
-    comportamiento y asociarlas por índice de muestreo.
+    Estrategia: users_synthetic.csv ahora contiene los 1.916 jóvenes de 18-34
+    de la ECF en el mismo orden en que regenerate_users_from_ecf.py los procesa
+    (jovenes.reset_index(drop=True), sin muestreo). Por tanto, basta con tomar
+    los 1.916 jóvenes en ese mismo orden y extraer las variables de comportamiento.
     """
     print("Cargando ECF 2021...")
     df = pd.read_csv(ECF, sep=";", low_memory=False)
@@ -76,17 +75,14 @@ def load_ecf_behaviors():
     jovenes = df[(df['edad'] >= 18) & (df['edad'] <= 34)].copy().reset_index(drop=True)
     print(f"Jóvenes 18-34 disponibles: {len(jovenes)}")
 
-    # Muestreo con el mismo seed que regenerate_users_from_ecf.py
-    sampled = jovenes.sample(n=250, replace=True, random_state=42).reset_index(drop=True)
-
-    # Extraer las 5 variables de comportamiento (binarias 0/1)
+    # Sin muestreo: el orden coincide con users_synthetic.csv
     behaviors = pd.DataFrame({
-        'sampled_index': range(250),
-        'b0130a_ahorro_cualquiera': sampled['b0130a'].fillna(0).astype(int),
-        'b0130b_cuenta_ahorro': sampled['b0130b'].fillna(0).astype(int),
-        'b0130c_ahorro_informal': sampled['b0130c'].fillna(0).astype(int),
-        'b1000b_puede_pagar_imprevisto': sampled['b1000b'].fillna(0).astype(int),
-        'a0320_no_cubre_gastos': sampled['a0320'].fillna(0).astype(int),
+        'sampled_index': range(len(jovenes)),
+        'b0130a_ahorro_cualquiera': jovenes['b0130a'].fillna(0).astype(int),
+        'b0130b_cuenta_ahorro': jovenes['b0130b'].fillna(0).astype(int),
+        'b0130c_ahorro_informal': jovenes['b0130c'].fillna(0).astype(int),
+        'b1000b_puede_pagar_imprevisto': jovenes['b1000b'].fillna(0).astype(int),
+        'a0320_no_cubre_gastos': jovenes['a0320'].fillna(0).astype(int),
     })
     return behaviors
 
@@ -105,6 +101,19 @@ def load_contents():
 
 
 def knowledge_to_num(k):
+    """Convierte financial_knowledge_level a un entero 1-3 para uso interno del filtro.
+
+    IMPORTANTE — Tratamiento de NaN y valores vacíos:
+    Si el valor es NaN o cadena vacía (jóvenes que omitieron alguna pregunta
+    Big3 en la ECF), NO se modifica users_synthetic.csv ni se afirma que su
+    conocimiento real es bajo. Aquí se trata como 'sin evidencia suficiente'
+    para que el filtro pedagógico del recomendador actúe de forma conservadora:
+    ante la duda, asume el menor nivel conocido (1 = bajo) y limita al usuario
+    a contenidos básicos/intermedios. Esto es una regla del recomendador, no
+    una imputación del dato original.
+    """
+    if pd.isna(k) or k == "":
+        return 1
     return {"bajo": 1, "medio": 2, "alto": 3}[k]
 
 
@@ -262,13 +271,10 @@ def main():
     inter = [c for c in contents if c["difficulty"] == "intermedio"]
     adv = [c for c in contents if c["difficulty"] == "avanzado"]
 
-    # Patrón de dificultad para 1500 interacciones siguiendo 60/30/10
+    # Patrón de dificultad global (60/30/10) para todo el dataset
     pattern = (["básico"] * 6 + ["intermedio"] * 3 + ["avanzado"] * 1)
     pattern = (pattern * (N_INTERACTIONS // len(pattern) + 1))[:N_INTERACTIONS]
     rng.shuffle(pattern)
-
-    interactions = []
-    start = datetime(2025, 9, 1)
 
     # Cache de afinidades precalculadas para velocidad
     affinity_cache = {}
@@ -278,92 +284,130 @@ def main():
         for topic in set(c["topic"] for c in contents):
             affinity_cache[uid][topic] = topic_affinity(user_behavior[uid], topic)
 
-    for i, target_diff in enumerate(pattern):
-        if target_diff == "básico":
-            pool = basic
-        elif target_diff == "intermedio":
-            pool = inter
-        else:
-            pool = adv
-        if not pool:
-            pool = contents
+    # Construir cola global: garantizar mínimo 2 interacciones por usuario (para
+    # que todos los 1.916 aparezcan en el dataset), y luego distribuir las restantes
+    # de forma variable entre 0 y 12 adicionales para mantener ~N_INTERACTIONS totales.
+    # Los usuarios sin financial_knowledge_level también participan; el filtro
+    # pedagógico los trata conservadoramente (knowledge_to_num -> 1).
+    MIN_PER_USER = 2
+    MAX_PER_USER = 14
+    MAX_ADDITIONAL = MAX_PER_USER - MIN_PER_USER  # 12 adicionales
 
-        # Selección basada en afinidad real del usuario
-        # 1) Elegir usuario
-        user = rng.choice(users)
+    n_users = len(users)
+    user_ids = [u["user_id"] for u in users]  # lista separada para evitar agotar el iterador
+    user_interaction_counts = {uid: MIN_PER_USER for uid in user_ids}
+    total_planned = MIN_PER_USER * n_users  # mínimo garantizado
+
+    # Distribuir las interacciones restantes (N_INTERACTIONS - mínimo total)
+    remaining_total = N_INTERACTIONS - total_planned
+    if remaining_total < 0:
+        remaining_total = 0
+
+    # Asignar adicionales variables (0..MAX_ADDITIONAL) aleatoriamente hasta agotar remaining_total
+    additional_counts = {uid: 0 for uid in user_ids}
+    claimed = 0
+    while claimed < remaining_total:
+        uid = user_ids[rng.randrange(n_users)]  # randrange(n) devuelve [0, n), evita off-by-one
+        if additional_counts[uid] < MAX_ADDITIONAL:
+            additional_counts[uid] += 1
+            claimed += 1
+
+    for uid in user_ids:
+        user_interaction_counts[uid] += additional_counts[uid]
+
+    interactions = []
+    start = datetime(2025, 9, 1)
+    interaction_counter = 0
+    pattern_idx = 0
+
+    # Para mantener la lógica idéntica, procesamos usuario por usuario.
+    # Cada usuario consume una dificultad extraída secuencialmente del patrón barajado.
+    for user in users:
         uid = user["user_id"]
+        target_n = user_interaction_counts.get(uid, 0)
+        for _ in range(target_n):
+            if pattern_idx >= len(pattern):
+                pattern_idx = 0  # wrap-around defensivo
+            target_diff = pattern[pattern_idx]
+            pattern_idx += 1
 
-        # 2) Filtrar pool por reglas pedagógicas
-        qualified = [c for c in pool if user_qualifies(user, c, interacted_concepts)]
-        if not qualified:
-            qualified = [c for c in basic if user_qualifies(user, c, interacted_concepts)]
-        if not qualified:
-            user = rng.choice(users)
-            qualified = basic
+            if target_diff == "básico":
+                pool = basic
+            elif target_diff == "intermedio":
+                pool = inter
+            else:
+                pool = adv
+            if not pool:
+                pool = contents
 
-        # 3) Ponderar contenido por afinidad (sin filtro duro, solo modulación)
-        # La afinidad modula la probabilidad de elección pero no restringe el pool,
-        # para mantener cobertura del catálogo y dejar que el comportamiento
-        # module sin sesgar la distribución global.
-        weights = [affinity_cache[uid][c["topic"]] for c in qualified]
-        total = sum(weights)
-        if total > 0:
-            probs = [w / total for w in weights]
-            content = qualified[random.choices(range(len(qualified)), weights=probs, k=1)[0]]
-        else:
-            content = rng.choice(qualified)
+            # Filtrar pool por reglas pedagógicas
+            qualified = [c for c in pool if user_qualifies(user, c, interacted_concepts)]
+            if not qualified:
+                qualified = [c for c in basic if user_qualifies(user, c, interacted_concepts)]
+            if not qualified:
+                qualified = basic
 
-        k = knowledge_to_num(user["financial_knowledge_level"])
-        d = difficulty_to_num(content["difficulty"])
+            # Ponderar contenido por afinidad
+            weights = [affinity_cache[uid][c["topic"]] for c in qualified]
+            total = sum(weights)
+            if total > 0:
+                probs = [w / total for w in weights]
+                content = qualified[random.choices(range(len(qualified)), weights=probs, k=1)[0]]
+            else:
+                content = rng.choice(qualified)
 
-        # Modelo de engagement: sigmoid ajustado por afinidad
-        gap = k - d
-        affinity_boost = affinity_cache[uid][content["topic"]] - 0.5  # -0.4 a +0.5
-        import math
-        p_click = 1 / (1 + math.exp(-(1.5 + 0.8 * gap + 0.5 * affinity_boost + rng.uniform(-0.4, 0.4))))
+            k = knowledge_to_num(user["financial_knowledge_level"])
+            d = difficulty_to_num(content["difficulty"])
 
-        if rng.random() > p_click:
+            gap = k - d
+            affinity_boost = affinity_cache[uid][content["topic"]] - 0.5
+            import math
+            p_click = 1 / (1 + math.exp(-(1.5 + 0.8 * gap + 0.5 * affinity_boost + rng.uniform(-0.4, 0.4))))
+
+            if rng.random() > p_click:
+                interactions.append({
+                    "interaction_id": f"I{interaction_counter + 1:05d}",
+                    "user_id": uid,
+                    "content_id": content["content_id"],
+                    "event": "viewed",
+                    "score": round(0.1 + rng.random() * 0.2, 3),
+                    "completion_rate": round(rng.random() * 0.1, 3),
+                    "quiz_score": "",
+                    "timestamp": (start + timedelta(hours=interaction_counter * 2)).isoformat(),
+                })
+                interaction_counter += 1
+                continue
+
+            p_complete = 1 / (1 + math.exp(-(1.0 + 0.7 * gap + 0.3 * affinity_boost + rng.uniform(-0.3, 0.3))))
+            completion = 1 if rng.random() < p_complete else round(rng.random() * 0.7, 2)
+
+            if completion == 1:
+                q = 1 / (1 + math.exp(-(0.5 + 0.6 * gap + 0.2 * affinity_boost + rng.uniform(-0.3, 0.3))))
+            else:
+                q = 1 / (1 + math.exp(-(-0.5 + 0.6 * gap + rng.uniform(-0.3, 0.3))))
+            quiz = round(q, 3) if rng.random() < 0.6 else None
+
+            event = sample_event(rng, completion if isinstance(completion, float) else 1.0, quiz)
+
+            score = round(0.4 * (completion if isinstance(completion, float) else 1.0)
+                          + 0.4 * (quiz if quiz is not None else 0.0)
+                          + 0.2 * rng.uniform(0.3, 0.9), 3)
+
             interactions.append({
-                "interaction_id": f"I{i + 1:05d}",
-                "user_id": user["user_id"],
+                "interaction_id": f"I{interaction_counter + 1:05d}",
+                "user_id": uid,
                 "content_id": content["content_id"],
-                "event": "viewed",
-                "score": round(0.1 + rng.random() * 0.2, 3),
-                "completion_rate": round(rng.random() * 0.1, 3),
-                "quiz_score": "",
-                "timestamp": (start + timedelta(hours=i * 2)).isoformat(),
+                "event": event,
+                "score": score,
+                "completion_rate": completion if isinstance(completion, float) else 1.0,
+                "quiz_score": quiz if quiz is not None else "",
+                "timestamp": (start + timedelta(hours=interaction_counter * 2)).isoformat(),
             })
-            continue
+            interaction_counter += 1
 
-        p_complete = 1 / (1 + math.exp(-(1.0 + 0.7 * gap + 0.3 * affinity_boost + rng.uniform(-0.3, 0.3))))
-        completion = 1 if rng.random() < p_complete else round(rng.random() * 0.7, 2)
-
-        if completion == 1:
-            q = 1 / (1 + math.exp(-(0.5 + 0.6 * gap + 0.2 * affinity_boost + rng.uniform(-0.3, 0.3))))
-        else:
-            q = 1 / (1 + math.exp(-(-0.5 + 0.6 * gap + rng.uniform(-0.3, 0.3))))
-        quiz = round(q, 3) if rng.random() < 0.6 else None
-
-        event = sample_event(rng, completion if isinstance(completion, float) else 1.0, quiz)
-
-        score = round(0.4 * (completion if isinstance(completion, float) else 1.0)
-                      + 0.4 * (quiz if quiz is not None else 0.0)
-                      + 0.2 * rng.uniform(0.3, 0.9), 3)
-
-        interactions.append({
-            "interaction_id": f"I{i + 1:05d}",
-            "user_id": user["user_id"],
-            "content_id": content["content_id"],
-            "event": event,
-            "score": score,
-            "completion_rate": completion if isinstance(completion, float) else 1.0,
-            "quiz_score": quiz if quiz is not None else "",
-            "timestamp": (start + timedelta(hours=i * 2)).isoformat(),
-        })
-
-        topic = content["topic"]
-        for cid in TOPIC_TO_CONCEPTS.get(topic, []):
-            interacted_concepts[user["user_id"]].add(cid)
+            topic = content["topic"]
+            for cid in TOPIC_TO_CONCEPTS.get(topic, []):
+                interacted_concepts[uid].add(cid)
 
     with open(OUT, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(
