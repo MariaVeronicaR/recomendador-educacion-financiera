@@ -51,8 +51,8 @@ CONTENTS_FILE = os.path.join(DATA_DIR, "contents.csv")
 INTERACTIONS_FILE = os.path.join(DATA_DIR, "interactions_synthetic.csv")
 PREREQS_FILE = os.path.join(DATA_DIR, "prerequisites.csv")
 MAP_FILE = os.path.join(DATA_DIR, "content_concept_map.csv")
-METRICS_OUT_WARM = os.path.join(DATA_DIR, "evaluation_metrics_warm_v5.csv")
-METRICS_OUT_COLD = os.path.join(DATA_DIR, "evaluation_metrics_cold_v5.csv")
+METRICS_OUT_WARM = os.path.join(DATA_DIR, "evaluation_metrics_warm_v6.csv")
+METRICS_OUT_COLD = os.path.join(DATA_DIR, "evaluation_metrics_cold_v6.csv")
 
 # Stopwords en español integradas (evita dependencias de nltk)
 STOPWORDS_ES = [
@@ -364,9 +364,12 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
     pvr_pre = (violations_pre / total_recs_pre) * 100.0 if total_recs_pre > 0 else 0.0
     pvr_post = (violations_post / total_recs_post) * 100.0 if total_recs_post > 0 else 0.0
 
-    # filter_rate_pct: % de recomendaciones del ranking original descartadas por el filtro
-    discarded = total_recs_pre - total_recs_post
-    filter_rate_pct = (discarded / total_recs_pre) * 100.0 if total_recs_pre > 0 else 0.0
+    # filter_rate_pct: % de posiciones del ranking crudo que fueron RECHAZADAS por el
+    # filtro pedagógico (por violación de prerequisites). NO es el cociente
+    # total_recs_pre/total_recs_post, porque el filtro siempre rellena con
+    # fallback hasta k=5, así que discarded=0 incluso cuando el filtro SÍ filtra.
+    # Mide cuántas del ranking crudo fueron rechazadas por PVR, antes del fallback.
+    filter_rate_pct = (violations_pre / total_recs_pre) * 100.0 if total_recs_pre > 0 else 0.0
 
     # feasibility_at_5: % de usuarios con relevantes en test que obtienen 5 recomendaciones
     if users_evaluated > 0:
@@ -579,8 +582,9 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
     pvr_pre = (violations_pre / total_recs_pre) * 100.0 if total_recs_pre > 0 else 0.0
     pvr_post = (violations_post / total_recs_post) * 100.0 if total_recs_post > 0 else 0.0
 
-    discarded = total_recs_pre - total_recs_post
-    filter_rate_pct = (discarded / total_recs_pre) * 100.0 if total_recs_pre > 0 else 0.0
+    # filter_rate_pct: % de posiciones del ranking crudo rechazadas por el filtro
+    # pedagógico (por violación de prerequisites), antes del fallback.
+    filter_rate_pct = (violations_pre / total_recs_pre) * 100.0 if total_recs_pre > 0 else 0.0
 
     users_eval_with_pos = 0
     users_full_count = 0
@@ -933,24 +937,13 @@ def main():
         cold_pop_preds.append(user_preds)
     cold_pop_df = pd.DataFrame(cold_pop_preds, index=cold_user_profiles['user_id'].tolist(), columns=all_contents)
 
-    # Conocimiento inicial para Cold Start desde el perfil del cuestionario.
-    # Inferencia metodológica: si financial_knowledge_level = 'alto' asumimos que
-    # el usuario domina conceptos básicos y algunos intermedios (sin usar interacciones).
-    # Si 'medio', solo conceptos raíz. Si 'bajo' o NaN, sin mastered.
-    # Esto NO usa interacciones: solo el campo declarado en users_synthetic.csv.
-    KNOWN_BASIC = ['C01', 'C02', 'C03', 'C04', 'C05', 'C07', 'C08', 'C09', 'C15']
-    KNOWN_INTERMEDIATE = ['C06', 'C12', 'C13', 'C16', 'C19', 'C26']
-    initial_mastered = {}
-    for _, user in cold_user_profiles.iterrows():
-        uid = user['user_id']
-        lvl = user.get('financial_knowledge_level', None)
-        mastered_set = set()
-        if pd.notna(lvl):
-            if lvl == 'alto':
-                mastered_set = set(KNOWN_BASIC) | set(KNOWN_INTERMEDIATE)
-            elif lvl == 'medio':
-                mastered_set = set(KNOWN_BASIC)
-        initial_mastered[uid] = mastered_set
+    # Conocimiento inicial para Cold Start.
+    # TODOS los cold users empiezan con mastered = set().
+    # La diferencia entre 'alto'/'medio'/'bajo' en financial_knowledge_level
+    # se manifestará únicamente en su comportamiento futuro (interacciones),
+    # no se imputa al estado inicial. Esto evita inflar PVR Post artificialmente
+    # y refleja fielmente el escenario "nuevo usuario sin historial".
+    initial_mastered = {uid: set() for uid in cold_user_profiles['user_id']}
 
     results_cold["Popularidad"] = evaluate_predictions_cold(
         cold_pop_df, train_pool_df, cold_test_df, concept_prereqs, content_concepts,

@@ -36,7 +36,7 @@ import pandas as pd
 
 random.seed(123)
 
-N_INTERACTIONS = 11500
+N_INTERACTIONS = 23000
 USERS = "/Users/veronica/Desktop/tfm/data/users_synthetic.csv"
 CONTENTS = "/Users/veronica/Desktop/tfm/data/contents.csv"
 ECF = "ecf_2021.csv"  # Debe estar descomprimido en la carpeta actual
@@ -155,7 +155,7 @@ def topic_affinity(user_behavior, topic):
         ]),
         "crédito": (0.1, [
             ("a0320_no_cubre_gastos", 0.8),
-            ("b1000b_puede_pagar_imprevisto", -0.1),
+            ("b1000b_puede_pagar_imprevisto", 0.2),  # Si puede pagar, crédito más afín (antes -0.1 bug)
         ]),
         "préstamos": (0.1, [
             ("a0320_no_cubre_gastos", 0.6),
@@ -185,9 +185,14 @@ def topic_affinity(user_behavior, topic):
             ("b0130c_ahorro_informal", 0.8),
         ]),
 
-        # Conceptos técnicos: interés medio para todos
-        "interés": (0.4, []),
-        "inflación": (0.4, []),
+        # Conceptos técnicos: interés medio para todos,
+        # pero con boost para perfiles financieramente activos
+        "interés": (0.4, [
+            ("b0130b_cuenta_ahorro", 0.2),  # Tener cuenta de ahorro indica interés en finanzas
+        ]),
+        "inflación": (0.3, [
+            ("a0320_no_cubre_gastos", 0.4),  # Quien no cubre gastos aprende inflación
+        ]),
     }
 
     base, adjustments = weights.get(topic, (0.3, []))
@@ -322,9 +327,15 @@ def main():
 
     # Para mantener la lógica idéntica, procesamos usuario por usuario.
     # Cada usuario consume una dificultad extraída secuencialmente del patrón barajado.
+    # Cada usuario tiene su propia semilla temporal (determinista por uid)
+    # para que el split cronológico en evaluate_models sea válido.
     for user in users:
         uid = user["user_id"]
+        rng_user = random.Random(int(hash(uid) & 0xffffffff))
+        # Base temporal por usuario: dentro de los primeros 60 días para todos
+        base_day = rng_user.uniform(0, 60)
         target_n = user_interaction_counts.get(uid, 0)
+        user_intra_counter = 0
         for _ in range(target_n):
             if pattern_idx >= len(pattern):
                 pattern_idx = 0  # wrap-around defensivo
@@ -347,8 +358,19 @@ def main():
             if not qualified:
                 qualified = basic
 
-            # Ponderar contenido por afinidad
-            weights = [affinity_cache[uid][c["topic"]] for c in qualified]
+            # Ponderar contenido por afinidad POR CONTENIDO (no por topic).
+            # Esto permite que dentro del mismo topic los contenidos se diferencien
+            # por dificultad, tipo (inversión vs no) y características del usuario.
+            weights = []
+            for c in qualified:
+                base = affinity_cache[uid][c["topic"]]
+                # Boost por dificultad (usuarios con conocimiento alto prefieren avanzados)
+                diff_boost = {"básico": 0.0, "intermedio": 0.1, "avanzado": 0.3}.get(c["difficulty"], 0)
+                # Penalizar inversión avanzada si no tiene experiencia inversora
+                invest_penalty = 0
+                if c["is_investment_related"] == "si" and c["difficulty"] == "avanzado":
+                    invest_penalty = -0.2
+                weights.append(max(0.05, base + diff_boost + invest_penalty))
             total = sum(weights)
             if total > 0:
                 probs = [w / total for w in weights]
@@ -360,6 +382,7 @@ def main():
             d = difficulty_to_num(content["difficulty"])
 
             gap = k - d
+            # El affinity_boost se mantiene coherente con la afinidad por topic
             affinity_boost = affinity_cache[uid][content["topic"]] - 0.5
             import math
             p_click = 1 / (1 + math.exp(-(1.5 + 0.8 * gap + 0.5 * affinity_boost + rng.uniform(-0.4, 0.4))))
@@ -370,12 +393,13 @@ def main():
                     "user_id": uid,
                     "content_id": content["content_id"],
                     "event": "viewed",
-                    "score": round(0.1 + rng.random() * 0.2, 3),
-                    "completion_rate": round(rng.random() * 0.1, 3),
+                    "score": round(0.1 + rng_user.random() * 0.2, 3),
+                    "completion_rate": round(rng_user.random() * 0.1, 3),
                     "quiz_score": "",
-                    "timestamp": (start + timedelta(hours=interaction_counter * 2)).isoformat(),
+                    "timestamp": (start + timedelta(days=base_day + user_intra_counter * 0.5, hours=rng_user.uniform(0, 24))).isoformat(),
                 })
                 interaction_counter += 1
+                user_intra_counter += 1
                 continue
 
             p_complete = 1 / (1 + math.exp(-(1.0 + 0.7 * gap + 0.3 * affinity_boost + rng.uniform(-0.3, 0.3))))
@@ -391,7 +415,7 @@ def main():
 
             score = round(0.4 * (completion if isinstance(completion, float) else 1.0)
                           + 0.4 * (quiz if quiz is not None else 0.0)
-                          + 0.2 * rng.uniform(0.3, 0.9), 3)
+                          + 0.2 * rng_user.uniform(0.3, 0.9), 3)
 
             interactions.append({
                 "interaction_id": f"I{interaction_counter + 1:05d}",
@@ -401,9 +425,10 @@ def main():
                 "score": score,
                 "completion_rate": completion if isinstance(completion, float) else 1.0,
                 "quiz_score": quiz if quiz is not None else "",
-                "timestamp": (start + timedelta(hours=interaction_counter * 2)).isoformat(),
+                "timestamp": (start + timedelta(days=base_day + user_intra_counter * 0.5, hours=rng_user.uniform(0, 24))).isoformat(),
             })
             interaction_counter += 1
+            user_intra_counter += 1
 
             topic = content["topic"]
             for cid in TOPIC_TO_CONCEPTS.get(topic, []):
