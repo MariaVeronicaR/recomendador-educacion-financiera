@@ -21,17 +21,25 @@ Fuentes:
 - DOI del informe: 10.53479/34752
 
 Uso:
-    cd /Users/veronica/Desktop/tfm/ECF-archivos
-    python3 regenerate_users_from_ecf.py
+    # Funciona desde cualquier directorio. Detecta automáticamente la raíz del proyecto.
+    python3 data/scripts/regenerate_users_from_ecf.py
 """
+
+from pathlib import Path
 
 import pandas as pd
 import numpy as np
 
 # Configuración
 np.random.seed(42)  # Reproducibilidad
-ECF_PATH = "ecf_2021.csv"
-OUTPUT_PATH = "/Users/veronica/Desktop/tfm/data/users_synthetic.csv"
+
+# Detección robusta de la raíz del proyecto: subimos 2 niveles desde este script
+# (data/scripts/<este_archivo>.py → raíz del proyecto) y buscamos ECF-archivos/ y data/.
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # data/scripts → data → raíz
+ECF_CANDIDATES = [SCRIPT_DIR / "ecf_2021.csv", PROJECT_ROOT / "ECF-archivos" / "ecf_2021.csv"]
+ECF_PATH = next((str(p) for p in ECF_CANDIDATES if p.exists()), "ecf_2021.csv")
+OUTPUT_PATH = str(PROJECT_ROOT / "data" / "users_synthetic.csv")
 
 # Códigos de valores missing según la documentación estándar de la ECF
 MISSING_CODES = [-97, -98, -99]

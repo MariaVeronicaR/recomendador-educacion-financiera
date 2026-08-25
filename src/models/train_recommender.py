@@ -1,4 +1,16 @@
 """
+NOTA HISTÓRICA: este script entrena un recomendador inicial (modelo híbrido SVD+Ridge)
+que producía recomendaciones antes de la integración con el filtro pedagógico y el split
+Train/Test por pares (user_id, content_id). El pipeline v6 del TFM lo reemplaza por
+src/utils/evaluate_models.py, que evalúa cuatro modelos en un único script.
+Se mantiene aquí para reproducibilidad histórica y trazabilidad arquitectónica del TFM
+(ver docs/plan_evaluacion_modelos.md y docs/informe_detallado_evaluacion.md).
+
+NOTA DE EJECUCIÓN: este script NO se ejecuta en el pipeline v6. Si necesitas reproducir
+el experimento v6, ejecuta src/utils/evaluate_models.py (no requiere este archivo).
+"""
+
+"""
 train_recommender.py
 
 Entrena un recomendador híbrido de contenidos de educación financiera para el MVP.

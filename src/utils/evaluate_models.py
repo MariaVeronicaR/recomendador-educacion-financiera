@@ -51,8 +51,8 @@ CONTENTS_FILE = os.path.join(DATA_DIR, "contents.csv")
 INTERACTIONS_FILE = os.path.join(DATA_DIR, "interactions_synthetic.csv")
 PREREQS_FILE = os.path.join(DATA_DIR, "prerequisites.csv")
 MAP_FILE = os.path.join(DATA_DIR, "content_concept_map.csv")
-METRICS_OUT_WARM = os.path.join(DATA_DIR, "evaluation_metrics_warm_v6.csv")
-METRICS_OUT_COLD = os.path.join(DATA_DIR, "evaluation_metrics_cold_v6.csv")
+METRICS_OUT_WARM = os.path.join(DATA_DIR, "evaluation_metrics_warm.csv")
+METRICS_OUT_COLD = os.path.join(DATA_DIR, "evaluation_metrics_cold.csv")
 
 # Stopwords en español integradas (evita dependencias de nltk)
 STOPWORDS_ES = [
@@ -270,15 +270,25 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
         if row['score'] >= 0.5:
             test_relevant[row['user_id']].add(row['content_id'])
 
-    precisions = []
-    recalls = []
-    ndcgs = []
+    # Separamos métricas RAW y POST: el ranking del modelo (sin filtro) se evalúa
+    # en precisions_raw/recalls_raw/ndcgs_raw, y el ranking post-filtro en las
+    # versiones _post. Esto permite distinguir la calidad del recomendador
+    # de la influencia del filtro pedagógico.
+    precisions_raw, recalls_raw, ndcgs_raw = [], [], []
+    precisions, recalls, ndcgs = [], [], []
     recommended_set = set()
 
     violations_pre = 0
     total_recs_pre = 0
     violations_post = 0
     total_recs_post = 0
+
+    # filter_rate_pct: contador explícito del ranking crudo rechazado por el filtro
+    # pedagógico. Esto es distinto del fallback: mide cuántas posiciones del top-K
+    # original fueron saltadas por violación de prerequisites, antes de que el
+    # fallback rellenase con posiciones más bajas.
+    raw_rejected_by_filter = 0
+    raw_total_considered = 0
 
     users_evaluated = 0
 
@@ -288,11 +298,19 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
         history = train_history[uid]
         mastered = user_mastered_train[uid]
 
-        # --- PRE-FILTRO (IA Pura) ---
-        # Sugerir contenidos basados solo en la predicción (excluyendo lo visto en Train)
+        # --- RANKING CRUDO (sin filtro pedagógico) ---
         sorted_raw = user_preds.sort_values(ascending=False)
         raw_recs = [cid for cid in sorted_raw.index if cid not in history][:k]
 
+        # Métricas RAW sobre el ranking sin filtro
+        if len(relevant_ids) > 0:
+            users_evaluated += 1
+            hits_raw = len(set(raw_recs) & relevant_ids)
+            precisions_raw.append(hits_raw / k)
+            recalls_raw.append(hits_raw / len(relevant_ids))
+            ndcgs_raw.append(calculate_ndcg(raw_recs, relevant_ids, k))
+
+        # PVR Pre sobre el ranking crudo (cuántas del top-K violan)
         for cid in raw_recs:
             total_recs_pre += 1
             for concept in content_concepts[cid]:
@@ -302,13 +320,12 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
                     break
 
         # --- POST-FILTRO (IA + Grafo Pedagógico) ---
-        # Aplicar el filtro pedagógico real usando conceptos aprendidos en TRAIN
         filtered_recs = []
         for cid, _ in sorted_raw.items():
             if cid in history:
                 continue
 
-            # Validar prerrequisitos
+            raw_total_considered += 1
             qualified = True
             for concept in content_concepts[cid]:
                 required = concept_prereqs[concept]
@@ -320,6 +337,8 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
                 filtered_recs.append(cid)
                 if len(filtered_recs) == k:
                     break
+            else:
+                raw_rejected_by_filter += 1
 
         # Rellenar con fallback si el filtro deja menos de K recomendaciones
         # IMPORTANTE: el fallback debe respetar el ranking del modelo (sorted_raw),
@@ -339,9 +358,8 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
                     if len(filtered_recs) == k:
                         break
 
-        # Métricas de exactitud sobre el post-filtro (solo si tiene relevantes en TEST)
+        # Métricas POST sobre el ranking tras filtro (solo si tiene relevantes en TEST)
         if len(relevant_ids) > 0:
-            users_evaluated += 1
             hits = len(set(filtered_recs) & relevant_ids)
             precisions.append(hits / k) # Siempre k=5 recomendaciones
             recalls.append(hits / len(relevant_ids))
@@ -357,6 +375,10 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
                     break
 
     # Promedios
+    avg_precision_raw = np.mean(precisions_raw) if precisions_raw else 0.0
+    avg_recall_raw = np.mean(recalls_raw) if recalls_raw else 0.0
+    avg_ndcg_raw = np.mean(ndcgs_raw) if ndcgs_raw else 0.0
+
     avg_precision = np.mean(precisions) if precisions else 0.0
     avg_recall = np.mean(recalls) if recalls else 0.0
     avg_ndcg = np.mean(ndcgs) if ndcgs else 0.0
@@ -364,52 +386,39 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
     pvr_pre = (violations_pre / total_recs_pre) * 100.0 if total_recs_pre > 0 else 0.0
     pvr_post = (violations_post / total_recs_post) * 100.0 if total_recs_post > 0 else 0.0
 
-    # filter_rate_pct: % de posiciones del ranking crudo que fueron RECHAZADAS por el
-    # filtro pedagógico (por violación de prerequisites). NO es el cociente
-    # total_recs_pre/total_recs_post, porque el filtro siempre rellena con
-    # fallback hasta k=5, así que discarded=0 incluso cuando el filtro SÍ filtra.
-    # Mide cuántas del ranking crudo fueron rechazadas por PVR, antes del fallback.
-    filter_rate_pct = (violations_pre / total_recs_pre) * 100.0 if total_recs_pre > 0 else 0.0
+    # filter_rate_pct: % del ranking crudo que fue RECHAZADO por el filtro pedagógico.
+    # raw_total_considered excluye los contenidos ya consumidos en Train (no son candidatos).
+    # raw_rejected_by_filter cuenta cuántos candidatos válidos fueron saltados por PVR.
+    filter_rate_pct = (raw_rejected_by_filter / raw_total_considered) * 100.0 if raw_total_considered > 0 else 0.0
 
     # feasibility_at_5: % de usuarios con relevantes en test que obtienen 5 recomendaciones
-    if users_evaluated > 0:
-        users_full = sum(1 for _, r in test_relevant.items() if len(r) > 0 and len(filtered_recs) >= k)
-        feasibility_at_5 = (sum(1 for uid, r in test_relevant.items()
-                                 if len(r) > 0 and len(preds_matrix.loc[uid]) > 0
-                                 and (lambda fr: len(fr) >= k)(
-                                     [cid for cid, _ in preds_matrix.loc[uid].sort_values(ascending=False).items()
-                                      if cid not in train_history.get(uid, set())][:k]
-                                 )) / users_evaluated) * 100.0 if users_evaluated > 0 else 0.0
-        # Simpler: re-compute feasibility by iterating users with positives
-        users_full_count = 0
-        users_eval_with_pos = 0
-        for uid, r in test_relevant.items():
-            if len(r) > 0:
-                users_eval_with_pos += 1
-                user_preds = preds_matrix.loc[uid]
-                hist = train_history.get(uid, set())
-                # Simulate filtered_recs to check >=5
-                sorted_raw = user_preds.sort_values(ascending=False)
-                filtered = []
-                mastered = user_mastered_train.get(uid, set())
-                for cid, _ in sorted_raw.items():
-                    if cid in hist:
-                        continue
-                    qualified = True
-                    for concept in content_concepts[cid]:
-                        req = concept_prereqs[concept]
-                        if req and not set(req).issubset(mastered):
-                            qualified = False
-                            break
-                    if qualified:
-                        filtered.append(cid)
-                        if len(filtered) >= k:
-                            break
-                if len(filtered) >= k:
-                    users_full_count += 1
-        feasibility_at_5 = (users_full_count / users_eval_with_pos) * 100.0 if users_eval_with_pos > 0 else 0.0
-    else:
-        feasibility_at_5 = 0.0
+    # tras el filtro pedagógico (no antes). Un usuario es "feasible" si filtered_recs >= 5.
+    users_full_count = 0
+    users_eval_with_pos = 0
+    for uid, r in test_relevant.items():
+        if len(r) > 0:
+            users_eval_with_pos += 1
+            user_preds = preds_matrix.loc[uid]
+            hist = train_history.get(uid, set())
+            sorted_raw = user_preds.sort_values(ascending=False)
+            filtered = []
+            mastered = user_mastered_train.get(uid, set())
+            for cid, _ in sorted_raw.items():
+                if cid in hist:
+                    continue
+                qualified = True
+                for concept in content_concepts[cid]:
+                    req = concept_prereqs[concept]
+                    if req and not set(req).issubset(mastered):
+                        qualified = False
+                        break
+                if qualified:
+                    filtered.append(cid)
+                    if len(filtered) >= k:
+                        break
+            if len(filtered) >= k:
+                users_full_count += 1
+    feasibility_at_5 = (users_full_count / users_eval_with_pos) * 100.0 if users_eval_with_pos > 0 else 0.0
 
     print(f"  [Debug] Usuarios evaluados en test (con interacciones positivas en test): {users_evaluated}/{len(all_users)}")
 
@@ -421,7 +430,10 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
         "pvr_pre": pvr_pre,
         "pvr_post": pvr_post,
         "filter_rate_pct": filter_rate_pct,
-        "feasibility_at_5": feasibility_at_5
+        "feasibility_at_5": feasibility_at_5,
+        "precision_raw": avg_precision_raw,
+        "recall_raw": avg_recall_raw,
+        "ndcg_raw": avg_ndcg_raw,
     }
 
 
@@ -502,7 +514,15 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
 
     users_evaluated = 0
 
-    # Para cold start, los cold users NO tienen historial previo (train_history[uid] = {})
+    # Separar métricas RAW y POST en Cold también
+    precisions_raw, recalls_raw, ndcgs_raw = [], [], []
+    precisions, recalls, ndcgs = [], [], []
+    recommended_set = set()
+
+    # filter_rate_pct Cold: contador explícito de rechazos del ranking crudo
+    raw_rejected_by_filter = 0
+    raw_total_considered = 0
+
     for uid in cold_users_list:
         if uid not in preds_matrix.index:
             continue
@@ -516,9 +536,16 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
         profile_mastered = initial_mastered.get(uid, set()) if initial_mastered else set()
         mastered = profile_mastered | user_mastered_train.get(uid, set())
 
-        # --- PRE-FILTRO (IA Pura, sin historial) ---
+        # --- RANKING CRUDO (sin filtro pedagógico) ---
         sorted_raw = user_preds.sort_values(ascending=False)
         raw_recs = [cid for cid in sorted_raw.index if cid not in history][:k]
+
+        if len(relevant_ids) > 0:
+            users_evaluated += 1
+            hits_raw = len(set(raw_recs) & relevant_ids)
+            precisions_raw.append(hits_raw / k)
+            recalls_raw.append(hits_raw / len(relevant_ids))
+            ndcgs_raw.append(calculate_ndcg(raw_recs, relevant_ids, k))
 
         for cid in raw_recs:
             total_recs_pre += 1
@@ -533,6 +560,8 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
         for cid, _ in sorted_raw.items():
             if cid in history:
                 continue
+
+            raw_total_considered += 1
             qualified = True
             for concept in content_concepts[cid]:
                 required = concept_prereqs[concept]
@@ -543,6 +572,8 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
                 filtered_recs.append(cid)
                 if len(filtered_recs) == k:
                     break
+            else:
+                raw_rejected_by_filter += 1
 
         if len(filtered_recs) < k:
             for cid, _ in sorted_raw.items():
@@ -560,7 +591,7 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
                         break
 
         if len(relevant_ids) > 0:
-            users_evaluated += 1
+            # Ya se contó users_evaluated en la sección RAW
             hits = len(set(filtered_recs) & relevant_ids)
             precisions.append(hits / k)
             recalls.append(hits / len(relevant_ids))
@@ -575,6 +606,10 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
                     violations_post += 1
                     break
 
+    avg_precision_raw = np.mean(precisions_raw) if precisions_raw else 0.0
+    avg_recall_raw = np.mean(recalls_raw) if recalls_raw else 0.0
+    avg_ndcg_raw = np.mean(ndcgs_raw) if ndcgs_raw else 0.0
+
     avg_precision = np.mean(precisions) if precisions else 0.0
     avg_recall = np.mean(recalls) if recalls else 0.0
     avg_ndcg = np.mean(ndcgs) if ndcgs else 0.0
@@ -582,9 +617,8 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
     pvr_pre = (violations_pre / total_recs_pre) * 100.0 if total_recs_pre > 0 else 0.0
     pvr_post = (violations_post / total_recs_post) * 100.0 if total_recs_post > 0 else 0.0
 
-    # filter_rate_pct: % de posiciones del ranking crudo rechazadas por el filtro
-    # pedagógico (por violación de prerequisites), antes del fallback.
-    filter_rate_pct = (violations_pre / total_recs_pre) * 100.0 if total_recs_pre > 0 else 0.0
+    # filter_rate_pct: % del ranking crudo rechazado por el filtro pedagógico.
+    filter_rate_pct = (raw_rejected_by_filter / raw_total_considered) * 100.0 if raw_total_considered > 0 else 0.0
 
     users_eval_with_pos = 0
     users_full_count = 0
@@ -620,7 +654,10 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
         "pvr_pre": pvr_pre,
         "pvr_post": pvr_post,
         "filter_rate_pct": filter_rate_pct,
-        "feasibility_at_5": feasibility_at_5
+        "feasibility_at_5": feasibility_at_5,
+        "precision_raw": avg_precision_raw,
+        "recall_raw": avg_recall_raw,
+        "ndcg_raw": avg_ndcg_raw,
     }
 
 
@@ -642,6 +679,31 @@ def main():
 
     all_users = users_df['user_id'].tolist()
     all_contents = contents_df['content_id'].tolist()
+
+    # 6. AUDITORÍA ESTADÍSTICA DEL DATASET
+    print("\n" + "=" * 60)
+    print("AUDITORÍA ESTADÍSTICA DEL DATASET")
+    print("=" * 60)
+    per_user = interactions_df.groupby('user_id').size()
+    per_content = interactions_df.groupby('content_id').size()
+    positives = interactions_df[interactions_df['score'] >= 0.5]
+    pos_per_user = positives.groupby('user_id').size()
+    n_users = interactions_df['user_id'].nunique()
+    n_contents_with_inter = interactions_df['content_id'].nunique()
+    n_inter = len(interactions_df)
+    sparsity = 1.0 - (n_inter / (n_users * n_contents_with_inter))
+    print(f"  Usuarios únicos: {n_users}")
+    print(f"  Contenidos con interacción: {n_contents_with_inter} / {len(contents_df)} catalogados")
+    print(f"  Interacciones totales: {n_inter}")
+    print(f"  Media/mediana/mín/máx interacciones por usuario: {per_user.mean():.2f} / {per_user.median():.0f} / {per_user.min()} / {per_user.max()}")
+    print(f"  Media/máx interacciones por contenido: {per_content.mean():.2f} / {per_content.max()}")
+    print(f"  Positivos (score >= 0.5): {len(positives)} ({len(positives)/n_inter*100:.1f}%)")
+    print(f"  Media positivos por usuario (con positivos): {pos_per_user.mean():.2f}")
+    print(f"  Sparsity user×content (sobre contenidos con interacción): {sparsity*100:.1f}%")
+    dup_pairs = interactions_df.duplicated(subset=['user_id', 'content_id']).sum()
+    print(f"  Duplicados (user_id, content_id): {dup_pairs}")
+    has_ts = 'timestamp' in interactions_df.columns and interactions_df['timestamp'].notna().any()
+    print(f"  Timestamp disponible: {has_ts}")
 
     # Validaciones iniciales
     assert len(all_users) > 0, "Debe haber usuarios registrados."
@@ -879,10 +941,10 @@ def main():
     print("\n" + "=" * 85)
     print(f"{'MODELO COMPARATIVO DE IA (TRAIN/TEST SPLIT)':^85}")
     print("=" * 85)
-    print(f"{'Modelo':22s} | {'Precision@5':11s} | {'Recall@5':9s} | {'NDCG@5':7s} | {'Coverage':8s} | {'PVR Pre':7s} | {'PVR Post':8s}")
+    print(f"{'Modelo':22s} | {'P@5 RAW':7s} | {'P@5':7s} | {'R@5 RAW':7s} | {'R@5':7s} | {'NDCG RAW':9s} | {'NDCG':7s} | {'Coverage':8s} | {'PVR Pre':7s} | {'Post':6s}")
     print("-" * 85)
     for model_name, metrics in results.items():
-        print(f"{model_name:22s} | {metrics['precision']:11.3f} | {metrics['recall']:9.3f} | {metrics['ndcg']:7.3f} | {metrics['coverage']:7.1f}% | {metrics['pvr_pre']:6.1f}% | {metrics['pvr_post']:7.1f}%")
+        print(f"{model_name:22s} | {metrics.get('precision_raw', 0):7.3f} | {metrics['precision']:7.3f} | {metrics.get('recall_raw', 0):7.3f} | {metrics['recall']:7.3f} | {metrics.get('ndcg_raw', 0):9.3f} | {metrics['ndcg']:7.3f} | {metrics['coverage']:7.1f}% | {metrics['pvr_pre']:7.1f}% | {metrics['pvr_post']:6.1f}%")
     print("=" * 85)
 
     # Guardar en CSV para validación y auditoría
@@ -893,6 +955,9 @@ def main():
             "precision_5": round(metrics['precision'], 4),
             "recall_5": round(metrics['recall'], 4),
             "ndcg_5": round(metrics['ndcg'], 4),
+            "raw_precision_5": round(metrics.get('precision_raw', 0.0), 4),
+            "raw_recall_5": round(metrics.get('recall_raw', 0.0), 4),
+            "raw_ndcg_5": round(metrics.get('ndcg_raw', 0.0), 4),
             "coverage_pct": round(metrics['coverage'], 2),
             "pvr_pre_pct": round(metrics['pvr_pre'], 2),
             "pvr_post_pct": round(metrics['pvr_post'], 2),
@@ -1188,10 +1253,10 @@ def main():
     print("\n" + "=" * 85)
     print(f"{'MODELO COMPARATIVO DE IA - ESCENARIO COLD START':^85}")
     print("=" * 85)
-    print(f"{'Modelo':50s} | {'Precision@5':11s} | {'Recall@5':9s} | {'NDCG@5':7s} | {'Coverage':8s} | {'PVR Pre':7s} | {'PVR Post':8s}")
+    print(f"{'Modelo':50s} | {'P@5 RAW':7s} | {'P@5':7s} | {'R@5 RAW':7s} | {'R@5':7s} | {'NDCG RAW':9s} | {'NDCG':7s} | {'Coverage':8s} | {'PVR Pre':7s} | {'Post':6s}")
     print("-" * 85)
     for model_name, metrics in results_cold.items():
-        print(f"{model_name:50s} | {metrics['precision']:11.3f} | {metrics['recall']:9.3f} | {metrics['ndcg']:7.3f} | {metrics['coverage']:7.1f}% | {metrics['pvr_pre']:6.1f}% | {metrics['pvr_post']:7.1f}%")
+        print(f"{model_name:50s} | {metrics.get('precision_raw', 0):7.3f} | {metrics['precision']:7.3f} | {metrics.get('recall_raw', 0):7.3f} | {metrics['recall']:7.3f} | {metrics.get('ndcg_raw', 0):9.3f} | {metrics['ndcg']:7.3f} | {metrics['coverage']:7.1f}% | {metrics['pvr_pre']:7.1f}% | {metrics['pvr_post']:6.1f}%")
     print("=" * 85)
 
     # CSV separado para Cold Start
@@ -1202,6 +1267,9 @@ def main():
             "precision_5": round(metrics['precision'], 4),
             "recall_5": round(metrics['recall'], 4),
             "ndcg_5": round(metrics['ndcg'], 4),
+            "raw_precision_5": round(metrics.get('precision_raw', 0.0), 4),
+            "raw_recall_5": round(metrics.get('recall_raw', 0.0), 4),
+            "raw_ndcg_5": round(metrics.get('ndcg_raw', 0.0), 4),
             "coverage_pct": round(metrics['coverage'], 2),
             "pvr_pre_pct": round(metrics['pvr_pre'], 2),
             "pvr_post_pct": round(metrics['pvr_post'], 2),

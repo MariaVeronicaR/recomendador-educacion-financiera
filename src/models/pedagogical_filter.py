@@ -1,4 +1,16 @@
 """
+NOTA HISTÓRICA: este script implementa el filtro pedagógico del TFM (grafo de
+prerrequisitos conceptuales C01-C30) en su forma original, previa a la integración con
+el split Train/Test por pares (user_id, content_id). El pipeline v6 del TFM lo reemplaza
+por src/utils/evaluate_models.py, que evalúa cuatro modelos con la lógica de filtro
+embebida en las funciones evaluate_predictions() y evaluate_predictions_cold().
+Se mantiene aquí para reproducibilidad histórica y trazabilidad arquitectónica del TFM.
+
+NOTA DE EJECUCIÓN: este script NO se ejecuta en el pipeline v6. La lógica de filtro se
+ejecuta inline en src/utils/evaluate_models.py.
+"""
+
+"""
 pedagogical_filter.py
 
 Implementa el post-filtro pedagógico para el recomendador del MVP.

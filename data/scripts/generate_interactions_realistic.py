@@ -1,5 +1,5 @@
 """
-Genera /data/interactions_synthetic_realistic.csv con 1500 interacciones.
+Genera /data/interactions_synthetic_realistic_v2.csv con 23000 interacciones.
 
 A diferencia de generate_interactions.py (modelo sigmoid genérico), este script
 usa distribuciones REALES de comportamiento financiero de la ECF 2021 (BdE + CNMV)
@@ -23,9 +23,11 @@ Las 6 reglas pedagógicas del plan siguen vigentes:
 6. No simular asesoría financiera personalizada.
 
 Uso:
-    cd /Users/veronica/Desktop/tfm/ECF-archivos
-    python3 generate_interactions_realistic.py
+    # Funciona desde cualquier directorio. Detecta automáticamente la raíz del proyecto.
+    python3 data/scripts/generate_interactions_realistic.py
 """
+
+from pathlib import Path
 
 import csv
 import random
@@ -39,8 +41,18 @@ random.seed(123)
 N_INTERACTIONS = 23000
 USERS = "/Users/veronica/Desktop/tfm/data/users_synthetic.csv"
 CONTENTS = "/Users/veronica/Desktop/tfm/data/contents.csv"
-ECF = "ecf_2021.csv"  # Debe estar descomprimido en la carpeta actual
 OUT = "/Users/veronica/Desktop/tfm/data/interactions_synthetic_realistic_v2.csv"
+
+# Detección robusta de la raíz del proyecto y del archivo ECF.
+# El script funciona desde cualquier directorio de ejecución.
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # data/scripts → data → raíz
+ECF_CANDIDATES = [
+    SCRIPT_DIR / "ecf_2021.csv",
+    PROJECT_ROOT / "ECF-archivos" / "ecf_2021.csv",
+    PROJECT_ROOT / "data" / "ecf_2021.csv",
+]
+ECF = next((str(p) for p in ECF_CANDIDATES if p.exists()), "ecf_2021.csv")
 
 # Mapa: topic -> conceptos requeridos según grafo pedagógico
 TOPIC_TO_CONCEPTS = {
