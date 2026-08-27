@@ -8,7 +8,7 @@
     "status": 200,
     "ok": true,
     "error": null,
-    "elapsed_ms": 868,
+    "elapsed_ms": 0,
     "bytes": 59268
   },
   "title": "¿Cómo elaborar un presupuesto? - Finanzas para todos",
@@ -125,6 +125,7 @@
     "platforms": [],
     "schema_type": null
   },
+  "interactive": false,
   "classification": "ok",
   "errors": [],
   "title_match": true,
@@ -136,5 +137,6 @@
     "format": "artículo web",
     "summary": "Aprende a organizar tus ingresos y gastos para tener unas finanzas equilibradas",
     "learning_objective": "Saber planificar ingresos y gastos mensuales"
-  }
+  },
+  "deduped_from": null
 }

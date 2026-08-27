@@ -8,7 +8,7 @@
     "status": 200,
     "ok": true,
     "error": null,
-    "elapsed_ms": 718,
+    "elapsed_ms": 0,
     "bytes": 31559
   },
   "title": "Cálculo de la fecha de vencimiento de la última cuota de una tarjeta revolving",
@@ -79,6 +79,7 @@
     "platforms": [],
     "schema_type": null
   },
+  "interactive": true,
   "classification": "ok",
   "errors": [],
   "title_match": false,
@@ -90,5 +91,6 @@
     "format": "simulador",
     "summary": "Calcula la cuota y el coste real de una tarjeta revolving",
     "learning_objective": "Identificar el elevado coste de las revolving"
-  }
+  },
+  "deduped_from": null
 }

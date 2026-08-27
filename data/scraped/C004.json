@@ -8,7 +8,7 @@
     "status": 200,
     "ok": true,
     "error": null,
-    "elapsed_ms": 1224,
+    "elapsed_ms": 0,
     "bytes": 250083
   },
   "title": "Renta fija, acciones y fondos de inversión",
@@ -192,6 +192,7 @@
     "platforms": [],
     "schema_type": null
   },
+  "interactive": false,
   "classification": "ok",
   "errors": [],
   "title_match": false,
@@ -208,5 +209,6 @@
     "n_pages": 5,
     "body_size": 16.0,
     "extractor": "pymupdf"
-  }
+  },
+  "deduped_from": null
 }

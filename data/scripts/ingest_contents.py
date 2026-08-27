@@ -43,25 +43,48 @@ PROJECT_ROOT = SCRIPT_DIR.parent.parent  # data/scripts -> data -> raiz
 
 CONTENTS_CSV = PROJECT_ROOT / "data" / "contents.csv"
 OUT_DIR = PROJECT_ROOT / "data" / "scraped"
+CACHE_DIR = OUT_DIR / "_cache"
 
-# Piloto: 7 URLs representativas. Cubre HTML (articulo web, BdE, simulador,
-# blog, prensa) y 2 PDFs (Finanzas para Todos y CNMV). Si alguna falla el
-# script sigue con las demas.
+# Piloto: URLs representativas. Cubre articulos web, glosarios (C015, C114),
+# herramientas (C016), simulador (C020), blog (C024) y PDFs (C004, C062).
+# Si alguna falla el script sigue con las demas.
 #   C001  articulo web   finanzasparatodos.es
-#   C003  nota de prensa finanzasparatodos.es
 #   C004  PDF            finanzasparatodos.es  (10 consejos de inversion)
+#   C015  glosario web   finanzasparatodos.es
+#   C016  herramienta     finanzasparatodos.es (indice de calculadoras)
 #   C017  articulo web   clientebancario.bde.es
 #   C020  simulador HTML clientebancario.bde.es
 #   C024  articulo blog  clientebancario.bde.es
 #   C062  PDF            cnmv.es                (Guia basica para inversores)
-PILOT_IDS = ["C001", "C003", "C004", "C017", "C020", "C024", "C062"]
+#   C114  glosario web   finanzasparatodos.es (glosario criptoactivos)
+PILOT_IDS = ["C001", "C004", "C015", "C016", "C017", "C020", "C024", "C062", "C114"]
 
 TIMEOUT_S = 20
 MIN_TEXT_LEN = 200  # umbral para clasificar como "ok" vs "short"
+
+# Hint del formato CSV para la extraccion en curso (glosarios, etc.).
+# Se establece en process_one antes de extraer; script de una pasada, sin hilos.
+_fmt_hint = {"format": ""}
+
+# Formatos que son contenidos interactivos (no articulos)
+INTERACTIVE_FORMATS = {"simulador", "calculadora", "herramienta", "herramienta interactiva"}
 USER_AGENT = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 )
+
+# Headers completos de navegador: algunos sitios (UNIR Mexico, Santander MX)
+# bloquean peticiones con solo User-Agent (403) o tardan en responder.
+BROWSER_HEADERS = {
+    "User-Agent": USER_AGENT,
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
+}
 
 # Palabras que delatan un menu/navegacion (heuristica simple).
 NAV_WORDS = {
@@ -83,7 +106,7 @@ def fetch_url(url, timeout=TIMEOUT_S):
         with httpx.Client(
             follow_redirects=True,
             timeout=timeout,
-            headers={"User-Agent": USER_AGENT, "Accept-Language": "es-ES,es;q=0.9"},
+            headers=BROWSER_HEADERS,
         ) as client:
             resp = client.get(url)
         elapsed_ms = int((time.monotonic() - started) * 1000)
@@ -136,6 +159,29 @@ def _parse_xml_headings(xml_text):
             text = "".join(el.itertext()).strip()
             if text:
                 out.append({"level": level, "text": text})
+    return out
+
+
+def _parse_xml_links(xml_text):
+    """Extrae los enlaces del XML de Trafilatura (con include_links=True).
+
+    Trafilatura emite los enlaces como <ref target="URL">texto del enlace</ref>.
+    Devuelve lista de {text, href} en orden de aparicion.
+    """
+    out = []
+    if not xml_text:
+        return out
+    try:
+        root = ET.fromstring(xml_text)
+    except ET.ParseError:
+        return out
+    for el in root.iter():
+        tag = el.tag.split("}", 1)[-1]
+        if tag == "ref":
+            href = el.attrib.get("target", "")
+            text = "".join(el.itertext()).strip()
+            if href and text:
+                out.append({"text": text, "href": href})
     return out
 
 
@@ -222,6 +268,13 @@ def detect_video(html_bytes, url):
         else:
             # iframe generico, no asumimos plataforma
             _add(src, None)
+    # 2b) Atributos data-* con IDs de video (players custom que cargan el
+    # embed por JS; p.ej. el Portal del Cliente Bancario usa data-video="ID")
+    for el in soup.find_all(attrs={"data-video": True}):
+        vid = el["data-video"].strip()
+        if vid:
+            # Formato BdE: ID puro o con prefijo. Construir URL de embed.
+            _add(f"https://www.youtube.com/embed/{vid}", "youtube")
     # 3) JSON-LD con @type: VideoObject
     for script in soup.find_all("script", attrs={"type": "application/ld+json"}):
         try:
@@ -251,13 +304,47 @@ def detect_video(html_bytes, url):
     return info
 
 
+def _decode_html_smart(html_bytes):
+    """Decodifica HTML respetando el charset declarado.
+
+    Muchas paginas antiguas (p.ej. tutoriales CNMV) declaran iso-8859-1 en el
+    <meta charset> pero el servidor no lo dice en el Content-Type, por lo que
+    una decodificacion UTF-8 ciega produce caracteres de reemplazo (U+FFFD).
+    Estrategia: si el HTML declara iso-8859-1/latin-1/windows-1252 y los bytes
+    no son UTF-8 valido, decodificar con el charset declarado.
+    """
+    if not html_bytes:
+        return ""
+    # ¿Es UTF-8 valido? Si lo es, gana (la mayoria de la web moderna).
+    try:
+        return html_bytes.decode("utf-8")
+    except UnicodeDecodeError:
+        pass
+    # Buscar charset declarado en los primeros 2KB
+    head = html_bytes[:2048]
+    m = re.search(rb'charset=["\']?([\w-]+)', head, re.IGNORECASE)
+    if m:
+        declared = m.group(1).decode("ascii", errors="ignore").lower()
+        aliases = {
+            "iso-8859-1": "iso-8859-1", "latin1": "iso-8859-1", "latin-1": "iso-8859-1",
+            "windows-1252": "windows-1252", "cp1252": "windows-1252",
+            "iso-8859-15": "iso-8859-15",
+        }
+        if declared in aliases:
+            try:
+                return html_bytes.decode(aliases[declared], errors="replace")
+            except (UnicodeDecodeError, LookupError):
+                pass
+    # Ultimo recurso: reemplazo
+    return html_bytes.decode("utf-8", errors="replace")
+
+
 def extract_with_trafilatura(html_bytes, url):
     """Ejecuta Trafilatura sobre HTML. Devuelve dict con campos o {} si falla."""
     if not html_bytes:
         return {}
-    try:
-        html_text = html_bytes.decode("utf-8", errors="replace")
-    except Exception:
+    html_text = _decode_html_smart(html_bytes)
+    if not html_text:
         return {}
 
     # 1) Texto principal
@@ -273,7 +360,7 @@ def extract_with_trafilatura(html_bytes, url):
         favor_recall=False,
     ) or ""
 
-    # 2) XML con estructura (para sacar headings)
+    # 2) XML con estructura (para sacar headings y links)
     xml_text = trafilatura.extract(
         html_text,
         url=url,
@@ -281,11 +368,13 @@ def extract_with_trafilatura(html_bytes, url):
         include_comments=False,
         include_tables=True,
         include_images=False,
+        include_links=True,
         target_language="es",
         favor_precision=False,
         favor_recall=False,
     ) or ""
     headings = _parse_xml_headings(xml_text)
+    xml_links = _parse_xml_links(xml_text)
 
     # 3) Metadatos (autor, fecha, descripcion, etc.)
     try:
@@ -297,9 +386,19 @@ def extract_with_trafilatura(html_bytes, url):
     # 4) Titulo (de metadata si esta, si no del primer heading de nivel 1)
     title = metadata.get("title") or (headings[0]["text"] if headings else "")
 
+    # 5) Fallback de links con BeautifulSoup: si el XML no trajo <ref> pero
+    # el HTML tiene <a> con texto, extraerlos del contenido principal.
+    # Util para paginas indice (herramientas, cursos) donde Trafilatura
+    # descarta los enlaces con su contenido.
+    if not xml_links:
+        xml_links = _bs4_links_fallback(html_bytes, url)
+
     sections = build_sections_offsets(text, headings)
-    blocks = build_blocks(text, headings)
+    blocks = build_blocks(text, headings, xml_links=xml_links)
     video_info = detect_video(html_bytes, url)
+
+    # Convertir listas de glosarios a bloques glossary (termino/definicion)
+    blocks = [convert_list_to_glossary(b, _fmt_hint.get("format", "")) for b in blocks]
 
     return {
         "title": title,
@@ -312,6 +411,58 @@ def extract_with_trafilatura(html_bytes, url):
         "metadata": metadata,
         "video_info": video_info,
     }
+
+
+def _bs4_links_fallback(html_bytes, base_url):
+    """Extrae enlaces del contenido principal con BeautifulSoup cuando
+    Trafilatura no devuelve <ref>. Filtra enlaces de navegacion (hrefs
+    internos de menu, anchors, mailto) y resuelve URLs relativas."""
+    if not html_bytes:
+        return []
+    try:
+        soup = BeautifulSoup(html_bytes, "lxml")
+    except Exception:
+        return []
+
+    # Candidatos a contenedor de contenido principal (en orden de preferencia)
+    main = None
+    for sel in ["main", "article", '[role="main"]', "#content", ".main-content", "div.contenido"]:
+        found = soup.select_one(sel)
+        if found:
+            main = found
+            break
+    if main is None:
+        return []
+
+    out = []
+    seen = set()
+    for a in main.find_all("a", href=True):
+        href = a["href"].strip()
+        text = a.get_text(" ", strip=True)
+        if not href or not text or len(text) < 3:
+            continue
+        if href.startswith(("#", "mailto:", "javascript:")):
+            continue
+        # Resolver URL relativa
+        from urllib.parse import urljoin
+        abs_href = urljoin(base_url, href)
+        # Filtrar anchors internos de la misma pagina
+        if urlparse(abs_href).fragment and urlparse(abs_href).path == urlparse(base_url).path:
+            continue
+        if abs_href in seen:
+            continue
+        seen.add(abs_href)
+        # Si el texto del anchor es generico (CTA tipo "Probar herramienta",
+        # "Leer mas"), usar el heading mas cercano ANTERIOR como texto del
+        # enlace: es el nombre del elemento al que apunta.
+        if len(text) < 25 and not text.rstrip().endswith((".", "?", "!", ":")):
+            prev_heading = a.find_previous(["h1", "h2", "h3", "h4"])
+            if prev_heading is not None:
+                head_text = prev_heading.get_text(" ", strip=True)
+                if head_text and len(head_text) >= 3:
+                    text = head_text
+        out.append({"text": text, "href": abs_href})
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -413,13 +564,60 @@ _LIST_DASH_RE = re.compile(r"^\s*[-•·]\s+")
 _LIST_NUM_RE = re.compile(r"^\s*\d+[.)]\s+")
 
 
-def build_blocks(text, headings):
+def _find_links_in_block(block_text, link_iter):
+    """Anota links de link_iter dentro de block_text por matching de texto.
+
+    link_iter: iterador compartido de {text, href} en orden de documento.
+    Devuelve (links_anotados, consumidos_flag). Los links cuyo texto no
+    aparece en este bloque se dejan en el iterador para bloques siguientes.
+    """
+    annotated = []
+    if not block_text:
+        return annotated
+    norm_block = _norm_for_match(block_text)
+    # Necesitamos offsets sobre el texto ORIGINAL del bloque; como
+    # _norm_for_match colapsa espacios, buscamos sobre el original con una
+    # version normalizada por linea.
+    remaining = []
+    for link in link_iter:
+        lt = link["text"].strip()
+        if not lt or len(lt) < 2:
+            continue
+        idx = norm_block.find(_norm_for_match(lt))
+        if idx < 0:
+            remaining.append(link)
+            continue
+        # Mapear offset normalizado -> offset real buscando el texto literal
+        # (el texto plano de Trafilatura conserva el orden pero puede variar
+        # en espacios; buscamos el literal primero)
+        real_idx = block_text.find(lt)
+        if real_idx < 0:
+            # fallback: buscar con espacios flexibles
+            pattern = re.escape(lt)
+            m = re.search(pattern.replace(r"\ ", r"\s+"), block_text)
+            real_idx = m.start() if m else -1
+        if real_idx < 0:
+            remaining.append(link)
+            continue
+        annotated.append({
+            "text": lt,
+            "href": link["href"],
+            "start": real_idx,
+            "end": real_idx + len(lt),
+        })
+    link_iter[:] = remaining
+    return annotated
+
+
+def build_blocks(text, headings, xml_links=None):
     """Devuelve lista de bloques semanticos.
 
     Cada bloque es uno de:
       {"type": "heading", "level": int, "text": str}
-      {"type": "paragraph", "text": str}
+      {"type": "paragraph", "text": str, "links": [{text, href, start, end}]}
       {"type": "list", "style": "ul"|"ol", "items": [str, ...]}
+      {"type": "link_list", "items": [{text, href}, ...]}   (solo HTML)
+      {"type": "glossary", "entries": [{term, definition}, ...]}
 
     Estrategia: trabaja linea a linea. Para cada linea no vacia:
       - Si coincide con un heading pendiente -> emite bloque heading y lo
@@ -427,12 +625,18 @@ def build_blocks(text, headings):
       - Si es item de lista y las siguientes tambien -> agrupa como lista.
       - En cualquier otro caso -> acumula en un buffer de parrafo.
     Lineas en blanco cierran el parrafo actual.
+
+    xml_links: lista de {text, href} extraida del XML de Trafilatura. Se
+    anota a los parrafos por matching de texto y, si un grupo de items de
+    lista son TODOS enlaces, se emite como link_list.
     """
     if not text:
         return []
     heading_pending = list(headings or [])
     # Mapa rapido de heading normalizado -> heading
     head_index = {_norm_for_match(h["text"]): h for h in heading_pending}
+    # Iterador compartido de links (lista mutable que se consume)
+    links_remaining = list(xml_links or [])
 
     blocks = []
     para_buf = []  # lineas del parrafo en curso
@@ -441,7 +645,12 @@ def build_blocks(text, headings):
     def flush_para():
         nonlocal para_buf
         if para_buf:
-            blocks.append({"type": "paragraph", "text": "\n".join(para_buf).strip()})
+            ptext = "\n".join(para_buf).strip()
+            block = {"type": "paragraph", "text": ptext}
+            links = _find_links_in_block(ptext, links_remaining)
+            if links:
+                block["links"] = links
+            blocks.append(block)
             para_buf = []
 
     def flush_list():
@@ -449,6 +658,29 @@ def build_blocks(text, headings):
         if list_buf:
             style = list_buf[0][0]
             items = [t for _, t in list_buf]
+            # ¿Todos los items son texto de un enlace? -> link_list
+            if links_remaining:
+                matched = []
+                rest = []
+                pool = list(links_remaining)
+                ok = True
+                for item in items:
+                    hit = None
+                    for lk in pool:
+                        if _norm_for_match(lk["text"]) == _norm_for_match(item):
+                            hit = lk
+                            break
+                    if hit:
+                        matched.append({"text": item, "href": hit["href"]})
+                        pool.remove(hit)
+                    else:
+                        ok = False
+                        break
+                if ok and matched:
+                    blocks.append({"type": "link_list", "items": matched})
+                    links_remaining[:] = pool
+                    list_buf = []
+                    return
             blocks.append({"type": "list", "style": style, "items": items})
             list_buf = []
 
@@ -487,13 +719,79 @@ def build_blocks(text, headings):
 
 
 # ---------------------------------------------------------------------------
+# Glosarios
+# ---------------------------------------------------------------------------
+
+def _looks_like_term(item_text):
+    """Heuristica: un item de lista es 'termino' si es corto, sin verbo
+    conjugado tipico y sin puntuacion de frase."""
+    t = item_text.strip()
+    if not t or len(t) > 60:
+        return False
+    # Los terminos no suelen terminar en punto ni contener verbos conjugados
+    if t.endswith((".", ",", ";")):
+        return False
+    # No debe tener mas de ~8 palabras
+    if len(t.split()) > 8:
+        return False
+    return True
+
+
+def _pair_glossary_entries(items):
+    """Empareja items de lista alternos como (termino, definicion).
+
+    En el glosario de finanzasparatodos, Trafilatura emite cada definicion
+    como item de lista y el termino como item corto previo. Heuristica:
+    item par (indice 0, 2, 4...) = termino si _looks_like_term; el siguiente
+    item = su definicion.
+    """
+    entries = []
+    i = 0
+    while i < len(items):
+        term = items[i].strip()
+        if i + 1 < len(items) and _looks_like_term(term):
+            entries.append({"term": term, "definition": items[i + 1].strip()})
+            i += 2
+        else:
+            # No parece termino: guardarlo como definicion huerfana
+            entries.append({"term": "", "definition": term})
+            i += 1
+    return entries
+
+
+def convert_list_to_glossary(block, fmt):
+    """Si el bloque es una lista larga de un glosario, conviertela a
+    bloque glossary con pares termino/definicion."""
+    if block.get("type") != "list" or block.get("style") != "ul":
+        return block
+    if "glosario" not in (fmt or "").lower():
+        return block
+    items = block.get("items", [])
+    if len(items) < 4:
+        return block
+    entries = _pair_glossary_entries(items)
+    # Solo convertir si la heuristica emparejo al menos la mitad
+    n_terms = sum(1 for e in entries if e["term"])
+    if n_terms >= max(1, len(entries) // 2):
+        return {"type": "glossary", "entries": entries}
+    return block
+
+
+# ---------------------------------------------------------------------------
 # Extraccion PDF con PyMuPDF
 # ---------------------------------------------------------------------------
 
 def is_pdf_url(url):
-    """Heuristica simple: la URL apunta a un .pdf (ignorando query/fragmento)."""
+    """Heuristica: la URL apunta a un .pdf (ignorando query/fragmento)."""
     path = urlparse(url).path.lower()
     return path.endswith(".pdf")
+
+
+def sniff_is_pdf(body):
+    """Detecta si los bytes descargados son un PDF por su magic number.
+    Mas fiable que la URL: algunos servicios devuelven PDF sin extension
+    (p.ej. el webservice de documentos de la CNMV)."""
+    return body[:5] == b"%PDF-"
 
 
 def _pdf_date_to_iso(s):
@@ -830,6 +1128,8 @@ def _titles_match_loosely(a, b):
 
 def process_one(content_id, url, csv_meta):
     """Procesa una URL. Bifurca a HTML o PDF segun la extension."""
+    # Hint de formato para la extraccion (glosarios, etc.)
+    _fmt_hint["format"] = csv_meta.get("format", "")
     record = {
         "content_id": content_id,
         "url": url,
@@ -846,6 +1146,7 @@ def process_one(content_id, url, csv_meta):
         "num_headings": 0,
         "metadata": {},
         "video_info": {"has_video": False, "video_urls": [], "platforms": [], "schema_type": None},
+        "interactive": csv_meta.get("format", "").lower() in INTERACTIVE_FORMATS,
         "classification": "empty",
         "errors": [],
         "title_match": False,
@@ -863,6 +1164,50 @@ def process_one(content_id, url, csv_meta):
 
     # 1) Descarga
     body, status, err, elapsed = fetch_url(url)
+    return _finish_process(record, body, status, err, elapsed, url)
+
+
+def process_one_cached(content_id, url, csv_meta, body, status, err, elapsed):
+    """Igual que process_one pero con la descarga ya hecha (cache o batch)."""
+    _fmt_hint["format"] = csv_meta.get("format", "")
+    record = {
+        "content_id": content_id,
+        "url": url,
+        "source": csv_meta.get("source", ""),
+        "host": _host_of(url),
+        "url_type": "pdf" if is_pdf_url(url) else "html",
+        "fetch": {"status": 0, "ok": False, "error": None, "elapsed_ms": 0, "bytes": 0},
+        "title": "",
+        "headings": [],
+        "sections": [],
+        "blocks": [],
+        "text": "",
+        "text_len": 0,
+        "num_headings": 0,
+        "metadata": {},
+        "video_info": {"has_video": False, "video_urls": [], "platforms": [], "schema_type": None},
+        "interactive": csv_meta.get("format", "").lower() in INTERACTIVE_FORMATS,
+        "classification": "empty",
+        "errors": [],
+        "title_match": False,
+        "csv_meta": {
+            "title": csv_meta.get("title", ""),
+            "topic": csv_meta.get("topic", ""),
+            "subtopic": csv_meta.get("subtopic", ""),
+            "difficulty": csv_meta.get("difficulty", ""),
+            "format": csv_meta.get("format", ""),
+            "summary": csv_meta.get("summary", ""),
+            "learning_objective": csv_meta.get("learning_objective", ""),
+        },
+    }
+    return _finish_process(record, body, status, err, elapsed, url)
+
+
+def _finish_process(record, body, status, err, elapsed, url):
+    """Rellena el record con la extraccion. Compartido por process_one y
+    process_one_cached."""
+    csv_meta = record["csv_meta"]
+    errors = record["errors"]
     record["fetch"] = {
         "status": status,
         "ok": err is None and body != b"",
@@ -872,11 +1217,14 @@ def process_one(content_id, url, csv_meta):
     }
     if err is not None or not body:
         record["classification"] = "fetch_error"
-        errors.append(err or "empty_body")
+        record["errors"].append(err or "empty_body")
         return record
 
-    # 2) Extraccion segun tipo de URL
-    is_pdf = record["url_type"] == "pdf"
+    # 2) Extraccion segun tipo de contenido real (magic number), no solo URL:
+    # el webservice CNMV devuelve application/pdf sin extension .pdf.
+    is_pdf = sniff_is_pdf(body)
+    if is_pdf != (record["url_type"] == "pdf"):
+        record["url_type"] = "pdf" if is_pdf else "html"
     try:
         if is_pdf:
             extracted = extract_pdf(body, url)
@@ -989,21 +1337,50 @@ def write_summary_csv(records, path):
 # Main
 # ---------------------------------------------------------------------------
 
-def load_pilot(csv_path, pilot_ids):
-    """Lee el CSV y devuelve {content_id: row} solo para los IDs del piloto."""
+def load_catalog(csv_path):
+    """Lee el CSV completo. Devuelve lista de filas en orden de aparicion."""
     with open(csv_path, encoding="utf-8") as f:
         reader = csv.DictReader(f)
-        rows = {row["content_id"]: row for row in reader if row["content_id"] in pilot_ids}
+        rows = [row for row in reader if row.get("content_id")]
     return rows
 
 
+def _url_cache_path(url):
+    """Ruta del archivo de cache para una URL: data/scraped/_cache/<md5>.bin"""
+    import hashlib
+    h = hashlib.md5(url.encode("utf-8")).hexdigest()
+    return CACHE_DIR / f"{h}.bin"
+
+
+def fetch_url_cached(url, timeout=TIMEOUT_S):
+    """fetch_url con cache en disco. Si la URL ya esta en cache, no toca la red.
+    El archivo de cache guarda los bytes crudos (HTML o PDF)."""
+    cpath = _url_cache_path(url)
+    if cpath.exists():
+        try:
+            body = cpath.read_bytes()
+            return body, 200, None, 0  # cache hit: status 200 simbólico
+        except Exception:
+            pass  # cache corrupta: re-descargar
+    body, status, err, elapsed = fetch_url(url, timeout)
+    if err is None and body:
+        try:
+            cpath.write_bytes(body)
+        except Exception:
+            pass  # sin cache no pasa nada grave
+    return body, status, err, elapsed
+
+
 def main():
+    import sys
+    use_cache = "--no-cache" not in sys.argv
+
     print("=" * 60)
-    print("INGESTA PILOTO DE CONTENIDOS CON TRAFILATURA")
+    print("INGESTA COMPLETA DEL CATALOGO")
     print("=" * 60)
     print(f"CSV de entrada:  {CONTENTS_CSV}")
     print(f"Directorio out:  {OUT_DIR}")
-    print(f"IDs piloto ({len(PILOT_IDS)}): {', '.join(PILOT_IDS)}")
+    print(f"Cache:           {'activada' if use_cache else 'desactivada'}")
     print(f"Timeout:         {TIMEOUT_S}s")
     print(f"Min text len:    {MIN_TEXT_LEN} chars")
     print()
@@ -1012,37 +1389,70 @@ def main():
         print(f"ERROR: no se encuentra {CONTENTS_CSV}")
         return
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    if use_cache:
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
-    catalog = load_pilot(CONTENTS_CSV, PILOT_IDS)
-    missing = [cid for cid in PILOT_IDS if cid not in catalog]
-    if missing:
-        print(f"AVISO: IDs del piloto no encontrados en el CSV: {missing}")
+    catalog = load_catalog(CONTENTS_CSV)
     if not catalog:
-        print("ERROR: no hay IDs validos en el CSV. Abortando.")
+        print("ERROR: catalogo vacio. Abortando.")
         return
 
-    records = []
-    total = len(catalog)
-    for i, (cid, row) in enumerate(catalog.items(), start=1):
-        url = row["url"]
+    # --- Deduplicacion por URL ---
+    # url -> lista de (content_id, row). Se scrapea 1 vez por URL.
+    by_url = {}
+    for row in catalog:
+        by_url.setdefault(row["url"], []).append(row)
+    n_rows = len(catalog)
+    n_urls = len(by_url)
+    print(f"Filas en catalogo: {n_rows}")
+    print(f"URLs unicas a descargar: {n_urls} ({n_rows - n_urls} gemelos reutilizan)")
+    print()
+
+    # --- Fase 1: descargar y extraer por URL unica ---
+    url_records = {}  # url -> record base (sin content_id final)
+    for i, (url, rows) in enumerate(by_url.items(), start=1):
         url_type = "pdf" if is_pdf_url(url) else "html"
-        print(f"\n[{i}/{total}] {cid}  [{url_type}]  {row.get('format','')}")
+        first = rows[0]
+        print(f"\n[{i}/{n_urls}] {first['content_id']}{' (+' + str(len(rows) - 1) + ' gemelos)' if len(rows) > 1 else ''}  [{url_type}]  {first.get('format','')}")
         print(f"  URL:    {url}")
-        print(f"  CSV title: {row.get('title','')}")
-        rec = process_one(cid, url, row)
-        records.append(rec)
-        status = rec["fetch"]["status"] or "-"
+        fetch_fn = fetch_url_cached if use_cache else fetch_url
+        body, status, err, elapsed = fetch_fn(url)
+        rec = process_one_cached(first["content_id"], url, first, body, status, err, elapsed)
+        url_records[url] = rec
+        status_s = status or "-"
         cls = rec["classification"]
-        err = rec["fetch"]["error"] or ""
+        err_s = err or ""
         title_short = _short_title(rec["title"], 50)
-        print(f"  fetch:  status={status}  bytes={rec['fetch']['bytes']}  ms={rec['fetch']['elapsed_ms']}  err={err or '-'}")
+        print(f"  fetch:  status={status_s}  bytes={rec['fetch']['bytes']}  ms={rec['fetch']['elapsed_ms']}  err={err or '-'}")
         print(f"  extract: title='{title_short}'")
         extra = ""
         if url_type == "pdf" and "pdf_info" in rec:
             extra = f"  pages={rec['pdf_info'].get('n_pages')}({rec['pdf_info'].get('n_pages_with_text')})"
         print(f"  text_len={rec['text_len']}  headings={rec['num_headings']}  class={cls}{extra}")
 
-    # Guardar un JSON por articulo
+    # --- Fase 2: emitir un record por content_id (gemelos comparten texto) ---
+    records = []
+    for url, rows in by_url.items():
+        base = url_records[url]
+        n_twins = len(rows)
+        for j, row in enumerate(rows):
+            rec = dict(base)  # copia plana
+            rec["content_id"] = row["content_id"]
+            rec["csv_meta"] = {
+                "title": row.get("title", ""),
+                "topic": row.get("topic", ""),
+                "subtopic": row.get("subtopic", ""),
+                "difficulty": row.get("difficulty", ""),
+                "format": row.get("format", ""),
+                "summary": row.get("summary", ""),
+                "learning_objective": row.get("learning_objective", ""),
+            }
+            rec["interactive"] = row.get("format", "").lower() in INTERACTIVE_FORMATS
+            rec["title_match"] = _titles_match_loosely(rec["title"], row.get("title", ""))
+            rec["deduped_from"] = rows[0]["content_id"] if j > 0 else None
+            records.append(rec)
+
+    # --- Guardar un JSON por articulo ---
     for r in records:
         per_path = OUT_DIR / f"{r['content_id']}.json"
         with open(per_path, "w", encoding="utf-8") as f:
@@ -1063,7 +1473,7 @@ def main():
     # Tabla en pantalla
     print()
     print("=" * 60)
-    print("RESUMEN DE LA INGESTA PILOTO")
+    print("RESUMEN DE LA INGESTA COMPLETA")
     print("=" * 60)
     print(_format_summary_table(records))
     print()
@@ -1071,7 +1481,8 @@ def main():
     n_short = sum(1 for r in records if r["classification"] == "short")
     n_empty = sum(1 for r in records if r["classification"] in ("empty", "navigation_only"))
     n_err = sum(1 for r in records if r["classification"] in ("fetch_error", "extract_error"))
-    print(f"ok={n_ok}  short={n_short}  empty/nav={n_empty}  errores={n_err}  total={len(records)}")
+    n_dedup = sum(1 for r in records if r.get("deduped_from"))
+    print(f"ok={n_ok}  short={n_short}  empty/nav={n_empty}  errores={n_err}  gemelos={n_dedup}  total={len(records)}")
     print()
     print("Para revisar: abre data/scraped/<content_id>.json y el CSV resumen.")
 

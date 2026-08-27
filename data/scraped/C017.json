@@ -8,7 +8,7 @@
     "status": 200,
     "ok": true,
     "error": null,
-    "elapsed_ms": 788,
+    "elapsed_ms": 0,
     "bytes": 43242
   },
   "title": "Cuentas corrientes, depósitos a la vista y libretas de ahorro",
@@ -239,6 +239,7 @@
     "platforms": [],
     "schema_type": null
   },
+  "interactive": false,
   "classification": "ok",
   "errors": [],
   "title_match": true,
@@ -250,5 +251,6 @@
     "format": "artículo web",
     "summary": "Características y diferencias entre cuentas y libretas de ahorro",
     "learning_objective": "Elegir el producto de cuenta adecuado"
-  }
+  },
+  "deduped_from": null
 }

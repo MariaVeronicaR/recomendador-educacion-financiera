@@ -8,7 +8,7 @@
     "status": 200,
     "ok": true,
     "error": null,
-    "elapsed_ms": 628,
+    "elapsed_ms": 0,
     "bytes": 51656
   },
   "title": "Planificación financiera antes de gastar: qué hacer con la paga extra o la devolución de la renta -",
@@ -109,7 +109,15 @@
     },
     {
       "type": "paragraph",
-      "text": "MADRID 29/06/2026. La campaña de la renta (si sale a devolver) y la llegada de la paga extraordinaria de verano hacen que muchas personas reciban en estas fechas un ingreso adicional. Y coincidiendo con las vacaciones, es inevitable tener la tentación de destinarlo al ocio y disfrute. Sin embargo, sin renunciar a disfrutar del periodo estival, estos ingresos también pueden convertirse en una oportunidad para mejorar la planificación financiera, reforzando el ahorro y/o la inversión para algún objetivo.\n“La planificación financiera consiste, básicamente, en tomar decisiones hoy pensando en las necesidades que tendremos mañana\", explica Roberto España, del Banco de España, miembro de Finanzas Para Todos, iniciativa de educación financiera de la que también forman parte la Comisión Nacional del Mercado de Valores y el Ministerio de Economía Comercio y Empresa. En este sentido, recuerda que tanto la devolución del IRPF como la paga extra \"no pueden considerarse como “imprevistos” ni deberían entenderse como un premio, sino como recursos que conviene integrar en nuestra planificación financiera\".\nEl verano suele ser una época de mayor gasto, pero también puede convertirse en el mejor momento para dar un paso adelante en la gestión del dinero. Aprovechar una devolución del IRPF o una paga extra para combinar disfrute, ahorro e inversión puede marcar la diferencia entre cubrir únicamente las necesidades del presente o empezar a construir los objetivos del futuro. En definitiva, una oportunidad para poner en práctica el lema del próximo Día de la Educación Financiera: \"Ahorra. Invierte. Avanza\"."
+      "text": "MADRID 29/06/2026. La campaña de la renta (si sale a devolver) y la llegada de la paga extraordinaria de verano hacen que muchas personas reciban en estas fechas un ingreso adicional. Y coincidiendo con las vacaciones, es inevitable tener la tentación de destinarlo al ocio y disfrute. Sin embargo, sin renunciar a disfrutar del periodo estival, estos ingresos también pueden convertirse en una oportunidad para mejorar la planificación financiera, reforzando el ahorro y/o la inversión para algún objetivo.\n“La planificación financiera consiste, básicamente, en tomar decisiones hoy pensando en las necesidades que tendremos mañana\", explica Roberto España, del Banco de España, miembro de Finanzas Para Todos, iniciativa de educación financiera de la que también forman parte la Comisión Nacional del Mercado de Valores y el Ministerio de Economía Comercio y Empresa. En este sentido, recuerda que tanto la devolución del IRPF como la paga extra \"no pueden considerarse como “imprevistos” ni deberían entenderse como un premio, sino como recursos que conviene integrar en nuestra planificación financiera\".\nEl verano suele ser una época de mayor gasto, pero también puede convertirse en el mejor momento para dar un paso adelante en la gestión del dinero. Aprovechar una devolución del IRPF o una paga extra para combinar disfrute, ahorro e inversión puede marcar la diferencia entre cubrir únicamente las necesidades del presente o empezar a construir los objetivos del futuro. En definitiva, una oportunidad para poner en práctica el lema del próximo Día de la Educación Financiera: \"Ahorra. Invierte. Avanza\".",
+      "links": [
+        {
+          "text": "lema",
+          "href": "https://www.finanzasparatodos.es/ahorra-invierte-avanza-lema-del-d-a-de-la-educaci-n-financiera-2026",
+          "start": 1538,
+          "end": 1542
+        }
+      ]
     },
     {
       "type": "heading",
@@ -183,6 +191,7 @@
     "platforms": [],
     "schema_type": null
   },
+  "interactive": false,
   "classification": "ok",
   "errors": [],
   "title_match": false,
@@ -194,5 +203,6 @@
     "format": "nota de prensa",
     "summary": "Recomendaciones para aprovechar ingresos extraordinarios",
     "learning_objective": "Decidir qué hacer con ingresos extra"
-  }
+  },
+  "deduped_from": null
 }

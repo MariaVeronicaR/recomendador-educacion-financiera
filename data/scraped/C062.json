@@ -8,7 +8,7 @@
     "status": 200,
     "ok": true,
     "error": null,
-    "elapsed_ms": 3738,
+    "elapsed_ms": 0,
     "bytes": 573546
   },
   "title": "Marco de competencias",
@@ -1124,6 +1124,7 @@
     "platforms": [],
     "schema_type": null
   },
+  "interactive": false,
   "classification": "ok",
   "errors": [],
   "title_match": false,
@@ -1140,5 +1141,6 @@
     "n_pages": 20,
     "body_size": 13.0,
     "extractor": "pymupdf"
-  }
+  },
+  "deduped_from": null
 }
