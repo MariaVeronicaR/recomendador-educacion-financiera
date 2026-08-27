@@ -36,12 +36,8 @@ C032,C19,directa,Explica la TAE de un préstamo hipotecario
 C033,C05,directa,Explica el tipo de interés efectivo
 C034,C04,directa,Explica coste financiero del crédito
 C034,C10,directa,Explica coste financiero de un préstamo
-C035,C12,directa,Concepto principal inferido del topic inversión
-C036,C12,directa,Concepto principal inferido del topic inversión
-C037,C12,directa,Concepto principal inferido del topic inversión
-C038,C12,directa,Concepto principal inferido del topic inversión
+C036,C12,directa,Tutorial CNMV sobre perfiles de inversor: riesgo y decisiones de inversión
 C039,C26,directa,Explica qué son y cómo funcionan los fondos
-C040,C24,directa,Explica acciones como activos financieros
 C041,C13,directa,Explica riesgo
 C041,C14,directa,Explica diversificación
 C042,C15,directa,Concepto principal inferido del topic fraude
@@ -81,7 +77,6 @@ C072,C03,directa,Concepto principal inferido del topic deuda
 C073,C02,directa,Concepto principal inferido del topic ahorro
 C074,C23,directa,Herramienta de planificación de jubilación
 C075,C01,directa,Concepto principal inferido del topic planificación
-C076,C01,directa,Concepto principal inferido del topic planificación
 C077,C10,directa,Concepto principal inferido del topic préstamos
 C078,C14,directa,Explica diversificación de cartera
 C079,C07,directa,La sección de conocimiento financiero aborda inflación y valor real del dinero
@@ -105,3 +100,29 @@ C096,C17,directa,Impacto práctico del tipo de cambio
 C097,C17,directa,Aspectos prácticos de divisas y comisiones
 C098,C20,directa,Definición técnica oficial de PIB
 C099,C20,directa,Explicación macroeconómica básica del PIB
+C100,C24,directa,La guía explica los productos de renta fija como activos financieros
+C100,C12,directa,La guía es material de inversión
+C101,C24,directa,Opciones y futuros son activos financieros derivados
+C101,C25,directa,Los derivados implican alta volatilidad
+C101,C12,directa,La guía es material de inversión
+C102,C12,directa,La guía trata la protección regulatoria del inversor
+C102,C13,directa,La protección del inversor está ligada a la gestión del riesgo
+C103,C24,directa,Las acciones son activos financieros
+C103,C12,directa,La guía es material de inversión
+C104,C24,directa,Las órdenes de valores operan sobre activos financieros
+C104,C25,directa,Las órdenes bursátiles se ejecutan en mercados volátiles
+C104,C12,directa,La guía es material de inversión
+C105,C24,directa,Invertir en bolsa implica operar con activos financieros
+C105,C25,directa,La bolsa implica volatilidad
+C105,C12,directa,La guía es material de inversión
+C106,C21,directa,La guía trata la fiscalidad de las inversiones
+C107,C15,directa,La persuasión digital es una técnica de fraude financiero
+C107,C29,directa,La manipulación online requiere protección de datos
+C109,C27,directa,Leccion sobre criptoactivos
+C109,C13,directa,Riesgo de los criptoactivos
+C110,C27,directa,Validacion en blockchain como parte de la tecnologia cripto
+C111,C27,directa,"Ethereum, tokens y smart contracts son infraestructura cripto"
+C112,C27,directa,DeFi es un ecosistema cripto
+C112,C13,directa,Riesgo de DeFi
+C113,C27,directa,Web 3.0 es parte del ecosistema cripto
+C114,C27,directa,Terminologia cripto
