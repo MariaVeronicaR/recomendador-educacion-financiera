@@ -48,11 +48,14 @@ Eso es todo. Si entiendes esto, entiendes el TFM.
 | Archivo | Qué es | Quién lo genera |
 |---|---|---|
 | `data/concepts.csv` | Los 30 conceptos (C01-C30) que el sistema enseña: ahorro, inflación, hipoteca, etc. | Creado a mano al inicio del proyecto |
-| `data/contents.csv` | Los 99 contenidos (artículos) con su tema, dificultad y conceptos que enseñan | Recopilado de BdE + CNMV |
-| `data/prerequisites.csv` | Las reglas pedagógicas: "para ver X, primero debes saber Y" | Definido por el diseño pedagógico |
-| `data/content_concept_map.csv` | Qué conceptos enseña cada contenido | Recopilado manualmente |
+| `data/contents.csv` | Los **104 contenidos** (C001-C114, artículos y PDFs) con su tema, dificultad y conceptos que enseñan | Recopilado de BdE + CNMV |
+| `data/prerequisites.csv` | Las **34 reglas pedagógicas**: "para ver X, primero debes saber Y" | Definido por el diseño pedagógico |
+| `data/content_concept_map.csv` | Qué conceptos enseña cada contenido (122 asignaciones, refinadas manualmente con evidencia) | Revisado a mano tras el scraping |
+| `data/sources.csv` | Las **8 fuentes** oficiales (Finanzas para Todos, CNMV, BdE, OCDE, PISA…) con su fiabilidad | Documentado al inicio |
+| `data/scraped/*.json` | El **texto crudo extraído** de cada URL (HTML con Trafilatura, PDF con PyMuPDF) | `ingest_contents.py` |
+| `data/enriched/*.json` | Cada contenido **enriquecido con LLM**: TLDR, puntos clave y 3 preguntas de quiz etiquetadas por concepto | `enrich_contents.py` |
 | `data/users_synthetic.csv` | Los **1.916 perfiles de usuario** inventados a partir de la ECF real | `regenerate_users_from_ecf.py` |
-| `data/interactions_synthetic.csv` | Las **23.000 lecturas simuladas** que esos usuarios harían | `generate_interactions_realistic.py` |
+| `data/interactions_synthetic.csv` | Las **23.000 lecturas simuladas** que esos usuarios harían (symlink al fichero v2 validado) | `generate_interactions_v2.py` |
 | `data/evaluation_metrics_*.csv` | Las **métricas de calidad** de cada modelo | `evaluate_models.py` |
 
 ### Lo que NO debes tocar (archivado en `archive/`)
@@ -111,17 +114,17 @@ Si no contestó alguna (NS/NC), su nivel queda como **NaN** (ausente). Esto es h
 
 ### PASO 3: Generar las 23.000 lecturas simuladas
 
-**Script:** `data/scripts/generate_interactions_realistic.py`
+**Script:** `data/scripts/generate_interactions_v2.py` (v2, la versión actual)
 
 **Qué hace:**
-Para cada uno de los 1.916 usuarios, simula entre 3 y 14 lecturas de contenidos del catálogo (media 12).
+Para cada uno de los 1.916 usuarios, simula entre 10 y 14 lecturas de contenidos del catálogo (media 12, total 23.000).
 
 **Lógica de la simulación (por cada lectura):**
 
 1. **¿Qué tema le interesa?** (afinidad)
    - El usuario "joven con cuenta de ahorro" tiene más afinidad por *planificación/ahorro/cuentas*.
    - El que "no cubre gastos" tiene más afinidad por *deuda/crédito/presupuesto*.
-   - Esto se modela con pesos aprendidos del ECF.
+   - Esto se modela con pesos aprendidos del ECF (función `topic_affinity`).
 
 2. **¿Qué dificultad?** (60% básico / 30% intermedio / 10% avanzado)
    - Pero esto es por **usuario**, no global. Cada usuario tiene su propia distribución de dificultad (más básico si sabe poco, más avanzado si sabe mucho).
@@ -139,18 +142,22 @@ Para cada uno de los 1.916 usuarios, simula entre 3 y 14 lecturas de contenidos 
 5. **¿Termina la lectura y aprueba el quiz?**
    - Calculamos un score = `0.4 × completion + 0.4 × quiz + 0.2 × ruido`.
 
-**Resultado:** 23.000 filas en `data/interactions_synthetic.csv` con este formato:
+**Resultado:** 23.000 filas en `data/interactions_synthetic_v2_validated.csv`. El fichero `data/interactions_synthetic.csv` es un **symlink** a este, por lo que el pipeline siempre lee la versión vigente. El script además imprime 7 validaciones (relevancia, distribución de scores, KL entre perfiles, completion por cuartil de afinidad, eventos, topics y resumen).
+
+Formato de cada fila:
 
 | Columna | Ejemplo | Significado |
 |---|---|---|
 | interaction_id | I00001 | ID único |
-| user_id | U0042 | Quién leyó |
-| content_id | C003 | Qué leyó |
+| user_id | U0001 | Quién leyó |
+| content_id | C800 | Qué leyó |
+| topic | cuentas bancarias | Tema del contenido |
+| affinity | 1.0 | Afinidad del usuario por ese tema |
+| completion | 1 | Cuánto consumió (0-1) |
+| relevant | 1 | Si la lectura se considera relevante para el usuario |
 | event | completed | Tipo de interacción |
-| score | 0.78 | Calidad de la lectura (0-1) |
-| completion_rate | 1.0 | Cuánto consumió |
-| quiz_score | 0.85 | Resultado del test |
-| timestamp | 2025-10-12T... | Cuándo leyó |
+| score | 1.0 | Calidad de la lectura (0-1) |
+| timestamp | 2025-01-00:00:00 | Cuándo leyó |
 
 **Detalle técnico:** el timestamp se genera **por usuario**, con un offset aleatorio (cada usuario tiene su propia línea temporal en los primeros 60 días desde el inicio). Esto permite hacer un split Train/Test **temporal** válido (los pares más recientes van a Test).
 
@@ -166,6 +173,7 @@ Para evitar **leakage** (que un mismo par (user, contenido) esté en Train y en 
 
 1. Si el par aparece solo 1 vez → va a Train (no hay nada que dividir).
 2. Si aparece ≥2 veces → toma las más recientes para Test, las demás a Train.
+3. Al final, una **validación anti-leakage** con `assert` comprueba que ningún par `(user_id, content_id)` está en ambos conjuntos; si ocurriera, el script aborta.
 
 Resultado: ~20.000 interacciones en Train, ~5.000 en Test, **sin que ningún par se repita entre ambos**.
 
@@ -241,11 +249,11 @@ Por ejemplo, un usuario que nunca leyó sobre ahorro NO verá contenido de inver
 | **Precision@5** | De las 5 recomendaciones, cuántas eran relevantes (en su historial real de Test) | 0-1 |
 | **Recall@5** | De sus lecturas relevantes en Test, cuántas aparecieron en las 5 recomendaciones | 0-1 |
 | **NDCG@5** | Como Recall pero ponderado: posición 1 vale más que posición 5 | 0-1 |
-| **Coverage** | Qué porcentaje del catálogo total (99 contenidos) fue recomendado a al menos un usuario | 0-100% |
+| **Coverage** | Qué porcentaje del catálogo total (104 contenidos) fue recomendado a al menos un usuario | 0-100% |
 | **PVR Pre** | % de recomendaciones que violan las reglas pedagógicas (antes del filtro) | 0-100% |
 | **PVR Post** | Mismo, después del filtro (debe ser 0% si el filtro funciona) | 0-100% |
 | **Filter Rate** | % de posiciones del ranking crudo que fueron rechazadas por el filtro | 0-100% |
-| **Feasibility@5** | % de usuarios con Test relevante que obtuvieron 5 recomendaciones post-filtro | 0-100% |
+| **Feasibility@5** | % de usuarios con Test relevante que obtuvieron 5 recomendaciones **tras el filtro** (no tras el fallback). Si el filtro deja menos de 5, el usuario queda "no feasible" | 0-100% |
 
 ---
 
@@ -282,23 +290,49 @@ coverage_pct, pvr_pre_pct, pvr_post_pct, filter_rate_pct, feasibility_at_5_pct
 ## 📋 Cómo reproducir el experimento desde cero
 
 ```bash
-# 1. Generar usuarios (1.916 perfiles)
-cd /Users/veronica/Desktop/tfm/ECF-archivos
+# 1. (Opcional) Re-scrapear los contenidos del catálogo → data/scraped/
+#    Requiere: pip3 install trafilatura lxml pymupdf httpx beautifulsoup4
+python3 /Users/veronica/Desktop/tfm/data/scripts/ingest_contents.py
+
+# 2. (Opcional) Enriquecer con LLM → data/enriched/
+#    Requiere: pip3 install anthropic  y  export ANTHROPIC_API_KEY=...
+python3 /Users/veronica/Desktop/tfm/data/scripts/enrich_contents.py
+
+# 3. Generar usuarios (1.916 perfiles)
 python3 /Users/veronica/Desktop/tfm/data/scripts/regenerate_users_from_ecf.py
 
-# 2. Generar interacciones (23.000 lecturas simuladas)
-python3 /Users/veronica/Desktop/tfm/data/scripts/generate_interactions_realistic.py
+# 4. Generar interacciones (23.000 lecturas simuladas) → interactions_synthetic_v2_validated.csv
+python3 /Users/veronica/Desktop/tfm/data/scripts/generate_interactions_v2.py
 
-# 3. Evaluar los 5 modelos
+# 5. Evaluar los 5 modelos
 cd /Users/veronica/Desktop/tfm/ECF-archivos
 python3 /Users/veronica/Desktop/tfm/src/utils/evaluate_models.py
 
-# 4. Leer resultados
+# 6. Leer resultados
 cat /Users/veronica/Desktop/tfm/data/evaluation_metrics_warm.csv
 cat /Users/veronica/Desktop/tfm/data/evaluation_metrics_cold.csv
 ```
 
 Si todo funciona, verás las tablas con P@5, R@5, NDCG@5, PVR Pre/Post, Filter Rate, Feasibility para los 5 modelos.
+
+---
+
+## 🕷️ El pipeline de contenidos reales (scraping + enriquecimiento)
+
+Este es el trabajo más reciente del proyecto: en lugar de depender solo de resúmenes escritos a mano, los contenidos del catálogo ahora se obtienen **directamente de las fuentes oficiales** (Finanzas para Todos, CNMV, Banco de España).
+
+1. **`ingest_contents.py`** descarga cada URL de `data/contents.csv`:
+   - Si es **HTML**, extrae el texto con **Trafilatura** (conserva títulos, secciones y enlaces).
+   - Si es **PDF**, extrae el texto con **PyMuPDF**.
+   - Escribe un JSON por contenido en `data/scraped/<content_id>.json` más dos reportes (`ingest_report.json` y `ingest_summary.csv`). Es reanudable y tolerante a fallos (si una URL falla, sigue con las demás).
+
+2. **`enrich_contents.py`** usa **Claude (Haiku 4.5)** para generar, a partir del texto scrapeado:
+   - `tldr`: resumen de 2-4 frases.
+   - `key_points`: 3-5 puntos clave.
+   - `quiz`: 3 preguntas tipo test (4 opciones, 1 correcta, explicación), **cada una etiquetada con el `concept_id` que evalúa**.
+   - Escribe en `data/enriched/<content_id>.json` (capa paralela a `scraped/`, no se mezclan). Es reanudable (`--force` para regenerar, `--pilot` para probar con unos pocos).
+
+> **Nota:** el scraping y el enriquecimiento alimentan el **catálogo** (qué contenidos existen y qué enseñan). No cambian el pipeline de evaluación de modelos, que sigue leyendo `interactions_synthetic.csv`.
 
 ---
 
@@ -309,7 +343,8 @@ Si todo funciona, verás las tablas con P@5, R@5, NDCG@5, PVR Pre/Post, Filter R
 - "El filtro pedagógico reduce la tasa de violaciones pedagógicas (PVR) a 0% en todos los modelos."
 - "Popularidad supera a los modelos personalizados en P@5 en Warm Start, lo que es consistente con la literatura sobre datasets dispersos."
 - "TF-IDF muestra mayor cobertura (diversidad) que Popularidad en ambos escenarios."
-- "La separación Train/Test por (user_id, content_id) evita leakage."
+- "La separación Train/Test por (user_id, content_id) evita leakage, y un `assert` lo garantiza."
+- "En Cold Start, Popularidad también lidera P@5 (0.146), seguida de la variante NeuMF (0.123)."
 
 ### ❌ NO puedes afirmar:
 - "Los modelos personalizados son significativamente mejores que Popularidad" (sin pruebas estadísticas).
@@ -333,11 +368,15 @@ TFM/
 ├── data/
 │   ├── scripts/                     ← Scripts del generador (orden cronológico)
 │   │   ├── regenerate_users_from_ecf.py    ← PASO 2: crear usuarios
-│   │   ├── generate_interactions_realistic.py ← PASO 3: crear interacciones
+│   │   ├── generate_interactions_v2.py     ← PASO 3: crear interacciones (v2 actual)
+│   │   ├── ingest_contents.py              ← scraping de URLs → data/scraped/
+│   │   ├── enrich_contents.py              ← enriquecimiento LLM → data/enriched/
 │   │   └── repair_catalog_structure.py     ← (herramienta de catálogo)
+│   ├── scraped/                     ← texto crudo extraído de cada URL (JSON)
+│   ├── enriched/                    ← TLDR + key_points + quiz por contenido (JSON)
 │   ├── users_synthetic.csv           ← output del PASO 2
-│   ├── interactions_synthetic*.csv ← output del PASO 3
-│   ├── concepts.csv, contents.csv, ... ← datos pedagógicos
+│   ├── interactions_synthetic*.csv ← output del PASO 3 (v2_validated es el vigente)
+│   ├── concepts.csv, contents.csv, prerequisites.csv, content_concept_map.csv, sources.csv ← datos pedagógicos
 │   ├── evaluation_metrics_*.csv     ← output del PASO 5
 │   └── README.md                     ← este archivo para ti misma
 │
@@ -364,7 +403,13 @@ TFM/
 R: El TFM está enfocado en jóvenes de 18-34 años. 7.764 incluye personas mayores, cuyo perfil financiero es distinto.
 
 **P: ¿Por qué 23.000 interacciones y no más?**
-R: El script genera ~12 interacciones por usuario. Con 1.916 × 12 = ~23.000. Aumentar más no aporta señal significativa y ralentiza la evaluación.
+R: El script genera entre 10 y 14 interacciones por usuario (media 12). Con 1.916 × 12 = ~23.000. Aumentar más no aporta señal significativa y ralentiza la evaluación.
+
+**P: ¿Dónde está el texto real de los contenidos?**
+R: En `data/scraped/` (texto crudo extraído de las URLs oficiales) y en `data/enriched/` (resumen, puntos clave y quiz generados con LLM). El catálogo `contents.csv` solo guarda los metadatos (tema, dificultad, URL).
+
+**P: ¿Qué es el symlink `interactions_synthetic.csv`?**
+R: Es un enlace simbólico a `interactions_synthetic_v2_validated.csv`, la versión vigente del generador. Así el pipeline siempre lee la versión correcta sin tocar el nombre del fichero. La versión anterior (`v1_backup`) se conserva como respaldo.
 
 **P: ¿Por qué el filtro pedagógico se llama "muro de seguridad"?**
 R: Porque **garantiza** que el sistema nunca recomiende algo inadecuado, sin importar lo que diga el modelo de IA. El modelo puede equivocarse; el filtro no.
