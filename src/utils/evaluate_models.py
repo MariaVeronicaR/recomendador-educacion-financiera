@@ -14,7 +14,8 @@ Metodología:
   las interacciones con score >= 0.5 presentes exclusivamente en el Test.
 - Se excluyen del promedio los usuarios sin interacciones relevantes en su Test.
 - PVR (Prerequisite Violation Rate) utiliza el progreso acumulado en Train.
-- Salida guardada en data/evaluation_metrics.csv y mostrada por consola.
+- Salida guardada en data/evaluation_metrics_warm.csv (arranque en caliente) y
+  data/evaluation_metrics_cold.csv (arranque en frío), y mostrada por consola.
 
 Uso:
     python3 src/utils/evaluate_models.py
@@ -48,7 +49,7 @@ torch.manual_seed(42)
 DATA_DIR = "/Users/veronica/Desktop/tfm/data"
 USERS_FILE = os.path.join(DATA_DIR, "users_synthetic.csv")
 CONTENTS_FILE = os.path.join(DATA_DIR, "contents.csv")
-INTERACTIONS_FILE = os.path.join(DATA_DIR, "interactions_synthetic.csv")
+INTERACTIONS_FILE = os.path.join(DATA_DIR, "interactions_synthetic_v3.csv")
 PREREQS_FILE = os.path.join(DATA_DIR, "prerequisites.csv")
 MAP_FILE = os.path.join(DATA_DIR, "content_concept_map.csv")
 METRICS_OUT_WARM = os.path.join(DATA_DIR, "evaluation_metrics_warm.csv")
@@ -185,8 +186,10 @@ def make_train_test_split(interactions_df, test_ratio=0.2, seed=42):
 
     Reglas:
     - Agrupa por (user_id, content_id) para que el mismo par no quede en ambos sets.
-    - Si hay timestamp, ordena cronológicamente y toma los últimos pares como Test.
-    - Si no hay timestamp o no es suficiente, baraja con seed fija (random split por par).
+    - Si hay timestamp válido por usuario, ordena cronológicamente y toma los últimos
+      pares como Test (split temporal dentro de cada usuario).
+    - Si NO hay timestamp, baraja los pares del usuario con seed fija (random split
+      reproducible por par).
     - Usuarios con un solo par (user_id, content_id) → todo a Train.
     - Usuarios con >= 2 pares: garantiza al menos 1 par en Test.
     """
@@ -195,21 +198,10 @@ def make_train_test_split(interactions_df, test_ratio=0.2, seed=42):
 
     if has_timestamp:
         df['_ts_parsed'] = pd.to_datetime(df['timestamp'], errors='coerce')
-        pair_meta = (
-            df.groupby(['user_id', 'content_id'])
-            .agg(_first_ts=('_ts_parsed', 'min'))
-            .reset_index()
-        )
-        pair_meta = pair_meta.sort_values('_first_ts').reset_index(drop=True)
     else:
-        rng = random.Random(seed)
-        pair_meta = (
-            df.groupby(['user_id', 'content_id']).size().reset_index(name='_count')
-        )
-        order = list(range(len(pair_meta)))
-        rng.shuffle(order)
-        pair_meta = pair_meta.iloc[order].reset_index(drop=True)
+        df['_ts_parsed'] = pd.NaT  # Marcador para no romper el sort por timestamp
 
+    rng = random.Random(seed)
     train_mask = pd.Series(False, index=df.index)
     test_mask = pd.Series(False, index=df.index)
 
@@ -229,14 +221,19 @@ def make_train_test_split(interactions_df, test_ratio=0.2, seed=42):
                 train_mask.loc[idx] = True
             continue
 
-        # Ordenar los pares únicos por timestamp si existe
+        # Ordenar los pares únicos: por timestamp si está disponible, o aleatorio si no
         if has_timestamp:
-            sorted_idx = sorted(unique_pairs, key=lambda i: df.loc[i, '_ts_parsed'])
+            # Orden estable por timestamp, desempate por el orden original del CSV
+            sorted_idx = sorted(
+                unique_pairs,
+                key=lambda i: (df.loc[i, '_ts_parsed'], i)
+            )
         else:
-            sorted_idx = unique_pairs  # ya están barajados por pair_meta
+            sorted_idx = list(unique_pairs)
+            rng.shuffle(sorted_idx)  # Baraja reproducible por usuario
 
         n_test = max(1, int(round(n_pairs * test_ratio)))
-        # Tomar los últimos n_test pares (los más recientes) como Test
+        # Tomar los últimos n_test pares (los más recientes según el orden elegido)
         for idx in sorted_idx[-n_test:]:
             test_mask.loc[idx] = True
         # El resto a Train
@@ -245,6 +242,13 @@ def make_train_test_split(interactions_df, test_ratio=0.2, seed=42):
 
     train_df = df[train_mask].drop(columns=['_ts_parsed'], errors='ignore').reset_index(drop=True)
     test_df = df[test_mask].drop(columns=['_ts_parsed'], errors='ignore').reset_index(drop=True)
+
+    # Validación anti-leakage: ningún par (user_id, content_id) puede estar en ambos sets
+    train_pairs = set(zip(train_df['user_id'], train_df['content_id']))
+    test_pairs = set(zip(test_df['user_id'], test_df['content_id']))
+    overlap = train_pairs & test_pairs
+    assert len(overlap) == 0, f"LEAKAGE: {len(overlap)} pares (user_id, content_id) están en Train y Test"
+
     return train_df, test_df
 
 def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, content_concepts, k=5):
@@ -283,12 +287,15 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
     violations_post = 0
     total_recs_post = 0
 
-    # filter_rate_pct: contador explícito del ranking crudo rechazado por el filtro
-    # pedagógico. Esto es distinto del fallback: mide cuántas posiciones del top-K
-    # original fueron saltadas por violación de prerequisites, antes de que el
-    # fallback rellenase con posiciones más bajas.
     raw_rejected_by_filter = 0
     raw_total_considered = 0
+
+    # feasibility_at_5: % de usuarios con relevantes en Test que obtienen k=5
+    # recomendaciones TRAS el filtro pedagógico (no tras el fallback). Si el filtro
+    # deja menos de k, el usuario queda "no feasible" — esto es información
+    # relevante para el TFM porque mide si el modelo tiene suficiente cobertura.
+    users_full_count = 0
+    users_eval_with_pos = 0
 
     users_evaluated = 0
 
@@ -320,8 +327,18 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
                     break
 
         # --- POST-FILTRO (IA + Grafo Pedagógico) ---
-        filtered_recs = []
-        for cid, _ in sorted_raw.items():
+        # Recorremos TODO el ranking crudo (sin cortar al llegar a k=5) para que
+        # filter_rate_pct refleje correctamente qué proporción de candidatos fue
+        # rechazada por el filtro pedagógico. Solo iteramos sobre items con score > 0
+        # (los items con score 0 nunca serían recomendados por el modelo).
+        # El filtro verifica prerequisites en cada candidato: si pasa, se incluye
+        # en filtered_recs (hasta llegar a k). Si falla, se cuenta como rechazo.
+        raw_rejected_by_filter = 0
+        raw_total_considered = 0
+        filtered_recs = []  # Inicializar por si el modelo no produce ranking con score>0
+        for cid, score in sorted_raw.items():
+            if score <= 0:
+                break  # Los items con score 0 no son candidatos reales del modelo
             if cid in history:
                 continue
 
@@ -334,37 +351,29 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
                     break
 
             if qualified:
-                filtered_recs.append(cid)
-                if len(filtered_recs) == k:
-                    break
+                if len(filtered_recs) < k:
+                    filtered_recs.append(cid)
             else:
                 raw_rejected_by_filter += 1
-
-        # Rellenar con fallback si el filtro deja menos de K recomendaciones
-        # IMPORTANTE: el fallback debe respetar el ranking del modelo (sorted_raw),
-        # no usar el orden físico de all_contents. Esto evita dependencia del orden del CSV.
-        if len(filtered_recs) < k:
-            for cid, _ in sorted_raw.items():
-                if cid in history or cid in filtered_recs:
-                    continue
-                qualified = True
-                for concept in content_concepts[cid]:
-                    required = concept_prereqs[concept]
-                    if required and not set(required).issubset(mastered):
-                        qualified = False
-                        break
-                if qualified:
-                    filtered_recs.append(cid)
-                    if len(filtered_recs) == k:
-                        break
 
         # Métricas POST sobre el ranking tras filtro (solo si tiene relevantes en TEST)
         if len(relevant_ids) > 0:
             hits = len(set(filtered_recs) & relevant_ids)
-            precisions.append(hits / k) # Siempre k=5 recomendaciones
+            precisions.append(hits / k)  # k fijo
             recalls.append(hits / len(relevant_ids))
             ndcgs.append(calculate_ndcg(filtered_recs, relevant_ids, k))
 
+        # feasibility_at_5: ¿el usuario tiene al menos k=5 recomendaciones tras el
+        # filtro? Si no, el sistema no puede darle 5 sugerencias seguras.
+        if len(relevant_ids) > 0:
+            users_eval_with_pos += 1
+            if len(filtered_recs) >= k:
+                users_full_count += 1
+
+        # PVR Post: por construcción del filtro pedagógico, TODAS las
+        # recomendaciones en filtered_recs cumplen los prerequisites, así que el
+        # conteo de violations_post sobre filtered_recs SIEMPRE será 0.
+        # Reportar 0.0% confirma que el filtro funciona correctamente.
         for cid in filtered_recs:
             recommended_set.add(cid)
             total_recs_post += 1
@@ -391,33 +400,8 @@ def evaluate_predictions(preds_matrix, train_df, test_df, concept_prereqs, conte
     # raw_rejected_by_filter cuenta cuántos candidatos válidos fueron saltados por PVR.
     filter_rate_pct = (raw_rejected_by_filter / raw_total_considered) * 100.0 if raw_total_considered > 0 else 0.0
 
-    # feasibility_at_5: % de usuarios con relevantes en test que obtienen 5 recomendaciones
-    # tras el filtro pedagógico (no antes). Un usuario es "feasible" si filtered_recs >= 5.
-    users_full_count = 0
-    users_eval_with_pos = 0
-    for uid, r in test_relevant.items():
-        if len(r) > 0:
-            users_eval_with_pos += 1
-            user_preds = preds_matrix.loc[uid]
-            hist = train_history.get(uid, set())
-            sorted_raw = user_preds.sort_values(ascending=False)
-            filtered = []
-            mastered = user_mastered_train.get(uid, set())
-            for cid, _ in sorted_raw.items():
-                if cid in hist:
-                    continue
-                qualified = True
-                for concept in content_concepts[cid]:
-                    req = concept_prereqs[concept]
-                    if req and not set(req).issubset(mastered):
-                        qualified = False
-                        break
-                if qualified:
-                    filtered.append(cid)
-                    if len(filtered) >= k:
-                        break
-            if len(filtered) >= k:
-                users_full_count += 1
+    # feasibility_at_5: % de usuarios con relevantes en Test que obtienen al menos k
+    # recomendaciones TRAS el filtro (medido en el bucle principal).
     feasibility_at_5 = (users_full_count / users_eval_with_pos) * 100.0 if users_eval_with_pos > 0 else 0.0
 
     print(f"  [Debug] Usuarios evaluados en test (con interacciones positivas en test): {users_evaluated}/{len(all_users)}")
@@ -519,9 +503,14 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
     precisions, recalls, ndcgs = [], [], []
     recommended_set = set()
 
-    # filter_rate_pct Cold: contador explícito de rechazos del ranking crudo
+    # filter_rate_pct Cold: % del ranking crudo rechazado por el filtro pedagógico.
     raw_rejected_by_filter = 0
     raw_total_considered = 0
+
+    # feasibility_at_5 Cold: % de cold users con relevantes en Test que obtienen
+    # al menos k recomendaciones TRAS el filtro (medido en el bucle principal).
+    users_full_count = 0
+    users_eval_with_pos = 0
 
     for uid in cold_users_list:
         if uid not in preds_matrix.index:
@@ -556,8 +545,18 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
                     break
 
         # --- POST-FILTRO (IA + Grafo Pedagógico) ---
+        # Recorremos TODO el ranking crudo (sin cortar al llegar a k=5) para que
+        # filter_rate_pct refleje correctamente qué proporción de candidatos fue
+        # rechazada por el filtro pedagógico. Solo iteramos sobre items con score > 0
+        # (los items con score 0 nunca serían recomendados por el modelo).
+        # El filtro verifica prerequisites en cada candidato: si pasa, se incluye
+        # en filtered_recs (hasta llegar a k). Si falla, se cuenta como rechazo.
+        # Inicializar por si el modelo no produce ranking con score>0 (ej. Popularidad
+        # inicializada con todos los scores = 0).
         filtered_recs = []
-        for cid, _ in sorted_raw.items():
+        for cid, score in sorted_raw.items():
+            if score <= 0:
+                break  # Los items con score 0 no son candidatos reales del modelo
             if cid in history:
                 continue
 
@@ -568,35 +567,28 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
                 if required and not set(required).issubset(mastered):
                     qualified = False
                     break
+
             if qualified:
-                filtered_recs.append(cid)
-                if len(filtered_recs) == k:
-                    break
+                if len(filtered_recs) < k:
+                    filtered_recs.append(cid)
             else:
                 raw_rejected_by_filter += 1
 
-        if len(filtered_recs) < k:
-            for cid, _ in sorted_raw.items():
-                if cid in filtered_recs:
-                    continue
-                qualified = True
-                for concept in content_concepts[cid]:
-                    required = concept_prereqs[concept]
-                    if required and not set(required).issubset(mastered):
-                        qualified = False
-                        break
-                if qualified:
-                    filtered_recs.append(cid)
-                    if len(filtered_recs) >= k:
-                        break
-
         if len(relevant_ids) > 0:
-            # Ya se contó users_evaluated en la sección RAW
             hits = len(set(filtered_recs) & relevant_ids)
             precisions.append(hits / k)
             recalls.append(hits / len(relevant_ids))
             ndcgs.append(calculate_ndcg(filtered_recs, relevant_ids, k))
 
+        # feasibility_at_5 Cold (medido en el bucle principal)
+        if len(relevant_ids) > 0:
+            users_eval_with_pos += 1
+            if len(filtered_recs) >= k:
+                users_full_count += 1
+
+        # PVR Post: por construcción del filtro, TODAS las recomendaciones en
+        # filtered_recs cumplen los prerequisites, así que violations_post SIEMPRE
+        # será 0. Reportar 0.0% confirma que el filtro funciona correctamente.
         for cid in filtered_recs:
             recommended_set.add(cid)
             total_recs_post += 1
@@ -620,28 +612,7 @@ def evaluate_predictions_cold(preds_matrix, train_pool_df, cold_test_df,
     # filter_rate_pct: % del ranking crudo rechazado por el filtro pedagógico.
     filter_rate_pct = (raw_rejected_by_filter / raw_total_considered) * 100.0 if raw_total_considered > 0 else 0.0
 
-    users_eval_with_pos = 0
-    users_full_count = 0
-    for uid, r in cold_relevant.items():
-        if len(r) > 0:
-            users_eval_with_pos += 1
-            user_preds = preds_matrix.loc[uid]
-            sorted_raw = user_preds.sort_values(ascending=False)
-            filtered = []
-            mastered = user_mastered_train.get(uid, set())
-            for cid, _ in sorted_raw.items():
-                qualified = True
-                for concept in content_concepts[cid]:
-                    req = concept_prereqs[concept]
-                    if req and not set(req).issubset(mastered):
-                        qualified = False
-                        break
-                if qualified:
-                    filtered.append(cid)
-                    if len(filtered) >= 5:
-                        break
-            if len(filtered) >= 5:
-                users_full_count += 1
+    # feasibility_at_5 Cold (medido en el bucle principal).
     feasibility_at_5 = (users_full_count / users_eval_with_pos) * 100.0 if users_eval_with_pos > 0 else 0.0
 
     print(f"  [Debug] Cold users evaluados (con positivos en su test): {users_evaluated}/{len(cold_users_list)}")
@@ -707,7 +678,7 @@ def main():
 
     # Validaciones iniciales
     assert len(all_users) > 0, "Debe haber usuarios registrados."
-    assert len(all_contents) == 99, "Debe haber 99 contenidos registrados."
+    assert len(all_contents) == 104, "Debe haber 104 contenidos registrados."
     assert len(interactions_df) > 0, "El dataset de interacciones está vacío."
 
     # Partición Train/Test por usuario
@@ -978,7 +949,9 @@ def main():
     print("FASE 2: COLD START (USUARIOS NUEVOS SIN HISTORIAL)")
     print("=" * 85)
 
-    N_COLD_USERS = 200
+    # N_COLD_USERS proporcional al número de usuarios del dataset (v3: 1916).
+    # Mantiene la proporción original (~20% de usuarios como "nuevos" sin historial).
+    N_COLD_USERS = max(1, int(round(len(all_users) * 0.2)))
     train_pool_df, cold_test_df, cold_users, train_pool_users = make_cold_start_split(
         interactions_df, n_cold_users=N_COLD_USERS, seed=42
     )
