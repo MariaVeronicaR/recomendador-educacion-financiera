@@ -11,12 +11,12 @@ C009,C03,directa,Concepto principal inferido del topic deuda
 C010,C23,directa,Trata preparación de jubilación y ahorro previsional
 C011,C08,directa,Concepto principal inferido del topic cuentas bancarias
 C012,C11,directa,Concepto principal inferido del topic hipotecas
-C013,C01,directa,Concepto principal inferido del topic planificación
+C013,C16,directa,Planificación financiera familiar
 C014,C12,directa,Concepto principal inferido del topic inversión
-C015,C01,directa,Concepto principal inferido del topic planificación
-C016,C01,directa,Concepto principal inferido del topic planificación
+C015,C28,directa,Glosario general de términos financieros
+C016,C28,directa,Página genérica de herramientas financieras
 C017,C08,directa,Concepto principal inferido del topic cuentas bancarias
-C018,C08,directa,Concepto principal inferido del topic cuentas bancarias
+C018,C02,directa,Depósitos a plazo como producto de ahorro
 C019,C09,directa,Explica tarjetas de crédito y débito
 C020,C09,directa,Explica el crédito revolving y su coste
 C021,C04,directa,Explica crédito al consumo
@@ -24,8 +24,8 @@ C021,C10,directa,Explica préstamos personales
 C022,C11,directa,Concepto principal inferido del topic hipotecas
 C023,C11,directa,Concepto principal inferido del topic hipotecas
 C024,C11,directa,Concepto principal inferido del topic hipotecas
-C025,C08,directa,Concepto principal inferido del topic cuentas bancarias
-C026,C05,directa,Explica tipos de interés y conceptos relacionados
+C025,C18,directa,Explica comisiones bancarias
+C026,C19,directa,Explica tipos de interés como coste efectivo
 C027,C11,directa,Concepto principal inferido del topic hipotecas
 C028,C15,directa,Concepto principal inferido del topic fraude
 C029,C15,directa,Concepto principal inferido del topic fraude
@@ -33,7 +33,7 @@ C030,C15,directa,Concepto principal inferido del topic fraude
 C031,C04,directa,Explica coste/TAE de un préstamo personal
 C031,C19,directa,Explica la TAE
 C032,C19,directa,Explica la TAE de un préstamo hipotecario
-C033,C05,directa,Explica el tipo de interés efectivo
+C033,C19,directa,Explica el tipo de interés efectivo (TAE)
 C034,C04,directa,Explica coste financiero del crédito
 C034,C10,directa,Explica coste financiero de un préstamo
 C036,C12,directa,Tutorial CNMV sobre perfiles de inversor: riesgo y decisiones de inversión
@@ -45,7 +45,7 @@ C047,C02,directa,Concepto principal inferido del topic ahorro
 C048,C02,directa,Concepto principal inferido del topic ahorro
 C049,C05,directa,Introduce interés simple
 C049,C06,directa,Introduce interés compuesto
-C050,C01,directa,Explica elementos financieros de una nómina
+C050,C21,directa,Explica retenciones e IRPF en la nómina
 C051,C21,directa,Explica conceptos básicos de impuestos/IRPF
 C052,C22,directa,Explica tipos y coberturas de seguros
 C053,C29,directa,Explica protección de datos en operaciones financieras
@@ -65,14 +65,14 @@ C064,C15,directa,Concepto principal inferido del topic fraude
 C065,C15,directa,Concepto principal inferido del topic fraude
 C066,C15,directa,Concepto principal inferido del topic fraude
 C067,C15,directa,Concepto principal inferido del topic fraude
-C068,C13,directa,Explica sesgos y riesgo en inversión
+C068,C12,directa,Explica sesgos conductuales en la inversión
 C069,C26,directa,Explica fondos de inversión
 C070,C26,directa,Explica ETF como vehículo de inversión colectiva
 C071,C01,directa,Concepto principal inferido del topic planificación
 C072,C03,directa,Concepto principal inferido del topic deuda
 C073,C02,directa,Concepto principal inferido del topic ahorro
 C074,C23,directa,Herramienta de planificación de jubilación
-C075,C01,directa,Concepto principal inferido del topic planificación
+C075,C16,directa,Calculadora de patrimonio neto para planificación financiera
 C077,C10,directa,Concepto principal inferido del topic préstamos
 C078,C14,directa,Explica diversificación de cartera
 C079,C07,directa,La sección de conocimiento financiero aborda inflación y valor real del dinero
@@ -106,7 +106,6 @@ C102,C13,directa,La protección del inversor está ligada a la gestión del ries
 C103,C24,directa,Las acciones son activos financieros
 C103,C12,directa,La guía es material de inversión
 C104,C24,directa,Las órdenes de valores operan sobre activos financieros
-C104,C25,directa,Las órdenes bursátiles se ejecutan en mercados volátiles
 C104,C12,directa,La guía es material de inversión
 C105,C24,directa,Invertir en bolsa implica operar con activos financieros
 C105,C25,directa,La bolsa implica volatilidad
