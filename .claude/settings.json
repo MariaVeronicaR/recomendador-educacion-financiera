@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import json; m=json.load\\(open\\('data/generation_metadata.json'\\)\\); print\\('seed',m['seed']\\); print\\('n_users',m['n_users']\\); print\\('n_interactions',m['n_interactions']\\); print\\('window',m['window_start'],m['window_days']\\)\")",
+      "Bash(python3 -c \"import pandas as pd; c=pd.read_csv\\('data/contents.csv'\\); print\\(sorted\\(c['topic'].unique\\(\\)\\)\\)\")",
+      "Bash(python3 -c \"import pandas as pd; c=pd.read_csv\\('data/contents.csv'\\); print\\(sorted\\(c['format'].unique\\(\\)\\)\\)\")",
+      "Bash(python3 -c \"import pandas as pd; c=pd.read_csv\\('data/concepts.csv'\\); print\\(sorted\\(c['topic'].unique\\(\\)\\)\\)\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 data/scripts/generate_interactions.py --seed 42)",
+      "Bash(python3 data/scripts/evaluate_models.py --seed 42)",
+      "Bash(python3 data/scripts/evaluate_models.py --seed 7)",
+      "Bash(python3 data/scripts/evaluate_models.py --seed 123)"
+    ]
+  }
+}

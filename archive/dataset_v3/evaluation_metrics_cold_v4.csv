@@ -1,6 +1,0 @@
-modelo,precision_5,recall_5,ndcg_5,coverage_pct,pvr_pre_pct,pvr_post_pct
-Popularidad,0.0619,0.0876,0.0742,5.05,80.0,0.0
-Random (baseline),0.0433,0.0608,0.0584,34.34,63.6,0.0
-TF-IDF + Cosine (perfil),0.0515,0.0726,0.07,12.12,22.3,0.0
-Híbrido SVD (variante perfil+contenido),0.0186,0.023,0.0224,5.05,100.0,0.0
-NeuMF-Profile (variante),0.0649,0.0996,0.0813,7.07,51.2,0.0

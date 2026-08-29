@@ -1,6 +1,0 @@
-modelo,precision_5,recall_5,ndcg_5,coverage_pct,pvr_pre_pct,pvr_post_pct,filter_rate_pct,feasibility_at_5_pct
-Popularidad,0.028,0.1296,0.0792,13.13,60.62,0.0,0.0,100.0
-Random (baseline),0.0176,0.0802,0.0464,68.69,62.82,0.0,0.0,100.0
-TF-IDF + Cosine,0.0216,0.1005,0.0645,70.71,51.04,0.0,0.0,100.0
-Híbrido SVD,0.013,0.0591,0.0367,45.45,34.05,0.0,0.0,100.0
-NCF-MLP (PyTorch),0.022,0.1043,0.0659,26.26,35.19,0.0,0.0,100.0
