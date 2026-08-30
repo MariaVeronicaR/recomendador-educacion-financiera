@@ -37,6 +37,14 @@ Diseño metodológico (calidad de la data para entrenar modelos de deep learning
    genera caminos de aprendizaje realistas y un PVR (Prerequisite Violation Rate)
    medible y coherente.
 
+5b. RELEVANCIA CONDICIONADA AL PERFIL. La probabilidad de que una interacción
+    accesible sea de dominio (completed/quiz_passed, score >= 0.5) crece con el
+    ajuste usuario-contenido (topic_match * difficulty_match). Un usuario completa
+    y aprueba sobre todo lo que le interesa y le queda a su nivel; lo popular pero
+    mal ajustado tiende a quedarse en view/started. Así la señal de relevancia
+    depende del perfil, no solo de la popularidad, y los modelos de cold start
+    tienen una señal explotable (ver pick_event).
+
 6. PATRONES TEMPORALES. Las interacciones se agrupan en sesiones con timestamps
    crecientes (minutos dentro de una sesión, días entre sesiones), con decaimiento
    de engagement. Distingue acciones pasivas (view) de activas (completed/quiz).
@@ -253,24 +261,47 @@ def concepts_mastered_for(cid, mastered):
     return True
 
 
-def pick_event(qualified, rng):
+def content_match_value(cid, topic_weights, difficulty_weights):
+    """Ajuste usuario-contenido en [0, 1] (sin el atractivo de popularidad).
+
+    Combina el interés por topic y la dificultad preferida. Se usa para
+    condicionar la probabilidad de evento de dominio: a mayor ajuste, más
+    probable que el usuario complete/apruebe el contenido.
+    """
+    topic = topic_of_content[cid]
+    diff = diff_of_content[cid]
+    topic_w = topic_weights.get(topic, 0.2)
+    diff_w = difficulty_weights.get(diff, 0.5)
+    return float(np.clip(topic_w * diff_w, 0.0, 1.0))
+
+
+def pick_event(qualified, match, rng):
     """Elige el evento de la interacción.
 
     - Si el contenido NO es accesible (faltan prerrequisitos): solo exploración
       pasiva (view/started), score < 0.5. El usuario puede verlo pero no dominarlo.
-    - Si SÍ es accesible: con cierta probabilidad lo completa/aprueba (dominio),
-      score >= 0.5; si no, solo lo explora.
+    - Si SÍ es accesible: la probabilidad de dominio (completed/quiz_passed,
+      score >= 0.5) crece con `match` (ajuste usuario-contenido). Un contenido
+      bien ajustado al perfil se completa/aprueba con más frecuencia; uno popular
+      pero mal ajustado tiende a quedarse en view/started. Esto hace que la
+      señal de relevancia dependa del perfil, no solo de la popularidad.
     """
     if not qualified:
         return rng.choices(["view", "started"], weights=[0.7, 0.3])[0], False
+    # Umbrales base (match=0) y su desplazamiento según el ajuste.
+    # A mayor match, más masa de probabilidad se mueve hacia completed/quiz_passed.
+    view_hi = 0.35 - 0.20 * match
+    started_hi = 0.55 - 0.20 * match
+    completed_hi = 0.55 + 0.25 * match
+    passed_hi = 0.80 + 0.15 * match
     r = rng.random()
-    if r < 0.35:
+    if r < view_hi:
         return "view", False
-    elif r < 0.55:
+    elif r < started_hi:
         return "started", False
-    elif r < 0.80:
+    elif r < completed_hi:
         return "completed", True
-    elif r < 0.95:
+    elif r < passed_hi:
         return "quiz_passed", True
     else:
         return "quiz_failed", False
@@ -382,7 +413,8 @@ def generate_user_interactions(row, all_cids, rng):
 
         # --- Evento y dominio ---
         qualified = concepts_mastered_for(cid, mastered)
-        event, mastered_now = pick_event(qualified, rng)
+        match = content_match_value(cid, topic_weights, difficulty_weights)
+        event, mastered_now = pick_event(qualified, match, rng)
         if mastered_now:
             for concept in content_concepts.get(cid, []):
                 mastered.add(concept)
