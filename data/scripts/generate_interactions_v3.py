@@ -277,17 +277,23 @@ def pick_event(qualified, rng):
 
 
 def score_for_event(event):
-    """Score 0-1 coherente con el evento (>=0.5 = relevante)."""
+    """Score 0-1 coherente con el evento (>=0.5 = relevante).
+
+    Solo los eventos de dominio (completed/quiz_passed) pueden alcanzar
+    score >= 0.5. Los pasivos (view/started) y los fallos (quiz_failed)
+    quedan SIEMPRE por debajo de 0.5, para que nunca se cuenten como
+    interacciones relevantes en la evaluación.
+    """
     if event == "view":
         return round(NPRNG.uniform(0.1, 0.4), 3)
     if event == "started":
-        return round(NPRNG.uniform(0.3, 0.5), 3)
+        return round(NPRNG.uniform(0.3, 0.49), 3)
     if event == "completed":
         return round(NPRNG.uniform(0.6, 0.9), 3)
     if event == "quiz_passed":
         return round(NPRNG.uniform(0.7, 1.0), 3)
     if event == "quiz_failed":
-        return round(NPRNG.uniform(0.4, 0.6), 3)
+        return round(NPRNG.uniform(0.4, 0.49), 3)
     return 0.5
 
 

@@ -197,13 +197,22 @@ def event_to_relevance(event):
     """
     Convierte eventos en relevancia pedagógica.
 
+    El vocabulario de eventos coincide con el que genera
+    generate_interactions_v3.py: view, started, completed,
+    quiz_passed, quiz_failed.
+
+    Solo los eventos de dominio (completed/quiz_passed) son
+    relevantes. Los pasivos (view/started) y los fallos
+    (quiz_failed) tienen relevancia 0.
+
     Puedes modificar estos pesos únicamente si forman parte
     de la metodología definida en el TFM.
     """
 
     mapping = {
-        "disliked": 0.0,
-        "viewed": 0.2,
+        "view": 0.0,
+        "started": 0.0,
+        "quiz_failed": 0.0,
         "quiz_passed": 0.7,
         "completed": 1.0,
     }
