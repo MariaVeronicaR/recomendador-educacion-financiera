@@ -1,6 +1,0 @@
-modelo,precision_5,recall_5,ndcg_5,coverage_pct,pvr_pre_pct,pvr_post_pct,filter_rate_pct,feasibility_at_5_pct
-Popularidad,0.0742,0.1154,0.1014,9.09,45.2,0.0,0.0,100.0
-Random (baseline),0.0392,0.0629,0.0585,71.72,52.1,0.0,0.0,100.0
-TF-IDF + Cosine (perfil),0.0515,0.0729,0.0703,17.17,20.0,0.0,0.0,100.0
-Profile + Content Ridge,0.0134,0.0174,0.0177,12.12,90.8,0.0,0.0,100.0
-NeuMF-Profile (variante),0.0629,0.1013,0.0804,8.08,57.7,0.0,0.0,100.0
