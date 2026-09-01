@@ -9,6 +9,7 @@ export interface ProfileRow {
   age: number | null
   education_level: string | null
   employment_status: string | null
+  learning_goal?: string | null
   knowledge_level: string | null
   interests: Record<string, number> | null
   format_pref: Record<string, number> | null
@@ -80,6 +81,7 @@ export async function buildUserProfile(userId: string): Promise<UserProfile> {
     age: profile?.age ?? null,
     education_level: profile?.education_level ?? null,
     employment_status: profile?.employment_status ?? null,
+    learning_goal: profile?.learning_goal ?? null,
     knowledge_level: profile?.knowledge_level ?? null,
     interests: profile?.interests ?? {},
     format_pref: profile?.format_pref ?? {},

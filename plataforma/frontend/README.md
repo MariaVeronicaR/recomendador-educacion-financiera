@@ -40,4 +40,4 @@ en el backend no requiere tocar el frontend.
 ## Despliegue
 
 Build estático a Vercel/Netlify (free tier). Ver `../../docs/plan_aplicacion_tfm.md`
-(Fase 7).
+para el despliegue completo.

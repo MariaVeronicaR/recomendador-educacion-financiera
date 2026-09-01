@@ -10,6 +10,7 @@ create table if not exists public.profiles (
   age              int,
   education_level  text,
   employment_status text,
+  learning_goal    text,           -- objetivo de aprendizaje (users_synthetic.csv)
   knowledge_level  text,          -- bajo | medio | alto
   interests        jsonb default '{}'::jsonb,  -- {topic: valor}
   format_pref      jsonb default '{}'::jsonb,
@@ -21,15 +22,21 @@ create table if not exists public.profiles (
 
 -- ============================================================
 -- 2. Tabla: interactions (interacciones usuario-contenido)
+-- Esquema de eventos alineado con generate_interactions_v3.csv:
+--   event: view | started | completed | quiz_passed | quiz_failed
+--   score: 0-1. Solo los eventos de dominio (completed/quiz_passed)
+--     tienen score >= 0.5 (relevantes). Sirve para reentrenar el modelo.
 -- ============================================================
 create table if not exists public.interactions (
-  id            bigint generated always as identity primary key,
-  user_id       uuid references auth.users (id) on delete cascade,
-  content_id    text not null,
-  interaction_type text default 'read',  -- read | quiz | ...
-  completed     boolean default false,
-  outcome       text,                    -- correct | incorrect | null
-  created_at    timestamptz default now()
+  id                 bigint generated always as identity primary key,
+  user_id            uuid references auth.users (id) on delete cascade,
+  content_id         text not null,
+  event              text not null default 'view',
+  score              numeric default 0,
+  time_spent_seconds int,
+  session_id         text,
+  is_recommended     boolean default false,
+  created_at         timestamptz default now()
 );
 
 -- ============================================================

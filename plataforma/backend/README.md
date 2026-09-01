@@ -47,14 +47,30 @@ Endpoints:
 .venv/bin/python -m pytest -q
 ```
 
-## Modelos ML (NeuMF, feature-aware NeuMF)
+## Modelos ML (NeuMF-Profile, NeuMF)
 
-Los modelos ML se registran en la factory pero se activan por configuración
-(`RECO_MODEL=neumf` / `feature_aware_neumf`) cuando el modelo esté entrenado y
-el artefacto (checkpoint) esté en `models/`. Hasta entonces se usan los
-baselines (`content_based` por defecto). El refactor de los `train_*` del
-harness (extraer clases `nn.Module`, separar fit de predict, serializar
-checkpoint) se completa en la Fase 4.
+El modelo servible hoy es **NeuMF-Profile** (ganador del escenario cold start):
+funciona por features de perfil, así que sirve para un usuario real nuevo que
+acaba de hacer el cuestionario.
+
+```bash
+# Entrenar y serializar el modelo (desde la raíz del proyecto):
+python3 plataforma/backend/scripts/train_serving_models.py
+# y en .env: RECO_MODEL=neumf_profile
+```
+
+Genera en `models/`: `neumf_profile.pt`, `neumf_profile_features.json` y
+`neumf_profile_meta.json`.
+
+**NeuMF (warm start)** aprende embeddings de `user_id` sobre los usuarios
+sintéticos del harness. Un usuario real de la app no está en ese mapeo, así que
+NeuMF warm solo es servible tras reentrenar con interacciones reales (feedback
+loop). Hasta entonces se usa NeuMF-Profile (cold start) o un baseline.
+
+Requiere la extra `ml`:
+```bash
+.venv/bin/python -m pip install torch
+```
 
 ## Grafo Neo4j (opcional)
 
@@ -70,4 +86,5 @@ real con Neo4j:
 ## Despliegue
 
 El servicio se despliega a Render (free tier) con un Dockerfile. Ver
-`../../docs/plan_aplicacion_tfm.md` (Fase 7) para el despliegue completo.
+`../../docs/plan_aplicacion_tfm.md` para el despliegue completo (incluye
+cómo generar los artefactos del modelo, que no están en git).

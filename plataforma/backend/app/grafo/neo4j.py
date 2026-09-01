@@ -49,13 +49,14 @@ class Neo4jGrafo(GrafoPedagogico):
         return [r["kid"] for r in rows]
 
     def is_accessible(self, content_id: str, mastered_concepts: set[str]) -> bool:
-        # Un contenido es accesible si para cada concepto que cubre, el usuario
-        # domina al menos un prerrequisito. Se evalúa en Python sobre las
-        # consultas del grafo (misma regla que InMemoryGrafo).
+        # Un contenido es accesible si el usuario domina TODOS los prerrequisitos
+        # de TODOS los conceptos que cubre (misma regla que el generador y que
+        # InMemoryGrafo, la que garantiza PVR=0). Se evalúa en Python sobre las
+        # consultas del grafo.
         for k in self.concepts_taught_by(content_id):
-            prereqs = self.prerequisites_of(k)
-            if prereqs and not (mastered_concepts & set(prereqs)):
-                return False
+            for prereq in self.prerequisites_of(k):
+                if prereq not in mastered_concepts:
+                    return False
         return True
 
     def accessible_contents(self, mastered_concepts: set[str]) -> list[str]:

@@ -1,14 +1,14 @@
 """Implementaciones del recomendador (interfaz Recomendador).
 
-Los baselines reutilizan las funciones del harness de evaluación existente
-(data/scripts/evaluate_models.py). Los modelos ML (NeuMF, feature-aware NeuMF)
-se registran en la factory pero se activan por configuración (RECO_MODEL) cuando
-el modelo esté entrenado.
+Los baselines se implementan de forma autónoma sobre la capa de datos
+(app/datos.py), sin depender del harness de evaluación. Así el servicio es
+estable y no se rompe si data/scripts/evaluate_models.py cambia.
+
+Los modelos ML (NeuMF, NeuMF-Profile) se registran en la factory pero se
+activan por configuración (RECO_MODEL) cuando el modelo esté entrenado.
 """
 
 from __future__ import annotations
-
-import json
 
 import numpy as np
 
@@ -25,9 +25,7 @@ class RuleBasedRecomendador(Recomendador):
 
     def rank(self, profile: UserProfile) -> list[str]:
         contents = datos.get_contents_df()
-        # Intereses del usuario (topic -> valor)
         interests = profile.interests or {}
-        # Ordenar por: interés en el topic (desc) y dificultad (asc)
         diff = datos.get_content_diff()
         scored = []
         for _, row in contents.iterrows():
@@ -43,11 +41,7 @@ class MostPopularRecomendador(Recomendador):
     name = "most_popular"
 
     def __init__(self) -> None:
-        # Reutiliza baseline_most_popular del harness (sys.path lo expone datos)
-        import evaluate_models as em
-
-        train = datos.get_data()["interactions"]
-        self._ranked = em.baseline_most_popular(train, datos.get_data())
+        self._ranked = datos.popularity_ranking()
 
     def rank(self, profile: UserProfile) -> list[str]:
         return list(self._ranked)
@@ -60,38 +54,63 @@ class ContentBasedRecomendador(Recomendador):
     name = "content_based"
 
     def __init__(self) -> None:
-        import evaluate_models as em
-
-        users = datos.get_data()["users"]
-        self._rank_for_user = em.baseline_content_based(users, datos.get_data())
+        self._contents = datos.get_contents_df()
+        self._topics = sorted(self._contents["topic"].unique())
+        # Vector one-hot por contenido (topic -> 1.0)
+        self._content_vecs: dict[str, np.ndarray] = {}
+        for _, row in self._contents.iterrows():
+            vec = np.zeros(len(self._topics))
+            if row["topic"] in self._topics:
+                vec[self._topics.index(row["topic"])] = 1.0
+            self._content_vecs[row["content_id"]] = vec
 
     def rank(self, profile: UserProfile) -> list[str]:
-        # El baseline usa el user_id para buscar intereses en users_synthetic.csv.
-        # Para un usuario nuevo (no en el CSV), construimos un perfil sintético
-        # con sus intereses y lo evaluamos con la misma lógica coseno.
-        uid = profile.user_id
-        if uid in self._user_ids():
-            return self._rank_for_user(uid)
-        return self._rank_from_interests(profile)
-
-    def _user_ids(self) -> set[str]:
-        return set(datos.get_data()["users"]["user_id"])
-
-    def _rank_from_interests(self, profile: UserProfile) -> list[str]:
-        """Ranking coseno usando solo los intereses del perfil (para usuarios
-        nuevos que no están en users_synthetic.csv)."""
-        contents = datos.get_contents_df()
-        topics = sorted(contents["topic"].unique())
-        uvec = np.array([profile.interests.get(t, 0.0) for t in topics])
+        interests = profile.interests or {}
+        # Si el perfil no trae intereses, intentar derivarlos del learning_goal
+        # (para usuarios que vienen de users_synthetic.csv sin cuestionario).
+        if not interests:
+            interests = self._interests_from_goal(profile)
+        uvec = np.array([interests.get(t, 0.0) for t in self._topics], dtype=float)
         norm_u = np.linalg.norm(uvec)
         if norm_u == 0:
-            return list(contents["content_id"])
-        scores = {}
-        for _, row in contents.iterrows():
-            cvec = np.zeros(len(topics))
-            cvec[topics.index(row["topic"])] = 1.0
-            scores[row["content_id"]] = float(np.dot(uvec, cvec) / (norm_u * np.linalg.norm(cvec)))
-        return sorted(scores, key=scores.get, reverse=True)
+            # Sin señal: popularidad como fallback neutro
+            return datos.popularity_ranking()
+        scored = {}
+        for cid, cvec in self._content_vecs.items():
+            denom = norm_u * np.linalg.norm(cvec)
+            scored[cid] = float(np.dot(uvec, cvec) / denom) if denom > 0 else 0.0
+        return sorted(scored, key=scored.get, reverse=True)
+
+    def _interests_from_goal(self, profile: UserProfile) -> dict[str, float]:
+        """Deriva un vector de intereses a partir del learning_goal del perfil.
+
+        Es un mapeo simplificado de los learning_goal de users_synthetic.csv a
+        topics, para que el baseline funcione incluso sin cuestionario.
+        """
+        goal = (profile.learning_goal or "").lower()
+        goal_topics = {
+            "prepararse para invertir": {
+                "inversión": 1.0, "mercado": 0.9, "riesgo": 0.8,
+                "diversificación": 0.8, "interés": 0.7, "ahorro": 0.5,
+            },
+            "ahorrar": {
+                "ahorro": 1.0, "planificación": 0.8, "cuentas bancarias": 0.7,
+                "presupuesto": 0.6, "interés": 0.5,
+            },
+            "presupuestar": {
+                "planificación": 1.0, "presupuesto": 0.9, "deuda": 0.6,
+                "cuentas bancarias": 0.6, "ahorro": 0.5,
+            },
+            "planificar finanzas": {
+                "planificación": 1.0, "ahorro": 0.8, "cuentas bancarias": 0.6,
+                "presupuesto": 0.6, "interés": 0.4,
+            },
+            "entender deuda": {
+                "deuda": 1.0, "préstamos": 0.9, "hipotecas": 0.8,
+                "tarjetas": 0.7, "interés": 0.6,
+            },
+        }
+        return dict(goal_topics.get(goal, goal_topics["planificar finanzas"]))
 
 
 class KgRulesRecomendador(Recomendador):
@@ -102,30 +121,16 @@ class KgRulesRecomendador(Recomendador):
     name = "kg_rules"
 
     def __init__(self) -> None:
-        import evaluate_models as em
-
-        data = datos.get_data()
-        train = data["interactions"]
-        mastery = em.compute_mastery(train, data)
-        self._rank_for_user = em.baseline_kg_rules(train, data, mastery)
+        self._mastery = datos.compute_mastery()
 
     def rank(self, profile: UserProfile) -> list[str]:
-        # Usa los conceptos dominados del perfil (progreso real del usuario)
         mastered = set(profile.mastered_concepts)
-        # Si el perfil no trae mastery, usamos el del harness (train) como fallback
+        # Si el perfil no trae mastery, usamos la del dataset como fallback
         if not mastered:
-            mastered = self._mastery_for(profile.user_id)
-        return self._rank_for_user_with_mastery(mastered)
+            mastered = self._mastery.get(profile.user_id, set())
+        return self._rank_with_mastery(mastered)
 
-    def _mastery_for(self, uid: str) -> set[str]:
-        import evaluate_models as em
-
-        data = datos.get_data()
-        train = data["interactions"]
-        mastery = em.compute_mastery(train, data)
-        return mastery.get(uid, set())
-
-    def _rank_for_user_with_mastery(self, mastered: set[str]) -> list[str]:
+    def _rank_with_mastery(self, mastered: set[str]) -> list[str]:
         from ..grafo.inmemory import InMemoryGrafo
 
         grafo = InMemoryGrafo()

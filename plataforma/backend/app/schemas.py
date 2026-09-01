@@ -72,6 +72,12 @@ class UserProfile(BaseModel):
     employment_status: str | None = None
     products: list[str] = Field(default_factory=list)
     knowledge_level: str | None = None  # bajo | medio | alto (estimado)
+    learning_goal: str | None = None    # objetivo de aprendizaje (users_synthetic.csv)
+    saving_habit: str | None = None     # frecuente | ocasional | nunca
+    investment_experience: str | None = None  # básica | ninguna
+    debt_experience: str | None = None  # ninguna | baja | media | alta
+    financial_behavior_level: str | None = None  # bajo | medio | alto
+    financial_attitude_level: str | None = None  # bajo | medio | alto
     risk: float | None = None
     activity: float | None = None
     interests: dict[str, float] = Field(default_factory=dict)

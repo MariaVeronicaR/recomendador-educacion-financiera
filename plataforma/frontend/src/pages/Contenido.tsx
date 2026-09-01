@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { getContentDetail, type ContentDetail, type QuizQuestion } from '../lib/api'
 import { useAuth } from '../lib/auth'
 import { supabase } from '../lib/supabase'
+import { registerInteraction } from '../lib/events'
 import ContentBlocks from '../components/ContentBlocks'
 import { IconCheck, IconSparkles } from '../components/Icons'
 
@@ -25,6 +26,16 @@ export default function Contenido() {
       try {
         const data = await getContentDetail(contentId)
         setContent(data)
+        // Registra la visualización (evento pasivo, score < 0.5)
+        if (user) {
+          registerInteraction({
+            userId: user.id,
+            contentId,
+            event: 'view',
+          }).catch(() => {
+            /* no bloquea la lectura del contenido */
+          })
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Error al cargar el contenido')
       } finally {
@@ -32,7 +43,7 @@ export default function Contenido() {
       }
     }
     load()
-  }, [contentId])
+  }, [contentId, user])
 
   function selectAnswer(qi: number, oi: number) {
     if (quizSubmitted) return
@@ -47,6 +58,17 @@ export default function Contenido() {
     })
     setResults(newResults)
     setQuizSubmitted(true)
+    // Si no se aciertan todas, registra el fallo (score < 0.5, no relevante)
+    const allCorrect = Object.values(newResults).every(Boolean)
+    if (!allCorrect && user && contentId) {
+      registerInteraction({
+        userId: user.id,
+        contentId,
+        event: 'quiz_failed',
+      }).catch(() => {
+        /* no bloquea la corrección del quiz */
+      })
+    }
   }
 
   const correctCount = Object.values(results).filter(Boolean).length
@@ -72,6 +94,12 @@ export default function Contenido() {
         updated_at: new Date().toISOString(),
       })
       if (progError) throw progError
+      // Registra el evento de dominio (score >= 0.5, relevante)
+      await registerInteraction({
+        userId: user.id,
+        contentId: contentId ?? '',
+        event: 'quiz_passed',
+      })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al guardar el progreso')
     } finally {

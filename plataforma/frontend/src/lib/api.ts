@@ -32,6 +32,7 @@ export interface UserProfile {
   sex?: string | null
   education_level?: string | null
   employment_status?: string | null
+  learning_goal?: string | null
   products?: string[]
   knowledge_level?: string | null
   risk?: number | null

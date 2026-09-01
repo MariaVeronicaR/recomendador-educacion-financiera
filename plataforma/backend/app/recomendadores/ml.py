@@ -1,75 +1,176 @@
-"""Implementaciones ML del recomendador (NeuMF, feature-aware NeuMF).
+"""Implementaciones ML del recomendador (NeuMF, NeuMF-Profile).
 
-Estos son los candidatos del borrador. Se registran en la factory pero se
-activan por configuración (RECO_MODEL) cuando el modelo esté entrenado y el
-artefacto (checkpoint) esté disponible. Hasta entonces, la app usa los baselines.
+NeuMF-Profile (cold start) es el modelo servible hoy: funciona por features de
+perfil, así que sirve para un usuario real nuevo que acaba de hacer el
+cuestionario. Se carga desde checkpoint (state_dict + transformador de
+features + meta) serializado por scripts/train_serving_models.py.
 
-El refactor de los train_* del harness (extraer las clases nn.Module, separar
-fit de predict, serializar checkpoint) se completa en la Fase 4 cuando se
-entrene el modelo final. Aquí dejamos la estructura y la carga desde checkpoint.
+NeuMF (warm start) requiere que el user_id esté en el mapeo de entrenamiento
+(usuarios sintéticos U0001-U1916). Un usuario real de la app no está en ese
+mapeo, así que NeuMF warm solo tiene sentido tras reentrenar con interacciones
+reales (feedback loop). Hasta entonces no es servible para usuarios nuevos.
+
+Ambos usan fallback de popularidad para los contenidos sin embedding (item
+cold start) o para usuarios sin features.
 """
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
+import numpy as np
+import torch
+
+from .. import datos
 from ..config import settings
 from ..interfaces import Recomendador
 from ..schemas import UserProfile
+from ..modelos.arquitecturas import NeuMFProfile
+from ..modelos.features import ProfileFeatureTransformer
+from .fallback import TfidfFallback
 
 
-class _ModeloCheckpoint(Recomendador):
-    """Base para recomendadores que cargan un modelo desde checkpoint."""
+def _load_json(path: Path) -> dict:
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-    name = "modelo"
 
-    def __init__(self, artifact_name: str) -> None:
-        self._artifact_path = Path(settings.model_artifact_path) / artifact_name
-        self._model = None
-        self._load()
+class NeumfProfileRecomendador(Recomendador):
+    """NeuMF-Profile: recomendación por features de perfil (cold start).
 
-    def _load(self) -> None:
-        """Carga el checkpoint (state_dict + mapeos + features). Se implementa
-        en la Fase 4 cuando se defina el formato del artefacto."""
-        if not self._artifact_path.exists():
+    Es el modelo ganador del escenario cold start. Recibe un UserProfile y
+    construye el vector de features con el transformador serializado, lo
+    pasa por el modelo y rankea el catálogo.
+    """
+
+    name = "neumf_profile"
+
+    def __init__(self, artifact_path: Path | None = None) -> None:
+        base = artifact_path or Path(settings.model_artifact_path)
+        self._meta_path = base / "neumf_profile_meta.json"
+        self._features_path = base / "neumf_profile_features.json"
+        self._state_path = base / "neumf_profile.pt"
+
+        if not self._meta_path.exists() or not self._features_path.exists():
             raise FileNotFoundError(
-                f"Artefacto del modelo no encontrado: {self._artifact_path}. "
-                "Entrena el modelo o usa un baseline (RECO_MODEL=content_based)."
+                f"Artefactos de NeuMF-Profile no encontrados en {base}. "
+                "Ejecuta scripts/train_serving_models.py o usa un baseline."
             )
-        # TODO(Fase 4): cargar state_dict, u_idx/i_idx, COLD_IDX, n_features,
-        # normalizadores y rehidratar el modelo sin re-entrenar.
-        raise NotImplementedError(
-            "Carga de checkpoint pendiente de implementar en la Fase 4."
+
+        self._meta = _load_json(self._meta_path)
+        self._transformer = ProfileFeatureTransformer.load(self._features_path)
+        self._content_ids: list[str] = self._meta["content_ids"]
+        self._item_to_idx: dict[str, int] = self._meta["item_to_idx"]
+
+        self._model = NeuMFProfile(
+            num_user_features=self._transformer.dim,
+            num_items=len(self._content_ids),
+            latent_dim=self._meta.get("latent_dim", 8),
         )
+        if self._state_path.exists():
+            self._model.load_state_dict(
+                torch.load(self._state_path, map_location="cpu", weights_only=True)
+            )
+        self._model.eval()
+
+        # Fallback de popularidad para usuarios sin features / ítems sin embedding
+        self._popular = datos.popularity_ranking()
+        # Fallback de contenido (TF-IDF) para contenidos NUEVOS sin embedding
+        self._tfidf = TfidfFallback()
 
     def rank(self, profile: UserProfile) -> list[str]:
-        raise NotImplementedError
+        # 1. Construir el vector de features del perfil
+        row = self._profile_to_row(profile)
+        vec = self._transformer.transform_row(row)
+
+        # 2. Score de todos los contenidos con embedding
+        idxs = torch.tensor(
+            [self._item_to_idx[cid] for cid in self._content_ids],
+            dtype=torch.long,
+        )
+        user_feat = torch.tensor(vec, dtype=torch.float32).repeat(len(self._content_ids), 1)
+
+        with torch.no_grad():
+            scores = self._model(user_feat, idxs).cpu().numpy()
+
+        # 3. Ranking de los contenidos conocidos: score descendente
+        pairs = list(zip(self._content_ids, scores))
+        pairs.sort(key=lambda x: -x[1])
+        ranked = [cid for cid, _ in pairs]
+
+        # 4. Contenidos NUEVOS (sin embedding en el modelo): se rankean por
+        #    TF-IDF al perfil y se intercalan al final, para que el item cold
+        #    start no quede fuera de las recomendaciones.
+        catalog_ids = datos.get_contents_df()["content_id"].tolist()
+        known = set(self._content_ids)
+        new_ids = [cid for cid in catalog_ids if cid not in known]
+        if new_ids:
+            new_ranked = [
+                cid for cid in self._tfidf.rank(profile) if cid in new_ids
+            ]
+            ranked += new_ranked
+
+        return ranked
+
+    def _profile_to_row(self, profile: UserProfile) -> dict:
+        """Convierte un UserProfile al dict de candidate_columns del transformador.
+
+        El transformador espera los nombres de columna de users_synthetic.csv.
+        UserProfile usa nombres ligeramente distintos (age_group vs age,
+        knowledge_level vs financial_knowledge_level), así que se mapean. Los
+        campos ausentes se dejan sin valor (el transformador imputa con la
+        mediana / "unknown", igual que en el entrenamiento).
+        """
+        row: dict = {}
+        # age_group se deriva de age
+        if profile.age is not None:
+            row["age_group"] = "18-24" if profile.age <= 24 else "25-34"
+        if profile.sex:
+            row["sex"] = profile.sex
+        if profile.education_level:
+            row["education_level"] = profile.education_level
+        if profile.employment_status:
+            row["employment_status"] = profile.employment_status
+        # knowledge_level -> financial_knowledge_level
+        if profile.knowledge_level:
+            row["financial_knowledge_level"] = profile.knowledge_level
+        if profile.learning_goal:
+            row["learning_goal"] = profile.learning_goal
+        if profile.saving_habit:
+            row["saving_habit"] = profile.saving_habit
+        if profile.investment_experience:
+            row["investment_experience"] = profile.investment_experience
+        if profile.debt_experience:
+            row["debt_experience"] = profile.debt_experience
+        if profile.financial_behavior_level:
+            row["financial_behavior_level"] = profile.financial_behavior_level
+        if profile.financial_attitude_level:
+            row["financial_attitude_level"] = profile.financial_attitude_level
+        return row
 
 
-class BprMfRecomendador(_ModeloCheckpoint):
-    """BPR-MF (Matrix Factorization con Bayesian Personalized Ranking).
-    En cold start usa fallback de popularidad."""
+class NeumfRecomendador(Recomendador):
+    """NeuMF puro (warm start). Requiere historial con user_id en el mapeo.
 
-    name = "bpr_mf"
-
-    def __init__(self) -> None:
-        super().__init__("bpr_mf.npz")
-
-
-class NeumfRecomendador(_ModeloCheckpoint):
-    """NeuMF puro (GMF + MLP). Requiere historial; en cold usa fallback."""
+    Un usuario real de la app no está en el mapeo de entrenamiento (usuarios
+    sintéticos), así que este modelo solo sirve tras reentrenar con
+    interacciones reales. Hasta entonces, recomendamos popularidad.
+    """
 
     name = "neumf"
 
-    def __init__(self) -> None:
-        super().__init__("neumf.pt")
+    def __init__(self, artifact_path: Path | None = None) -> None:
+        base = artifact_path or Path(settings.model_artifact_path)
+        self._state_path = base / "neumf.pt"
+        self._popular = datos.popularity_ranking()
+        if not self._state_path.exists():
+            raise FileNotFoundError(
+                f"Artefacto NeuMF warm no encontrado: {self._state_path}. "
+                "NeuMF warm requiere reentrenar con user_id reales (feedback "
+                "loop). Usa RECO_MODEL=neumf_profile para cold start."
+            )
 
-
-class FeatureAwareNeumfRecomendador(_ModeloCheckpoint):
-    """Feature-aware NeuMF: añade features del cuestionario al MLP. Resuelve
-    cold start usando solo features. Es el modelo propuesto del borrador."""
-
-    name = "feature_aware_neumf"
-
-    def __init__(self) -> None:
-        super().__init__("feature_aware_neumf.pt")
+    def rank(self, profile: UserProfile) -> list[str]:
+        # Sin user_id en el mapeo -> fallback de popularidad
+        return list(self._popular)

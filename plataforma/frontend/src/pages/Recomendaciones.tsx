@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../lib/auth'
 import { getRecommendations, type RecommendationResponse } from '../lib/api'
+import { registerInteraction } from '../lib/events'
 import { buildUserProfile } from '../lib/profile'
 import { supabase } from '../lib/supabase'
 import { IconArrowRight, IconBook, IconCheck, IconSparkles } from '../components/Icons'
@@ -19,13 +20,14 @@ export default function Recomendaciones() {
     if (!user) return
     setCompleting(contentId)
     try {
-      const { error: interError } = await supabase.from('interactions').insert({
-        user_id: user.id,
-        content_id: contentId,
-        interaction_type: 'read',
-        completed: true,
+      // Registra el evento de dominio (score >= 0.5, relevante). El contenido
+      // llegó por recomendación del sistema, así que is_recommended=true.
+      await registerInteraction({
+        userId: user.id,
+        contentId,
+        event: 'completed',
+        isRecommended: true,
       })
-      if (interError) throw interError
 
       const { error: progError } = await supabase.from('progress').upsert({
         user_id: user.id,

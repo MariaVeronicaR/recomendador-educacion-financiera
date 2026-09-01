@@ -45,3 +45,23 @@ def test_recommend():
     assert len(body["recommendations"]) <= 5
     # Cada recomendación tiene explicación
     assert all("explanation" in rec for rec in body["recommendations"])
+
+
+def test_recommend_neumf_profile():
+    """NeuMF-Profile (modelo ganador cold start) rankea el catálogo completo.
+
+    Se prueba el recomendador directamente (no vía el client global, que usa
+    el modelo por defecto) para no depender de RECO_MODEL.
+    """
+    from pathlib import Path
+
+    from app.recomendadores.ml import NeumfProfileRecomendador
+    from app.schemas import UserProfile
+
+    rec = NeumfProfileRecomendador(artifact_path=Path("models"))
+    ranking = rec.rank(
+        UserProfile(user_id="UUID_REAL_1", age=25, learning_goal="ahorrar")
+    )
+    # Rankea todo el catálogo (104 contenidos) sin duplicados
+    assert len(ranking) == len(set(ranking))
+    assert len(ranking) >= 100

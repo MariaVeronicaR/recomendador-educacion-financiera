@@ -80,6 +80,7 @@ export default function Cuestionario() {
   const [age, setAge] = useState('')
   const [education, setEducation] = useState('')
   const [employment, setEmployment] = useState('')
+  const [learningGoal, setLearningGoal] = useState('')
   const [knowledge, setKnowledge] = useState('')
   const [interests, setInterests] = useState<string[]>([])
   const [bigThree, setBigThree] = useState<number[]>([-1, -1, -1])
@@ -108,6 +109,7 @@ export default function Cuestionario() {
         setAge(p.age != null ? String(p.age) : '')
         setEducation(p.education_level ?? '')
         setEmployment(p.employment_status ?? '')
+        setLearningGoal(p.learning_goal ?? '')
         setKnowledge(p.knowledge_level ?? '')
         setInterests(
           Object.keys(p.interests ?? {}).filter((t) => (p.interests ?? {})[t] > 0),
@@ -149,6 +151,7 @@ export default function Cuestionario() {
         age: age ? Number(age) : null,
         education_level: education || null,
         employment_status: employment || null,
+        learning_goal: learningGoal || null,
         knowledge_level: estimatedLevel(),
         interests: interestsMap,
       }
@@ -159,6 +162,7 @@ export default function Cuestionario() {
         age: profileData.age,
         education_level: profileData.education_level,
         employment_status: profileData.employment_status,
+        learning_goal: profileData.learning_goal,
         knowledge_level: profileData.knowledge_level,
         interests: profileData.interests,
         big_three: bigThree,
@@ -262,6 +266,22 @@ export default function Cuestionario() {
                 <option value="estudiante">Estudiante</option>
                 <option value="autónomo">Autónomo/a</option>
                 <option value="desempleado">Desempleado/a</option>
+              </select>
+            </div>
+            <div>
+              <label className="label" htmlFor="learningGoal">¿Cuál es tu principal objetivo financiero?</label>
+              <select
+                id="learningGoal"
+                value={learningGoal}
+                onChange={(e) => setLearningGoal(e.target.value)}
+                className="input"
+              >
+                <option value="">Selecciona…</option>
+                <option value="ahorrar">Ahorrar</option>
+                <option value="presupuestar">Llevar un presupuesto</option>
+                <option value="planificar finanzas">Planificar mis finanzas</option>
+                <option value="prepararse para invertir">Prepararme para invertir</option>
+                <option value="entender deuda">Entender la deuda</option>
               </select>
             </div>
           </div>

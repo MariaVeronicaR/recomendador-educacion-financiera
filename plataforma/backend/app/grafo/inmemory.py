@@ -38,14 +38,18 @@ class InMemoryGrafo(GrafoPedagogico):
 
     # -- Validación pedagógica --------------------------------------------
     def is_accessible(self, content_id: str, mastered_concepts: set[str]) -> bool:
-        """Un contenido es accesible si, para cada concepto que cubre, el usuario
-        domina al menos un prerrequisito de ese concepto. Conceptos sin
-        prerrequisitos siempre son accesibles. (Misma regla que
-        evaluate_models.content_is_coherent.)"""
+        """Un contenido es accesible si el usuario domina TODOS los prerrequisitos
+        de TODOS los conceptos que cubre. Conceptos sin prerrequisitos siempre
+        son accesibles.
+
+        Misma regla que el generador (generate_interactions_v3.py,
+        `concepts_mastered_for`), que es la que garantiza PVR=0. Así el filtro
+        pedagógico de la app replica exactamente la coherencia de los datos.
+        """
         for k in self._concepts_of_content.get(content_id, []):
-            prereqs = self._prereq_of_concept.get(k, [])
-            if prereqs and not (mastered_concepts & set(prereqs)):
-                return False
+            for prereq in self._prereq_of_concept.get(k, []):
+                if prereq not in mastered_concepts:
+                    return False
         return True
 
     def accessible_contents(self, mastered_concepts: set[str]) -> list[str]:
