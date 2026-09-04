@@ -214,6 +214,43 @@ def learning_goal(row):
 
 sampled['learning_goal'] = sampled.apply(learning_goal, axis=1)
 
+# 12. risk (float 0-1) — tolerancia al riesgo financiero del usuario.
+#    Heurística derivada de tres señales del perfil. Esta función DEBE
+#    coincidir con las constantes en
+#    `frontend/src/pages/Cuestionario.tsx::computeRiskActivity`. Si tocas
+#    una, toca la otra, o el modelo entrenará con una distribución y
+#    servirá con otra (drift silencioso).
+#    - investment_experience: 'básica' indica familiaridad con riesgo (0.7)
+#    - learning_goal: 'prepararse para invertir' es la señal más fuerte (0.9)
+#    - financial_attitude_level: proxy conductual del ECF (alto → 0.8)
+def risk_score(row):
+    inv_exp = 0.7 if row.get('investment_experience') == 'básica' else 0.2
+    goal = 0.9 if row.get('learning_goal') == 'prepararse para invertir' else 0.3
+    attitude = {'alto': 0.8, 'medio': 0.5, 'bajo': 0.2}.get(row.get('financial_attitude_level'), 0.4)
+    # Pesos: goal=2 (es lo que el usuario quiere hacer), inv_exp=1, attitude=1
+    raw = (inv_exp + 2 * goal + attitude) / 4.0
+    return float(np.clip(raw, 0.0, 1.0))
+
+sampled['risk'] = sampled.apply(risk_score, axis=1)
+
+# 13. activity (float 0-1) — nivel de engagement financiero del usuario.
+#    Conceptualmente equivalente a `engagement_intensity` de
+#    generate_interactions_v3.py:165-183, normalizado de [0.5, 2.0] a [0, 1].
+#    - saving_habit: señal más fuerte (peso 2) — refleja hábito real
+#    - employment_status: empleados tienen más ingresos para ahorrar/invertir
+#    - financial_behavior_level: coherencia con el comportamiento observado
+#    - age_group: 18-24 +0.1 (jóvenes más activos en formación online)
+def activity_score(row):
+    saving = {'frecuente': 0.8, 'ocasional': 0.5, 'nunca': 0.1}.get(row.get('saving_habit'), 0.3)
+    emp = {'empleado': 0.7, 'estudiante': 0.6, 'desempleado': 0.3, 'jubilado': 0.2}.get(row.get('employment_status'), 0.5)
+    behavior = {'alto': 0.8, 'medio': 0.5, 'bajo': 0.2}.get(row.get('financial_behavior_level'), 0.4)
+    age_bonus = 0.1 if row.get('age_group') == '18-24' else 0.0
+    # Pesos: saving=2, employment=1, behavior=1
+    raw = (2 * saving + emp + behavior) / 4.0 + age_bonus
+    return float(np.clip(raw, 0.0, 1.0))
+
+sampled['activity'] = sampled.apply(activity_score, axis=1)
+
 # ============================================================
 # ESCRITURA DEL CSV FINAL
 # ============================================================
@@ -221,7 +258,8 @@ output_cols = [
     'user_id', 'age_group', 'education_level', 'employment_status',
     'financial_knowledge_level', 'saving_habit', 'debt_experience',
     'investment_experience', 'financial_behavior_level',
-    'financial_attitude_level', 'learning_goal', 'sex'
+    'financial_attitude_level', 'learning_goal', 'sex',
+    'risk', 'activity',
 ]
 
 final = sampled[output_cols].copy()
